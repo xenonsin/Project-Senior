@@ -87,8 +87,8 @@ public class PlayerMovement : MonoBehaviour {
         switch(substate1)
         {
             case 0:
-                mouseposition();                    //get mouse position
-                transform.LookAt(mousepos);         //rotate player
+                //mouseposition();                    //get mouse position
+                //transform.LookAt(mousepos);         //rotate player
                 anim["Fireball"].speed = fireballatkspd;
                 anim.Play("Fireball");           //play animation
                 substate1 = 1;
@@ -123,9 +123,18 @@ public class PlayerMovement : MonoBehaviour {
     void FixedUpdate()
     {
         //Capturing player input
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
-        fireball = Input.GetMouseButton(0);
+        if (this.gameObject.name == "Player1")
+        {
+            horizontal = Input.GetAxisRaw("P1Horizontal");
+            vertical = Input.GetAxisRaw("P1Vertical");
+            fireball = Input.GetKey(KeyCode.F);
+        }
+        if (this.gameObject.name == "Player2")
+        {
+            horizontal = Input.GetAxisRaw("P2Horizontal");
+            vertical = Input.GetAxisRaw("P2Vertical");
+            fireball = Input.GetKey(KeyCode.Keypad1);
+        }
 
         //Statemachine
         StateMachine();

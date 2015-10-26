@@ -142,7 +142,7 @@ public class MonsterStatus : MonoBehaviour {
         StateMachine();
         
         //capturing player position
-        playerpos = GameObject.Find("Player").transform.position;
+        playerpos = GameObject.FindGameObjectWithTag("Player").transform.position;
         distance = Vector3.Distance(playerpos, transform.position);
 
         //go to dead state from any state if health is less than 1

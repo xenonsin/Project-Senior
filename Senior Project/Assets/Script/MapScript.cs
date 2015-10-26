@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MapScript : MonoBehaviour {
 
-    public GameObject playerObject;
+    public GameObject[] playerObject;
     public GameObject monsterObject;
     private GameObject[] monsters;
     public GameObject Tile;
@@ -28,8 +28,10 @@ public class MapScript : MonoBehaviour {
         }
 
         //spawning player
-        GameObject Player = GameObject.Instantiate(playerObject, new Vector3(5f, 0.1f, 5f), Quaternion.identity) as GameObject;
-        Player.name = "Player";
+        GameObject Player1 = GameObject.Instantiate(playerObject[0], new Vector3(5f, 0.1f, 5f), Quaternion.identity) as GameObject;
+        Player1.name = "Player1";
+        GameObject Player2 = GameObject.Instantiate(playerObject[1], new Vector3(6f, 0.1f, 6f), Quaternion.identity) as GameObject;
+        Player2.name = "Player2";
 	}
 
     void Update()
