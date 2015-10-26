@@ -29,6 +29,29 @@ namespace Senior.Managers
                 }
             }
 
+            if (!PlayerTwoSpawned)
+            {
+                if (Input.GetButtonDown(playerTwoStartButton))
+                {
+                    
+                }
+            }
+
+            if (!PlayerThreeSpawned)
+            {
+                if (Input.GetButtonDown(playerThreeStartButton))
+                {
+
+                }
+            }
+
+            if (!PlayerFourSpawned)
+            {
+                if (Input.GetButtonDown(playerFourStartButton))
+                {
+
+                }
+            }
         }
 
         void HandleSpawningInGame()
