@@ -263,6 +263,7 @@ MonoBehaviour:
   playerTwoStartButton: Start_P2
   playerThreeStartButton: Start_P3
   playerFourStartButton: Start_P4
+  Heroes: []
 --- !u!114 &1770907008
 MonoBehaviour:
   m_ObjectHideFlags: 0

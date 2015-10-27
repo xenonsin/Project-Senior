@@ -1,4 +1,5 @@
-﻿using Senior.Globals;
+﻿using System;
+using Senior.Globals;
 using UnityEngine;
 
 namespace Senior.Managers
@@ -19,13 +20,19 @@ namespace Senior.Managers
         [SerializeField]
         private string playerFourStartButton = "Start_P4";
 
+        public GameObject[] Heroes;
+
+        public GameObject HeroSelectionUI;
+
+
         void Update()
         {
             if (!PlayerOneSpawned)
             {
                 if (Input.GetButtonDown(playerOneStartButton))
                 {
-
+                    PlayerOneSpawned = true;
+                    HandleScreenTransitionDependingOnGameState(1);
                 }
             }
 
@@ -33,7 +40,8 @@ namespace Senior.Managers
             {
                 if (Input.GetButtonDown(playerTwoStartButton))
                 {
-                    
+                    PlayerTwoSpawned = true;
+                    HandleScreenTransitionDependingOnGameState(2);
                 }
             }
 
@@ -41,7 +49,8 @@ namespace Senior.Managers
             {
                 if (Input.GetButtonDown(playerThreeStartButton))
                 {
-
+                    PlayerThreeSpawned = true;
+                    HandleScreenTransitionDependingOnGameState(3);
                 }
             }
 
@@ -49,19 +58,30 @@ namespace Senior.Managers
             {
                 if (Input.GetButtonDown(playerFourStartButton))
                 {
-
+                    PlayerFourSpawned = true;
+                    HandleScreenTransitionDependingOnGameState(4);
                 }
             }
         }
 
-        void HandleSpawningInGame()
+        void HandleScreenTransitionDependingOnGameState(int playerNumber)
         {
-            
-        }
+            switch (GameManager.Instance.CurrentGameState)
+            {
+                case GameState.MainMenu:
+                    //SwitchToCharacterSelectScreen
+                    //EnableHeroSelectUIWheel
+                    break;
+                case GameState.CharacterSelect:
+                    //EnableHeroSelectUIWheel
+                    break;
+                case GameState.Playing:
+                    //EnableHeroSelectUIWheelSmall
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
 
-        void GoToCharacterSelectScreen()
-        {
-            
+            }
         }
     }
 }
