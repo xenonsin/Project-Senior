@@ -5,5 +5,6 @@
         MainMenu,
         CharacterSelect,
         Playing,
+        Loading,
     }
 }
