@@ -6,6 +6,12 @@ namespace Senior.Inputs
 {
     public class PlayerController : MonoBehaviour, IPlayerController
     {
+        public delegate void PlayerAction(int number);
+
+        public static event PlayerAction StartButtonPressed;
+
+        [SerializeField]
+        private int playerNum;
 
         private string horizontalControlName;
         private string verticalControlName;
@@ -15,6 +21,7 @@ namespace Senior.Inputs
         private string skillTwoButtonName;
         private string skillThreeButtonName;
         private string skillFourButtonName;
+        private string startButtonName;
 
         public Vector2 MoveInput { get; private set; }
         public bool AttackButton { get; private set; }
@@ -24,7 +31,12 @@ namespace Senior.Inputs
         public bool SkillThreeButton { get; private set; }
         public bool SkillFourButton { get; private set; }
 
-        public void InitializePlayer(int playerNumber)
+        private void Awake()
+        {
+            InitializePlayerControls(playerNum);
+        }
+
+        public void InitializePlayerControls(int playerNumber)
         {
             horizontalControlName = "Horizontal_P" + playerNumber;
             verticalControlName = "Vertical_P" + playerNumber;
@@ -34,6 +46,12 @@ namespace Senior.Inputs
             skillTwoButtonName = "SkillTwo_P" + playerNumber;
             skillThreeButtonName = "SkillThree_P" + playerNumber;
             skillFourButtonName = "SkillFour_P" + playerNumber;
+            startButtonName = "Start_P" + playerNumber;
+
+#if UNITY_EDITOR
+            Debug.Log(string.Format("Player {0} initialized.", playerNumber));
+#endif
+
         }
 
         private void Update()
@@ -45,6 +63,12 @@ namespace Senior.Inputs
             SkillTwoButton = Input.GetButtonDown(skillTwoButtonName);
             SkillThreeButton = Input.GetButtonDown(skillThreeButtonName);
             SkillFourButton = Input.GetButtonDown(skillFourButtonName);
+
+            if (Input.GetButtonDown(startButtonName))
+            {
+                if (StartButtonPressed != null)
+                    StartButtonPressed(playerNum);
+            }
 
         }
     }

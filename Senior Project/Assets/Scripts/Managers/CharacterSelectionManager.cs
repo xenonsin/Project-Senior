@@ -1,5 +1,6 @@
 ﻿using System;
 using Senior.Globals;
+using Senior.Inputs;
 using UnityEngine;
 
 namespace Senior.Managers
@@ -24,48 +25,27 @@ namespace Senior.Managers
 
         public GameObject HeroSelectionUI;
 
+        void OnEnable()
+        {
+            PlayerController.StartButtonPressed += HandleScreenTransitionDependingOnGameState;
+        }
+
+        void OnDisable()
+        {
+            PlayerController.StartButtonPressed -= HandleScreenTransitionDependingOnGameState;
+        }
+
 
         void Update()
         {
-            if (!PlayerOneSpawned)
-            {
-                if (Input.GetButtonDown(playerOneStartButton))
-                {
-                    PlayerOneSpawned = true;
-                    HandleScreenTransitionDependingOnGameState(1);
-                }
-            }
 
-            if (!PlayerTwoSpawned)
-            {
-                if (Input.GetButtonDown(playerTwoStartButton))
-                {
-                    PlayerTwoSpawned = true;
-                    HandleScreenTransitionDependingOnGameState(2);
-                }
-            }
-
-            if (!PlayerThreeSpawned)
-            {
-                if (Input.GetButtonDown(playerThreeStartButton))
-                {
-                    PlayerThreeSpawned = true;
-                    HandleScreenTransitionDependingOnGameState(3);
-                }
-            }
-
-            if (!PlayerFourSpawned)
-            {
-                if (Input.GetButtonDown(playerFourStartButton))
-                {
-                    PlayerFourSpawned = true;
-                    HandleScreenTransitionDependingOnGameState(4);
-                }
-            }
         }
 
         void HandleScreenTransitionDependingOnGameState(int playerNumber)
         {
+#if UNITY_EDITOR
+            Debug.Log(string.Format("Player {0} pressed the Start Button!", playerNumber));
+#endif
             switch (GameManager.Instance.CurrentGameState)
             {
                 case GameState.MainMenu:
