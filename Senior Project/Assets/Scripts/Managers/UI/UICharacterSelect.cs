@@ -6,7 +6,7 @@ namespace Senior.Managers
 {
     public class UICharacterSelect : MonoBehaviour
     {
-
+        //TODO: Instantiate stuff during awake so that you wont get null errors
         public int NumberOfHeroes = 4;
         public RectTransform[] PlayerSelectionSprites;
         private int numberOfPlayersInGame = 0;
@@ -44,7 +44,7 @@ namespace Senior.Managers
             {
                 numberOfPlayersInGame++;
                 int pindex = --playerNum;
-                int unComfirmedChar = GetNextUnConfirmedCharacter();
+                int unComfirmedChar = GetUnConfirmedCharacter();
                 playerIndex.Add(playerNum, unComfirmedChar);
                 PlayerSelectionSprites[pindex].anchoredPosition = PlayerSelctionPositions[unComfirmedChar];
                 CharacterPortraits[unComfirmedChar].Selected();
@@ -58,19 +58,47 @@ namespace Senior.Managers
             PlayerConfirmFlag[index] = 1;
         }
 
-        public void SelectRight(int playerNum)
+        public int SearchRight(int playerNum)
         {
-            playerIndex[playerNum]++;
+            int index = playerIndex[playerNum];
+
+            if (index == PlayerConfirmFlag.Length - 1) return index;
+
+            for (int i = index + 1; i < PlayerConfirmFlag.Length; i++)
+            {
+                if (PlayerConfirmFlag[i] == 0)
+                {
+                    return i;
+                }
+            }
+
+            return index;
         }
 
-        private int GetNextUnConfirmedCharacter()
+        public int SearchLeft(int playerNum)
+        {
+            int index = playerIndex[playerNum];
+
+            if (index == 0) return index;
+
+            for (int i = index - 1; i >= 0; i--)
+            {
+                if (PlayerConfirmFlag[i] == 0)
+                {
+                    return i;
+                }
+            }
+
+            return index;
+        }
+
+        private int GetUnConfirmedCharacter()
         {
 
             for (int i = 0; i < PlayerConfirmFlag.Length; i++)
             {
                 if (PlayerConfirmFlag[i] == 0)
                 {
-                    //PlayerConfirmFlag[i] = 1;
                     return i;
                 }
             }

@@ -252,6 +252,7 @@ GameObject:
   - 224: {fileID: 87195697}
   - 222: {fileID: 87195699}
   - 114: {fileID: 87195698}
+  - 114: {fileID: 87195700}
   m_Layer: 5
   m_Name: Hau Portrait
   m_TagString: Untagged
@@ -309,6 +310,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 87195696}
+--- !u!114 &87195700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 87195696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce0ad6b7cc812da4ab148c6856c6bd1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &125426487
 Prefab:
   m_ObjectHideFlags: 0
@@ -833,6 +845,7 @@ GameObject:
   - 224: {fileID: 782120110}
   - 222: {fileID: 782120112}
   - 114: {fileID: 782120111}
+  - 114: {fileID: 782120113}
   m_Layer: 5
   m_Name: Keno Portrait
   m_TagString: Untagged
@@ -890,6 +903,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 782120109}
+--- !u!114 &782120113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 782120109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce0ad6b7cc812da4ab148c6856c6bd1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1034093247
 Prefab:
   m_ObjectHideFlags: 0
@@ -982,6 +1006,7 @@ GameObject:
   - 224: {fileID: 1060900987}
   - 222: {fileID: 1060900989}
   - 114: {fileID: 1060900988}
+  - 114: {fileID: 1060900990}
   m_Layer: 5
   m_Name: Lung Portrait
   m_TagString: Untagged
@@ -1039,6 +1064,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1060900986}
+--- !u!114 &1060900990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1060900986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce0ad6b7cc812da4ab148c6856c6bd1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1154679566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,6 +1085,7 @@ GameObject:
   - 224: {fileID: 1154679567}
   - 222: {fileID: 1154679569}
   - 114: {fileID: 1154679568}
+  - 114: {fileID: 1154679570}
   m_Layer: 5
   m_Name: Andrew Portrait
   m_TagString: Untagged
@@ -1106,6 +1143,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1154679566}
+--- !u!114 &1154679570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1154679566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce0ad6b7cc812da4ab148c6856c6bd1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1202324256 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22491510, guid: 0f93eb1c6a39abd47936bc1c81a33cb8,
@@ -1240,6 +1288,11 @@ MonoBehaviour:
   - {fileID: 444645125}
   - {fileID: 2035889198}
   - {fileID: 2014795699}
+  CharacterPortraits:
+  - {fileID: 1154679570}
+  - {fileID: 87195700}
+  - {fileID: 782120113}
+  - {fileID: 1060900990}
 --- !u!1001 &1689607768
 Prefab:
   m_ObjectHideFlags: 0
