@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using Senior.Globals;
 
 namespace Senior.Inputs
 {
@@ -9,9 +10,13 @@ namespace Senior.Inputs
         public delegate void PlayerAction(int number);
 
         public static event PlayerAction StartButtonPressed;
+        public static event PlayerAction LeftButtonPressed;
+        public static event PlayerAction RightButtonPressed;
 
         [SerializeField]
         private int playerNum;
+
+        private PlayerState currentState = PlayerState.WaitingForCredits;
 
         private string horizontalControlName;
         private string verticalControlName;
@@ -30,6 +35,7 @@ namespace Senior.Inputs
         public bool SkillTwoButton { get; private set; }
         public bool SkillThreeButton { get; private set; }
         public bool SkillFourButton { get; private set; }
+        public bool StartButton { get; private set; }
 
         private void Awake()
         {
@@ -63,11 +69,26 @@ namespace Senior.Inputs
             SkillTwoButton = Input.GetButtonDown(skillTwoButtonName);
             SkillThreeButton = Input.GetButtonDown(skillThreeButtonName);
             SkillFourButton = Input.GetButtonDown(skillFourButtonName);
+            StartButton = Input.GetButtonDown(startButtonName);
 
-            if (Input.GetButtonDown(startButtonName))
+            if (StartButton)
             {
                 if (StartButtonPressed != null)
                     StartButtonPressed(playerNum);
+            }
+
+            if (currentState == PlayerState.WaitingForCredits)
+            {
+                if (MoveInput.x < 0)
+                {
+                    if (LeftButtonPressed != null)
+                        LeftButtonPressed(playerNum);
+                }
+                else
+                {
+                    if (RightButtonPressed != null)
+                        RightButtonPressed(playerNum);
+                }
             }
 
         }

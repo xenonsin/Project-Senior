@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Senior.Globals;
 using Senior.Inputs;
 using UnityEngine;
@@ -8,8 +9,14 @@ namespace Senior.Managers
     public class GameManager : MonoBehaviour, IGameManager
     {
         public static GameManager Instance { get; private set; }
-
         public GameState CurrentGameState { get; set; }
+        public List<int> PlayersInGame = new List<int>();
+
+        public int NumberOfPlayersInGame
+        {
+            get { return PlayersInGame.Count; }
+        }
+
 
         void OnEnable()
         {
@@ -52,6 +59,10 @@ namespace Senior.Managers
 #if UNITY_EDITOR
             Debug.Log(string.Format("Player {0} pressed the Start Button!", playerNumber));
 #endif
+
+            if (!PlayerIsInGame(playerNumber))
+                PlayersInGame.Add(playerNumber);
+
             switch (GameManager.Instance.CurrentGameState)
             {
                 case GameState.MainMenu:
@@ -68,6 +79,17 @@ namespace Senior.Managers
                     throw new ArgumentOutOfRangeException();
 
             }
+        }
+
+        public bool PlayerIsInGame(int playerNumber)
+        {
+            foreach (var player in PlayersInGame)
+            {
+                if (playerNumber == player)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

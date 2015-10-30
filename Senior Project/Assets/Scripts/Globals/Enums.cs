@@ -7,4 +7,11 @@
         Playing,
         Loading,
     }
+
+    public enum PlayerState
+    {
+        ChoosingCharacter,
+        Playing,
+        WaitingForCredits,
+    }
 }
