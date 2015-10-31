@@ -4,21 +4,27 @@ using System.Collections;
 public class CameraMovement : MonoBehaviour
 {
     //-------------------READ ME-------------------
-    //gameobject player must be tagged "Player"
-    //camera angle must be (50,0,0)
-    //camera scale must be (1,1,1)
+    //gameobject players must be tagged "Player"
     //---------------------------------------------
+    
     private float Lerpspeed = 5f;
     private float camera_floor = 4f;
     private float camera_ceiling = 7f;
+    private Vector3 camera_pos = Vector3.zero;
+    private Quaternion camerarotation = Quaternion.Euler(new Vector3(50, 0, 0));
     public GameObject[] player;
     private Vector3[] player_pos;
     private int numberofplayer = 0;
-    private Vector3 camera_pos = Vector3.zero;
     private float CenterOfAllPlayer_X_Position, CenterOfAllPlayer_Z_Position,
                     Mean_X, Mean_Z,
                     AvgChange, max_x, min_x, max_z, min_z;
 
+    void Awake()
+    {
+        transform.localScale = new Vector3(1, 1, 1);
+        transform.localRotation = camerarotation;
+    }
+    
     void FixedUpdate()
     {
         //finding how many players
