@@ -113,7 +113,6 @@ namespace Senior.Managers
         {
 
             int index = playerSelectionIndex[playerNum];
-            Debug.Log(index);
 
             if (index == PlayerConfirmFlag.Length - 1) return index;
 

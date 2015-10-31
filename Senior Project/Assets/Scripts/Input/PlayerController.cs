@@ -89,7 +89,6 @@ namespace Senior.Inputs
                     if (!isAxisInUse)
                     {
                         isAxisInUse = true;
-                        Debug.Log(MoveInput.x);
                         if (LeftButtonPressed != null)
                             LeftButtonPressed(playerNum);
                     }
