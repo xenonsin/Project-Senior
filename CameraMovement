@@ -3,7 +3,11 @@ using System.Collections;
 
 public class CameraMovement : MonoBehaviour
 {
-
+    //-------------------READ ME-------------------
+    //gameobject player must be tagged "Player"
+    //camera angle must be (50,0,0)
+    //camera scale must be (1,1,1)
+    //---------------------------------------------
     private float Lerpspeed = 5f;
     private float camera_floor = 4f;
     private float camera_ceiling = 7f;
