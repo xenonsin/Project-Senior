@@ -7,17 +7,17 @@ public class CameraMovement : MonoBehaviour
     //gameobject players must be tagged "Player"
     //---------------------------------------------
     
-    private float Lerpspeed = 5f;
-    private float camera_floor = 4f;
-    private float camera_ceiling = 7f;
-    private Vector3 camera_pos = Vector3.zero;
-    private Quaternion camerarotation = Quaternion.Euler(new Vector3(50, 0, 0));
+    private float lerpspeed = 5f;
+    private float cameraFloor = 4f;
+    private float cameraCeiling = 7f;
+    private Vector3 cameraPos = Vector3.zero;
+    private Quaternion cameraRotation = Quaternion.Euler(new Vector3(50, 0, 0));
     public GameObject[] player;
-    private Vector3[] player_pos;
-    private int numberofplayer = 0;
-    private float CenterOfAllPlayer_X_Position, CenterOfAllPlayer_Z_Position,
-                    Mean_X, Mean_Z,
-                    AvgChange, max_x, min_x, max_z, min_z;
+    private Vector3[] playerPos;
+    private int numberOfPlayer = 0;
+    private float centerOfAllPlayerXPosition, centerOfAllPlayerZPosition,
+                    meanX, meanZ,
+                    avgChange, maxX, minX, maxZ, minZ;
 
     void Awake()
     {
