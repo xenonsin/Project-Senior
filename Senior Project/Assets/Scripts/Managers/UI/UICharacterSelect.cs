@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Senior.Globals;
+using Senior.Inputs;
 
 namespace Senior.Managers
 {
@@ -27,6 +28,19 @@ namespace Senior.Managers
             Initialize();
         }
 
+
+        private void OnEnable()
+        {
+            PlayerController.LeftButtonPressed += MovePlayerSelectLeft;
+            PlayerController.RightButtonPressed += MovePlayerSelectRight;
+        }
+
+        private void OnDisable()
+        {
+            PlayerController.LeftButtonPressed -= MovePlayerSelectLeft;
+            PlayerController.RightButtonPressed -= MovePlayerSelectRight;
+        }
+
         private void Initialize()
         {
             PlayerConfirmFlag = new int[Global.NUMBER_OF_HEROES_AVAILABLE];
@@ -50,6 +64,45 @@ namespace Senior.Managers
 
         }
 
+        //TODO Make this a delegate
+        public void MovePlayerSelectRight(int playerNum)
+        {
+            int characterSelectIndex = --playerNum;
+            int prevIndex = playerSelectionIndex[playerNum];
+            int newIndex = SearchRight(playerNum);
+            PlayerSelectionSprites[characterSelectIndex].anchoredPosition = PlayerSelctionPositions[newIndex];
+
+            bool playerSelected = false;
+            foreach (var player in playerSelectionIndex)
+            {
+                if (player.Key != playerNum && player.Value == prevIndex)
+                    playerSelected = true;
+            }
+            if (!playerSelected)
+                CharacterPortraits[prevIndex].Deselected();
+            CharacterPortraits[newIndex].Selected();
+            playerSelectionIndex[playerNum] = newIndex;
+
+        }
+
+        public void MovePlayerSelectLeft(int playerNum)
+        {
+            int characterSelectIndex = --playerNum;
+            int prevIndex = playerSelectionIndex[playerNum];
+            int newIndex = SearchLeft(playerNum);
+            PlayerSelectionSprites[characterSelectIndex].anchoredPosition = PlayerSelctionPositions[newIndex];
+            bool playerSelected = false;
+            foreach (var player in playerSelectionIndex)
+            {
+                if (player.Key != playerNum && player.Value == prevIndex)
+                    playerSelected = true;
+            }
+            if (!playerSelected)
+                CharacterPortraits[prevIndex].Deselected();
+            CharacterPortraits[newIndex].Selected();
+            playerSelectionIndex[playerNum] = newIndex;
+        }
+
         public void ConfirmSelection(int playerNum)
         {
             int index = playerSelectionIndex[playerNum];
@@ -58,7 +111,9 @@ namespace Senior.Managers
 
         public int SearchRight(int playerNum)
         {
+
             int index = playerSelectionIndex[playerNum];
+            Debug.Log(index);
 
             if (index == PlayerConfirmFlag.Length - 1) return index;
 

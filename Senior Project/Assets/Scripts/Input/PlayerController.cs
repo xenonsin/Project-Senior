@@ -37,6 +37,8 @@ namespace Senior.Inputs
         public bool SkillFourButton { get; private set; }
         public bool StartButton { get; private set; }
 
+        private bool isAxisInUse = false;
+
         private void Awake()
         {
             InitializePlayerControls(playerNum);
@@ -75,19 +77,36 @@ namespace Senior.Inputs
             {
                 if (StartButtonPressed != null)
                     StartButtonPressed(playerNum);
+
+                //debug
+                currentState = PlayerState.ChoosingCharacter;
             }
 
-            if (currentState == PlayerState.WaitingForCredits)
+            if (currentState == PlayerState.ChoosingCharacter)
             {
                 if (MoveInput.x < 0)
                 {
-                    if (LeftButtonPressed != null)
-                        LeftButtonPressed(playerNum);
+                    if (!isAxisInUse)
+                    {
+                        isAxisInUse = true;
+                        Debug.Log(MoveInput.x);
+                        if (LeftButtonPressed != null)
+                            LeftButtonPressed(playerNum);
+                    }
+
                 }
-                else
+                else if (MoveInput.x > 0)
                 {
-                    if (RightButtonPressed != null)
-                        RightButtonPressed(playerNum);
+                    if (!isAxisInUse)
+                    {
+                        isAxisInUse = true;
+                        if (RightButtonPressed != null)
+                            RightButtonPressed(playerNum);
+                    }
+                }
+                else if (MoveInput.x == 0)
+                {
+                    isAxisInUse = false;
                 }
             }
 
