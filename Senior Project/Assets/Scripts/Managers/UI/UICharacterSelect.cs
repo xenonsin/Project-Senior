@@ -33,12 +33,16 @@ namespace Senior.Managers
         {
             PlayerController.LeftButtonPressed += MovePlayerSelectLeft;
             PlayerController.RightButtonPressed += MovePlayerSelectRight;
+            PlayerController.ConfirmButtonPressed += ConfirmSelection;
+            PlayerController.CancelButtonPressed += CancelSelection;
         }
 
         private void OnDisable()
         {
             PlayerController.LeftButtonPressed -= MovePlayerSelectLeft;
             PlayerController.RightButtonPressed -= MovePlayerSelectRight;
+            PlayerController.ConfirmButtonPressed -= ConfirmSelection;
+            PlayerController.CancelButtonPressed -= CancelSelection;
         }
 
         private void Initialize()
@@ -54,8 +58,7 @@ namespace Senior.Managers
         public void ActivatePlayerSelectionSprite(int playerNum)
         {
             if (playerSelectionIndex.ContainsKey(playerNum)) return;
-
-            int index = --playerNum;
+            int index = playerNum - 1;
             int unComfirmedChar = GetUnConfirmedCharacter();
             playerSelectionIndex.Add(playerNum, unComfirmedChar);
             PlayerSelectionSprites[index].anchoredPosition = PlayerSelctionPositions[unComfirmedChar];
@@ -67,7 +70,7 @@ namespace Senior.Managers
         //TODO Make this a delegate
         public void MovePlayerSelectRight(int playerNum)
         {
-            int characterSelectIndex = --playerNum;
+            int characterSelectIndex = playerNum - 1;
             int prevIndex = playerSelectionIndex[playerNum];
             int newIndex = SearchRight(playerNum);
             PlayerSelectionSprites[characterSelectIndex].anchoredPosition = PlayerSelctionPositions[newIndex];
@@ -87,7 +90,7 @@ namespace Senior.Managers
 
         public void MovePlayerSelectLeft(int playerNum)
         {
-            int characterSelectIndex = --playerNum;
+            int characterSelectIndex = playerNum - 1;
             int prevIndex = playerSelectionIndex[playerNum];
             int newIndex = SearchLeft(playerNum);
             PlayerSelectionSprites[characterSelectIndex].anchoredPosition = PlayerSelctionPositions[newIndex];
@@ -107,6 +110,14 @@ namespace Senior.Managers
         {
             int index = playerSelectionIndex[playerNum];
             PlayerConfirmFlag[index] = 1;
+            CharacterPortraits[index].Confirmed();
+        }
+
+        public void CancelSelection(int playerNum)
+        {
+            int index = playerSelectionIndex[playerNum];
+            PlayerConfirmFlag[index] = 0;
+            CharacterPortraits[index].Selected();
         }
 
         public int SearchRight(int playerNum)

@@ -12,6 +12,9 @@ namespace Senior.Inputs
         public static event PlayerAction StartButtonPressed;
         public static event PlayerAction LeftButtonPressed;
         public static event PlayerAction RightButtonPressed;
+        public static event PlayerAction ConfirmButtonPressed;
+        public static event PlayerAction CancelButtonPressed;
+
 
         [SerializeField]
         private int playerNum;
@@ -78,8 +81,9 @@ namespace Senior.Inputs
                 if (StartButtonPressed != null)
                     StartButtonPressed(playerNum);
 
-                //debug
-                currentState = PlayerState.ChoosingCharacter;
+                //debug hack
+                if (currentState != PlayerState.ConfirmedCharacter)
+                    currentState = PlayerState.ChoosingCharacter;
             }
 
             if (currentState == PlayerState.ChoosingCharacter)
@@ -106,6 +110,23 @@ namespace Senior.Inputs
                 else if (MoveInput.x == 0)
                 {
                     isAxisInUse = false;
+                }
+
+                if (AttackButton)
+                {
+                    if (ConfirmButtonPressed != null)
+                        ConfirmButtonPressed(playerNum);
+                    currentState = PlayerState.ConfirmedCharacter;
+                }
+            }
+
+            if (currentState == PlayerState.ConfirmedCharacter)
+            {
+                if (AltAttackButton)
+                {
+                    if (CancelButtonPressed != null)
+                        CancelButtonPressed(playerNum);
+                    currentState = PlayerState.ChoosingCharacter;
                 }
             }
 

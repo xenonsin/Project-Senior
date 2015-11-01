@@ -11,6 +11,7 @@
     public enum PlayerState
     {
         ChoosingCharacter,
+        ConfirmedCharacter,
         Playing,
         WaitingForCredits,
     }
