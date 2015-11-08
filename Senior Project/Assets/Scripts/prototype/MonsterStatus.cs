@@ -6,8 +6,8 @@ public class MonsterStatus : MonoBehaviour {
     private int health = 100;
     private Animation anim;
     private float distance;
-    private float rotatespeed = 10f * Time.deltaTime;
-    private float movespeed = 0.25f * Time.deltaTime;
+    private float rotatespeed = 10f;// * Time.deltaTime; dont do this shit
+    private float movespeed = 0.25f;// * Time.deltaTime;
     private float aggrorange = 2f;
     private float meleerange = 0.5f;
     private Vector3 playerpos;

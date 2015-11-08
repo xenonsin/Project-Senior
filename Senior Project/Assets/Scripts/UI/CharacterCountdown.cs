@@ -7,6 +7,10 @@ namespace Senior.Managers
 {
     public class CharacterCountdown : MonoBehaviour
     {
+        public delegate void CountdownAction();
+
+        public static event CountdownAction CountdownExpiration;
+
         private Text countdownText;
         public float defaultCountdownTimer = 30f;
 
@@ -51,6 +55,11 @@ namespace Senior.Managers
 
                 if (defaultCountdownTimer < 0)
                 {
+                    if (CountdownExpiration != null)
+                        CountdownExpiration();
+
+                    //have callback or delay so that players can see what heroes they random.
+
                     UIManager.Instance.DisplayInGameStuff();
                     GameManager.LoadLevel("debug");
                     //Loading Screen

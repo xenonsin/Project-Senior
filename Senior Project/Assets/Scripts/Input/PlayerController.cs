@@ -114,6 +114,8 @@ namespace Senior.Inputs
                 {
                     if (ConfirmButtonPressed != null)
                         ConfirmButtonPressed(player);
+                    //BUG If the currently highlighted one is confirmed.. then it locks the player..
+                    //NEED CALLBACKS BRO
                     player.CurrentState = PlayerState.ConfirmedCharacter;
                 }
             }

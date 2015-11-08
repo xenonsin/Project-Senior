@@ -11,8 +11,8 @@ public class PlayerMovement : MonoBehaviour {
     private Quaternion rotation;
     private float horizontal = 0;
     private float vertical = 0;
-    private float movespeed = 2.5f * Time.deltaTime;
-    private float rotatespeed = 10f * Time.deltaTime;
+    private float movespeed = 2.5f;// * Time.deltaTime; dont do this shit
+    private float rotatespeed = 10f;// * Time.deltaTime;
     private bool fireball = false;
     private float fireballspeed = 300f;
     public float fireballatkspd = 1;

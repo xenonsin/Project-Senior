@@ -22,8 +22,6 @@ namespace Senior.Managers
 
         private Dictionary<Player,int> playerSelectionIndex = new Dictionary<Player, int>(); //player..CurrentSelection
 
-        private int[] PlayerConfirmFlag;
-
         private void Awake()
         {
             Initialize();
@@ -36,6 +34,7 @@ namespace Senior.Managers
             PlayerController.RightButtonPressed += MovePlayerSelectRight;
             PlayerController.ConfirmButtonPressed += ConfirmSelection;
             PlayerController.CancelButtonPressed += CancelSelection;
+            CharacterCountdown.CountdownExpiration += FinalizePlayerHeroes;
         }
 
         private void OnDisable()
@@ -44,11 +43,11 @@ namespace Senior.Managers
             PlayerController.RightButtonPressed -= MovePlayerSelectRight;
             PlayerController.ConfirmButtonPressed -= ConfirmSelection;
             PlayerController.CancelButtonPressed -= CancelSelection;
+            CharacterCountdown.CountdownExpiration -= FinalizePlayerHeroes;
         }
 
         private void Initialize()
         {
-            PlayerConfirmFlag = new int[Global.NUMBER_OF_HEROES_AVAILABLE];
             //Set All Sprites Inactive
             foreach (var sprite in PlayerSelectionSprites)
             {
@@ -63,7 +62,7 @@ namespace Senior.Managers
             int unComfirmedChar = GetUnConfirmedCharacter();
             playerSelectionIndex.Add(player, unComfirmedChar);
             PlayerSelectionSprites[index].anchoredPosition = PlayerSelctionPositions[unComfirmedChar];
-            CharacterPortraits[unComfirmedChar].Selected();
+            CharacterPortraits[unComfirmedChar].Selected(player);
             PlayerSelectionSprites[index].gameObject.SetActive(true);
 
         }
@@ -83,8 +82,8 @@ namespace Senior.Managers
                     playerSelected = true;
             }
             if (!playerSelected)
-                CharacterPortraits[prevIndex].Deselected();
-            CharacterPortraits[newIndex].Selected();
+                CharacterPortraits[prevIndex].Deselected(player);
+            CharacterPortraits[newIndex].Selected(player);
             playerSelectionIndex[player] = newIndex;
 
         }
@@ -103,23 +102,22 @@ namespace Senior.Managers
                     playerSelected = true;
             }
             if (!playerSelected)
-                CharacterPortraits[prevIndex].Deselected();
-            CharacterPortraits[newIndex].Selected();
+                CharacterPortraits[prevIndex].Deselected(player);
+            CharacterPortraits[newIndex].Selected(player);
             playerSelectionIndex[player] = newIndex;
         }
 
         public void ConfirmSelection(Player player)
         {
             int index = playerSelectionIndex[player];
-            PlayerConfirmFlag[index] = 1;
-            CharacterPortraits[index].Confirmed();
+            CharacterPortraits[index].Confirmed(player);
         }
 
         public void CancelSelection(Player player)
         {
             int index = playerSelectionIndex[player];
-            PlayerConfirmFlag[index] = 0;
-            CharacterPortraits[index].Selected();
+            CharacterPortraits[index].UnConfirm(player);
+            CharacterPortraits[index].Selected(player);
         }
 
         public int SearchRight(Player player)
@@ -127,11 +125,11 @@ namespace Senior.Managers
 
             int index = playerSelectionIndex[player];
 
-            if (index == PlayerConfirmFlag.Length - 1) return index;
+            if (index == CharacterPortraits.Length - 1) return index;
 
-            for (int i = index + 1; i < PlayerConfirmFlag.Length; i++)
+            for (int i = index + 1; i < CharacterPortraits.Length; i++)
             {
-                if (PlayerConfirmFlag[i] == 0)
+                if (!CharacterPortraits[i].IsConfirmed)
                 {
                     return i;
                 }
@@ -148,7 +146,7 @@ namespace Senior.Managers
 
             for (int i = index - 1; i >= 0; i--)
             {
-                if (PlayerConfirmFlag[i] == 0)
+                if (!CharacterPortraits[i].IsConfirmed)
                 {
                     return i;
                 }
@@ -160,15 +158,42 @@ namespace Senior.Managers
         private int GetUnConfirmedCharacter()
         {
 
-            for (int i = 0; i < PlayerConfirmFlag.Length; i++)
+            for (int i = 0; i < CharacterPortraits.Length; i++)
             {
-                if (PlayerConfirmFlag[i] == 0)
+                if (!CharacterPortraits[i].IsConfirmed)
                 {
                     return i;
                 }
             }
             return 0;
 
+        }
+
+        private void FinalizePlayerHeroes()
+        {
+            if (GameManager.AllPlayersInGameAreConfirmed()) return;
+            foreach (var player in GameManager.PlayersInGame)
+            {
+                if (player.CurrentState != PlayerState.ConfirmedCharacter)
+                {
+                    //Give the player a random hero
+                    int index = GetUnConfirmedCharacter();
+                    if (playerSelectionIndex[player] > index)
+                    {
+                        MovePlayerSelectRight(player);
+                        ConfirmSelection(player);
+                    }
+                    else if (playerSelectionIndex[player] < index)
+                    {
+                        MovePlayerSelectLeft(player);
+                        ConfirmSelection(player);
+                    }
+                    else
+                    {
+                        ConfirmSelection(player);
+                    }
+                }
+            }
         }
     }
 }
