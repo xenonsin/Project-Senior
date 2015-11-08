@@ -10,7 +10,7 @@ namespace Senior.Managers
     {
         public static GameManager Instance { get; private set; }
         public GameState CurrentGameState { get; set; }
-        public static List<int> PlayersInGame = new List<int>();
+        public static List<Player> PlayersInGame = new List<Player>();
 
         public static int NumberOfPlayersInGame
         {
@@ -55,23 +55,24 @@ namespace Senior.Managers
         }
 
         //TODO: move some logic to main menu.cs
-        void HandleScreenTransitionDependingOnGameState(int playerNumber)
+        void HandleScreenTransitionDependingOnGameState(Player player)
         {
+            int playerNumber = player.PlayerNumber;
 #if UNITY_EDITOR
             Debug.Log(string.Format("Player {0} pressed the Start Button!", playerNumber));
 #endif
 
-            if (!PlayerIsInGame(playerNumber))
-                PlayersInGame.Add(playerNumber);
+            if (!PlayerIsInGame(player))
+                PlayersInGame.Add(player);
 
             switch (GameManager.Instance.CurrentGameState)
             {
                 case GameState.MainMenu:
                     UIManager.Instance.DisplayCharacterSelect();
-                    UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(playerNumber);
+                    UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(player);
                     break;
                 case GameState.CharacterSelect:
-                    UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(playerNumber);
+                    UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(player);
                     break;
                 case GameState.Playing:
                     //EnableHeroSelectUIWheelSmall
@@ -82,15 +83,25 @@ namespace Senior.Managers
             }
         }
 
-        public bool PlayerIsInGame(int playerNumber)
+        public bool PlayerIsInGame(Player player)
         {
-            foreach (var player in PlayersInGame)
+            foreach (var p in PlayersInGame)
             {
-                if (playerNumber == player)
+                if (p == player)
                     return true;
             }
 
             return false;
+        }
+
+        public static bool AllPlayersInGameAreConfirmed()
+        {
+            foreach (var p in PlayersInGame)
+            {
+                if (p.CurrentState != PlayerState.ConfirmedCharacter)
+                    return false;
+            }
+            return true;
         }
 
         public static void LoadLevel(string levelName)

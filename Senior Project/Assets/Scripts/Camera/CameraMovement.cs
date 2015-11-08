@@ -11,7 +11,7 @@ public class CameraMovement : MonoBehaviour
     private float cameraFloor = 4f;
     private float cameraCeiling = 7f;
     private Vector3 cameraPos = Vector3.zero;
-    private Quaternion cameraRotation = Quaternion.Euler(new Vector3(50, 0, 0));
+    private Quaternion cameraRotation = Quaternion.Euler(new Vector3(55, 0, 0));
     public GameObject[] player;
     private Vector3[] playerPos;
     private int numberOfPlayer = 0;

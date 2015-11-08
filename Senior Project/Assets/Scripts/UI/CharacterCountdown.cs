@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Senior.Globals;
+using Senior.Inputs;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Senior.Managers
@@ -15,13 +17,16 @@ namespace Senior.Managers
             countdownText = GetComponent<Text>();
         }
 
+
         void OnEnable()
         {
+            PlayerController.ConfirmButtonPressed += DecrementTimer;
             IsEnabled = true;
         }
 
         void OnDisable()
         {
+            PlayerController.ConfirmButtonPressed -= DecrementTimer;
             IsEnabled = false;
             Reset();
         }
@@ -29,6 +34,12 @@ namespace Senior.Managers
         void Reset()
         {
             defaultCountdownTimer = 30f;
+        }
+
+        void DecrementTimer(Player player)
+        {
+            if (GameManager.AllPlayersInGameAreConfirmed())
+                defaultCountdownTimer -= 1;
         }
 
         void Update()
@@ -40,8 +51,11 @@ namespace Senior.Managers
 
                 if (defaultCountdownTimer < 0)
                 {
+                    UIManager.Instance.DisplayInGameStuff();
                     GameManager.LoadLevel("debug");
-                    //GameManager.Instance.s
+                    //Loading Screen
+                    IsEnabled = false;
+                    Reset();
                 }
             }
         }

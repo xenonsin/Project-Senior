@@ -7,19 +7,15 @@ namespace Senior.Inputs
 {
     public class PlayerController : MonoBehaviour, IPlayerController
     {
-        public delegate void PlayerAction(int number);
+        private Player player;
+
+        public delegate void PlayerAction(Player player);
 
         public static event PlayerAction StartButtonPressed;
         public static event PlayerAction LeftButtonPressed;
         public static event PlayerAction RightButtonPressed;
         public static event PlayerAction ConfirmButtonPressed;
         public static event PlayerAction CancelButtonPressed;
-
-
-        [SerializeField]
-        private int playerNum;
-
-        private PlayerState currentState = PlayerState.WaitingForCredits;
 
         private string horizontalControlName;
         private string verticalControlName;
@@ -44,7 +40,9 @@ namespace Senior.Inputs
 
         private void Awake()
         {
-            InitializePlayerControls(playerNum);
+            player = GetComponent<Player>();
+
+            InitializePlayerControls(player.PlayerNumber);
         }
 
         public void InitializePlayerControls(int playerNumber)
@@ -79,14 +77,14 @@ namespace Senior.Inputs
             if (StartButton)
             {
                 if (StartButtonPressed != null)
-                    StartButtonPressed(playerNum);
+                    StartButtonPressed(player);
 
                 //debug hack
-                if (currentState != PlayerState.ConfirmedCharacter)
-                    currentState = PlayerState.ChoosingCharacter;
+                if (player.CurrentState != PlayerState.ConfirmedCharacter)
+                    player.CurrentState = PlayerState.ChoosingCharacter;
             }
 
-            if (currentState == PlayerState.ChoosingCharacter)
+            if (player.CurrentState == PlayerState.ChoosingCharacter)
             {
                 if (MoveInput.x < 0)
                 {
@@ -94,7 +92,7 @@ namespace Senior.Inputs
                     {
                         isAxisInUse = true;
                         if (LeftButtonPressed != null)
-                            LeftButtonPressed(playerNum);
+                            LeftButtonPressed(player);
                     }
 
                 }
@@ -104,7 +102,7 @@ namespace Senior.Inputs
                     {
                         isAxisInUse = true;
                         if (RightButtonPressed != null)
-                            RightButtonPressed(playerNum);
+                            RightButtonPressed(player);
                     }
                 }
                 else if (MoveInput.x == 0)
@@ -115,18 +113,23 @@ namespace Senior.Inputs
                 if (AttackButton)
                 {
                     if (ConfirmButtonPressed != null)
-                        ConfirmButtonPressed(playerNum);
-                    currentState = PlayerState.ConfirmedCharacter;
+                        ConfirmButtonPressed(player);
+                    player.CurrentState = PlayerState.ConfirmedCharacter;
                 }
             }
 
-            if (currentState == PlayerState.ConfirmedCharacter)
+            if (player.CurrentState == PlayerState.ConfirmedCharacter)
             {
+                if (AttackButton)
+                {
+                    if (ConfirmButtonPressed != null)
+                        ConfirmButtonPressed(player);
+                }
                 if (AltAttackButton)
                 {
                     if (CancelButtonPressed != null)
-                        CancelButtonPressed(playerNum);
-                    currentState = PlayerState.ChoosingCharacter;
+                        CancelButtonPressed(player);
+                    player.CurrentState = PlayerState.ChoosingCharacter;
                 }
             }
 

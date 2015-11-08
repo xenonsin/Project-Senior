@@ -53,9 +53,12 @@ namespace Senior.Managers
             GameManager.Instance.SetGameState(GameState.Loading);
         }
 
-        private void DisplayInGameStuff()
+        public void DisplayInGameStuff()
         {
-            
+            MainMenu.SetActive(false);
+            CharacterSelect.gameObject.SetActive(false);
+            //DisplayGraphic false
+            GameManager.Instance.SetGameState(GameState.Playing);
         }
     }
 }

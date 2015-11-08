@@ -10,21 +10,21 @@ namespace Senior.Managers
     {
         private void OnEnable()
         {
-            PlayerController.StartButtonPressed += StartGame;
+           // PlayerController.StartButtonPressed += StartGame;
         }
 
         private void OnDisable()
         {
-            PlayerController.StartButtonPressed -= StartGame;
+           // PlayerController.StartButtonPressed -= StartGame;
         }
 
         private void StartGame(int playerNumber)
         {
-            if (!GameManager.Instance.PlayerIsInGame(playerNumber))
-                GameManager.PlayersInGame.Add(playerNumber);
+            //if (!GameManager.Instance.PlayerIsInGame(playerNumber))
+            //    GameManager.PlayersInGame.Add(playerNumber);
 
-            UIManager.Instance.DisplayCharacterSelect();
-            UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(playerNumber);
+            //UIManager.Instance.DisplayCharacterSelect();
+            //UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(playerNumber);
 
         }
     }
