@@ -1,30 +1,79 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraMovement : MonoBehaviour {
+public class CameraMovement : MonoBehaviour
+{
+    //-------------------READ ME-------------------
+    //gameobject players must be tagged "Player"
+    //---------------------------------------------
 
-    private float Lerpspeed = 5f;
-    private Vector3 player_pos1 = Vector3.zero;
-    private Vector3 player_pos2 = Vector3.zero;
-    private Vector3 camera_pos = Vector3.zero;
-    private float avgxc, avgzc, avgxp, avgzp;
+    private float lerpspeed = 5f;
+    private float cameraFloor = 4f;
+    private float cameraCeiling = 7f;
+    private Vector3 cameraPos = Vector3.zero;
+    private Quaternion cameraRotation = Quaternion.Euler(new Vector3(50, 0, 0));
+    public GameObject[] player;
+    private Vector3[] playerPos;
+    private int numberOfPlayer = 0;
+    private float centerOfAllPlayerXPosition, centerOfAllPlayerZPosition,
+                    meanX, meanZ,
+                    avgChange, maxX, minX, maxZ, minZ;
 
-	void FixedUpdate()
+    void Awake()
     {
-        //getting Player's position and offsetting for the camera
-        player_pos1 = GameObject.Find("Player1").GetComponent<Transform>().position;
-        player_pos2 = GameObject.Find("Player2").GetComponent<Transform>().position;
-        avgxc = (player_pos1.x + player_pos2.x) / 2;
-        avgzc = (player_pos1.z + player_pos2.z) / 2;
-        avgxp = Mathf.Abs(player_pos1.x - player_pos2.x);
-        avgzp = Mathf.Abs(player_pos1.z - player_pos2.z);
-        camera_pos.x = avgxc;
-        camera_pos.y = (avgxp+avgzp)/2;
-        camera_pos.z = avgzc - (avgxp + avgzp) / 2;
-        if (camera_pos.y < 4f)
-            camera_pos.y = 4f;
+        transform.localScale = new Vector3(1, 1, 1);
+        transform.localRotation = cameraRotation;
+    }
 
-        //Lerp old camera position to new player position
-        transform.position = Vector3.Lerp(transform.position, camera_pos, Lerpspeed * Time.deltaTime);
+    void FixedUpdate()
+    {
+        //finding how many players
+        player = GameObject.FindGameObjectsWithTag("Player");
+        numberOfPlayer = player.Length;
+
+        //player at the right most position
+        maxX = 0;
+        for (int i = 0; i < numberOfPlayer; i++)
+            if (player[i].transform.position.x > maxX) maxX = player[i].transform.position.x;
+
+        //player at the left most position
+        minX = maxX;
+        for (int i = 0; i < numberOfPlayer; i++)
+            if (player[i].transform.position.x < minX) minX = player[i].transform.position.x;
+
+        //player at the upper most position
+        maxZ = 0;
+        for (int i = 0; i < numberOfPlayer; i++)
+            if (player[i].transform.position.z > maxZ) maxZ = player[i].transform.position.z;
+
+        //player at the bottom most position
+        minZ = maxZ;
+        for (int i = 0; i < numberOfPlayer; i++)
+            if (player[i].transform.position.z < minZ) minZ = player[i].transform.position.z;
+
+        //center of the players in world space
+        centerOfAllPlayerXPosition = (maxX + minX) / 2;
+        centerOfAllPlayerZPosition = (maxZ + minZ) / 2;
+
+        //mean of x and z
+        meanX = maxX - minX;
+        meanZ = maxZ - minZ;
+
+        //average of both means
+        avgChange = (meanX + meanZ) / 2;
+
+        //min and max distance of the camera
+        if (avgChange < cameraFloor)
+            avgChange = cameraFloor;
+        if (avgChange > cameraCeiling)
+            avgChange = cameraCeiling;
+
+        //setting camera position
+        cameraPos.x = centerOfAllPlayerXPosition;
+        cameraPos.y = avgChange;
+        cameraPos.z = centerOfAllPlayerZPosition - avgChange;
+
+        //lerp old camera position to new player position
+        transform.position = Vector3.Lerp(transform.position, cameraPos, lerpspeed * Time.deltaTime);
     }
 }
