@@ -10,9 +10,9 @@ namespace Senior.Managers
     {
         public static GameManager Instance { get; private set; }
         public GameState CurrentGameState { get; set; }
-        public List<int> PlayersInGame = new List<int>();
+        public static List<int> PlayersInGame = new List<int>();
 
-        public int NumberOfPlayersInGame
+        public static int NumberOfPlayersInGame
         {
             get { return PlayersInGame.Count; }
         }
@@ -54,6 +54,7 @@ namespace Senior.Managers
             CurrentGameState = state;
         }
 
+        //TODO: move some logic to main menu.cs
         void HandleScreenTransitionDependingOnGameState(int playerNumber)
         {
 #if UNITY_EDITOR
@@ -90,6 +91,21 @@ namespace Senior.Managers
             }
 
             return false;
+        }
+
+        public static void LoadLevel(string levelName)
+        {
+            if (levelName == Application.loadedLevelName) return;
+
+            switch (levelName)
+            {
+                case "debug":
+                    Application.LoadLevel("debug");
+
+                    break;
+                case "levelSelect":
+                    break;
+            }
         }
     }
 }
