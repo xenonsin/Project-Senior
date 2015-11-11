@@ -53,15 +53,15 @@ namespace Senior.Managers
                 defaultCountdownTimer -= Time.deltaTime;
                 countdownText.text = Mathf.Floor(defaultCountdownTimer).ToString();
 
-                if (defaultCountdownTimer < 0)
+                if (defaultCountdownTimer <= 0)
                 {
                     if (CountdownExpiration != null)
                         CountdownExpiration();
 
                     //have callback or delay so that players can see what heroes they random.
 
-                    UIManager.Instance.DisplayInGameStuff();
-                    GameManager.LoadLevel("debug");
+                    //UIManager.Instance.DisplayInGameStuff();
+                    //GameManager.LoadLevel("debug");
                     //Loading Screen
                     IsEnabled = false;
                     Reset();

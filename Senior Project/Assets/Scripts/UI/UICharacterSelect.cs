@@ -111,6 +111,9 @@ namespace Senior.Managers
         {
             int index = playerSelectionIndex[player];
             CharacterPortraits[index].Confirmed(player);
+            
+            //TODO: update the positions of other players when they're currently selecting a character confirmed by someone else.
+            //use the character select list
         }
 
         public void CancelSelection(Player player)
@@ -176,22 +179,34 @@ namespace Senior.Managers
             {
                 if (player.CurrentState != PlayerState.ConfirmedCharacter)
                 {
-                    //Give the player a random hero
-                    int index = GetUnConfirmedCharacter();
-                    if (playerSelectionIndex[player] > index)
-                    {
-                        MovePlayerSelectRight(player);
+                    //If the character the player is currently selecting is not confirmed, confirm it for the player.
+                    if (!CharacterPortraits[playerSelectionIndex[player]].IsConfirmed)
                         ConfirmSelection(player);
-                    }
-                    else if (playerSelectionIndex[player] < index)
-                    {
-                        MovePlayerSelectLeft(player);
-                        ConfirmSelection(player);
-                    }
                     else
                     {
-                        ConfirmSelection(player);
+                        int index = GetUnConfirmedCharacter();
+                        Debug.Log(player.PlayerNumber + " " + playerSelectionIndex[player] + " : index > " + index);
+                        if (playerSelectionIndex[player] > index)
+                        {
+                            Debug.Log("The player's current index is greater than the found index");
+                            MovePlayerSelectLeft(player);
+                            ConfirmSelection(player);
+                        }
+                        else if (playerSelectionIndex[player] < index)
+                        {
+                            Debug.Log("The player's current index is less than the found index");
+                            MovePlayerSelectRight(player);
+                            ConfirmSelection(player);
+                        }
+                        else
+                        {
+                            Debug.Log("The player's current index is the same as the found index");
+                            ConfirmSelection(player);
+                        }
                     }
+
+
+                    
                 }
             }
         }
