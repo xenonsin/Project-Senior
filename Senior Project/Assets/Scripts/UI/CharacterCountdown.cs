@@ -15,6 +15,7 @@ namespace Senior.Managers
         public float defaultCountdownTimer = 30f;
 
         public bool IsEnabled = false;
+        private bool expirationSent = false;
 
         void Awake()
         {
@@ -38,6 +39,7 @@ namespace Senior.Managers
         void Reset()
         {
             defaultCountdownTimer = 30f;
+            expirationSent = false;
         }
 
         void DecrementTimer(Player player)
@@ -51,17 +53,25 @@ namespace Senior.Managers
             if (IsEnabled)
             {
                 defaultCountdownTimer -= Time.deltaTime;
-                countdownText.text = Mathf.Floor(defaultCountdownTimer).ToString();
 
-                if (defaultCountdownTimer <= 0)
+                if (defaultCountdownTimer > 0)
+                    countdownText.text = Mathf.Floor(defaultCountdownTimer).ToString();
+
+                if (defaultCountdownTimer <= 0 && !expirationSent)
                 {
                     if (CountdownExpiration != null)
                         CountdownExpiration();
+                    expirationSent = true;
 
-                    //have callback or delay so that players can see what heroes they random.
+                    countdownText.text = "Now Loading...";
 
-                    //UIManager.Instance.DisplayInGameStuff();
-                    //GameManager.LoadLevel("debug");
+                }
+                //have callback or delay so that players can see what heroes they random.
+
+                if (defaultCountdownTimer <= -2)
+                {
+                    UIManager.Instance.DisplayInGameStuff();
+                    GameManager.LoadLevel("debug");
                     //Loading Screen
                     IsEnabled = false;
                     Reset();

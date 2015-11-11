@@ -8,6 +8,8 @@ namespace Senior.Managers
 {
     public class UICharacterSelect : MonoBehaviour
     {
+        public delegate void Select(Player player);
+
         //TODO: Instantiate stuff during awake so that you wont get null errors
         public RectTransform[] PlayerSelectionSprites;
         public CharacterPortrait[] CharacterPortraits;
@@ -112,9 +114,18 @@ namespace Senior.Managers
             int index = playerSelectionIndex[player];
             CharacterPortraits[index].Confirmed(player);
             
-            //TODO: update the positions of other players when they're currently selecting a character confirmed by someone else.
-            //use the character select list
+            //Update Positions of players that had selected this hero before it being confirmed.
+
+            foreach (var p in CharacterPortraits[index].PlayersCurrentlySelecting)
+            {
+                if (p != player)
+                   MoveCharactersToUnconfirmedPositions(p, DoNothing);
+            }
+            
         }
+
+        public void DoNothing(Player player) { }
+        
 
         public void CancelSelection(Player player)
         {
@@ -172,6 +183,26 @@ namespace Senior.Managers
 
         }
 
+        void MoveCharactersToUnconfirmedPositions(Player player, Select select)
+        {
+            int index = GetUnConfirmedCharacter();
+            Debug.Log(player.PlayerNumber + " " + playerSelectionIndex[player] + " : index > " + index);
+            if (playerSelectionIndex[player] > index)
+            {
+                MovePlayerSelectLeft(player);
+                select(player);
+            }
+            else if (playerSelectionIndex[player] < index)
+            {
+                MovePlayerSelectRight(player);
+                select(player);
+            }
+            else
+            {
+                select(player);
+            }
+        }
+
         private void FinalizePlayerHeroes()
         {
             if (GameManager.AllPlayersInGameAreConfirmed()) return;
@@ -182,31 +213,9 @@ namespace Senior.Managers
                     //If the character the player is currently selecting is not confirmed, confirm it for the player.
                     if (!CharacterPortraits[playerSelectionIndex[player]].IsConfirmed)
                         ConfirmSelection(player);
-                    else
-                    {
-                        int index = GetUnConfirmedCharacter();
-                        Debug.Log(player.PlayerNumber + " " + playerSelectionIndex[player] + " : index > " + index);
-                        if (playerSelectionIndex[player] > index)
-                        {
-                            Debug.Log("The player's current index is greater than the found index");
-                            MovePlayerSelectLeft(player);
-                            ConfirmSelection(player);
-                        }
-                        else if (playerSelectionIndex[player] < index)
-                        {
-                            Debug.Log("The player's current index is less than the found index");
-                            MovePlayerSelectRight(player);
-                            ConfirmSelection(player);
-                        }
-                        else
-                        {
-                            Debug.Log("The player's current index is the same as the found index");
-                            ConfirmSelection(player);
-                        }
-                    }
-
-
-                    
+                    else                   
+                        MoveCharactersToUnconfirmedPositions(player,ConfirmSelection);
+                                     
                 }
             }
         }
