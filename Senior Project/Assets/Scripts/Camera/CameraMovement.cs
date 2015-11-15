@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Entities.Hero;
+using Senior;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -12,44 +16,54 @@ public class CameraMovement : MonoBehaviour
     private float cameraCeiling = 7f;
     private Vector3 cameraPos = Vector3.zero;
     private Quaternion cameraRotation = Quaternion.Euler(new Vector3(55, 0, 0));
-    public GameObject[] player;
+    public List<GameObject> players;
     private Vector3[] playerPos;
     private int numberOfPlayer = 0;
     private float centerOfAllPlayerXPosition, centerOfAllPlayerZPosition,
                     meanX, meanZ,
                     avgChange, maxX, minX, maxZ, minZ;
 
-    void Awake()
+    void Start()
     {
         transform.localScale = new Vector3(1, 1, 1);
         transform.localRotation = cameraRotation;
     }
 
+    void OnEnable()
+    {
+        Player.HeroSpawned += FindPlayers;
+    }
+
+    void FindPlayers(Player player)
+    {
+        players.Add(player.GetComponentInChildren<Hero>().gameObject);
+        //players = GameObject.FindGameObjectsWithTag("Player").ToList();
+    }
+
     void FixedUpdate()
     {
         //finding how many players
-        player = GameObject.FindGameObjectsWithTag("Player");
-        numberOfPlayer = player.Length;
+        numberOfPlayer = players.Count;
 
         //player at the right most position
         maxX = 0;
         for (int i = 0; i < numberOfPlayer; i++)
-            if (player[i].transform.position.x > maxX) maxX = player[i].transform.position.x;
+            if (players[i].transform.position.x > maxX) maxX = players[i].transform.position.x;
 
         //player at the left most position
         minX = maxX;
         for (int i = 0; i < numberOfPlayer; i++)
-            if (player[i].transform.position.x < minX) minX = player[i].transform.position.x;
+            if (players[i].transform.position.x < minX) minX = players[i].transform.position.x;
 
         //player at the upper most position
         maxZ = 0;
         for (int i = 0; i < numberOfPlayer; i++)
-            if (player[i].transform.position.z > maxZ) maxZ = player[i].transform.position.z;
+            if (players[i].transform.position.z > maxZ) maxZ = players[i].transform.position.z;
 
         //player at the bottom most position
         minZ = maxZ;
         for (int i = 0; i < numberOfPlayer; i++)
-            if (player[i].transform.position.z < minZ) minZ = player[i].transform.position.z;
+            if (players[i].transform.position.z < minZ) minZ = players[i].transform.position.z;
 
         //center of the players in world space
         centerOfAllPlayerXPosition = (maxX + minX) / 2;

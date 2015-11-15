@@ -77,6 +77,7 @@ namespace Senior.Managers
             int newIndex = SearchRight(player);
             PlayerSelectionSprites[characterSelectIndex].anchoredPosition = PlayerSelctionPositions[newIndex];
 
+
             bool playerSelected = false;
             foreach (var p in playerSelectionIndex)
             {
