@@ -29,7 +29,9 @@ namespace Senior.Managers
         {
             if (PlayersCurrentlySelecting.Contains(player))
                 PlayersCurrentlySelecting.Remove(player);
-            image.color = Color.grey;
+            
+            if (!IsConfirmed && PlayersCurrentlySelecting.Count == 0)           
+                image.color = Color.grey;
         }
 
         public void UnConfirm(Player player)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Senior.Globals;
@@ -77,16 +78,9 @@ namespace Senior.Managers
             int newIndex = SearchRight(player);
             PlayerSelectionSprites[characterSelectIndex].anchoredPosition = PlayerSelctionPositions[newIndex];
 
-
-            bool playerSelected = false;
-            foreach (var p in playerSelectionIndex)
-            {
-                if (p.Key != player && p.Value == prevIndex)
-                    playerSelected = true;
-            }
-            if (!playerSelected)
-                CharacterPortraits[prevIndex].Deselected(player);
+            CharacterPortraits[prevIndex].Deselected(player);
             CharacterPortraits[newIndex].Selected(player);
+
             playerSelectionIndex[player] = newIndex;
 
         }
@@ -101,19 +95,8 @@ namespace Senior.Managers
             // Moves the Player Marker to the next index
             PlayerSelectionSprites[characterSelectIndex].anchoredPosition = PlayerSelctionPositions[newIndex];
 
-            // Deselects the last selected portrait
-
-            bool playerSelected = false;
-            foreach (var p in playerSelectionIndex)
-            {
-                if (p.Key != player && p.Value == prevIndex)
-                    playerSelected = true;
-            }
-
-            if (!playerSelected)
-                CharacterPortraits[prevIndex].Deselected(player);
+            CharacterPortraits[prevIndex].Deselected(player);
             CharacterPortraits[newIndex].Selected(player);
-
 
             // Registers the new selection to the player selection index
             playerSelectionIndex[player] = newIndex;
@@ -125,8 +108,8 @@ namespace Senior.Managers
             CharacterPortraits[index].Confirmed(player);
             
             //Update Positions of players that had selected this hero before it being confirmed.
-            //Bug
-            foreach (var p in CharacterPortraits[index].PlayersCurrentlySelecting)
+            //Bug: the PlayersCurrntlySelecting is not functioning
+            foreach (var p in CharacterPortraits[index].PlayersCurrentlySelecting.ToList())
             {
                 if (p != player)
                    MoveCharactersToUnconfirmedPositions(p, DoNothing);
@@ -196,7 +179,6 @@ namespace Senior.Managers
         void MoveCharactersToUnconfirmedPositions(Player player, Select select)
         {
             int index = GetUnConfirmedCharacter();
-            Debug.Log(player.PlayerNumber + " " + playerSelectionIndex[player] + " : index > " + index);
             if (playerSelectionIndex[player] > index)
             {
                 MovePlayerSelectLeft(player);
