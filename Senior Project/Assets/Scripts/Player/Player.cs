@@ -46,6 +46,7 @@ namespace Senior
 
         }
 
+        // Spawns a Hero that is controlled by the player.
         public void SpawnPlayer(Vector3 spawnPosition)
         {
             if (Hero != null)
@@ -58,6 +59,13 @@ namespace Senior
                 if (HeroSpawned != null)
                     HeroSpawned(this);
             }
+        }
+
+        // Spawns the Health/Stamina bars if a hero is spawned, otherwise
+        // it spawns a insert credits text.
+        public void SpawnPlayerUI()
+        {
+            
         }
     }
 }

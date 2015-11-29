@@ -1,21 +1,22 @@
 ﻿using Assets.Scripts.Entities.Hero;
+using Senior.Components;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Senior.Inputs
 {
-    [RequireComponent(typeof(Hero))]
+    [RequireComponent(typeof(Stats))]
     [RequireComponent(typeof(Rigidbody))]
     public class HeroController : MonoBehaviour
     {
-        private Hero hero;
+        private Stats stats;
         private IPlayerController playerController;
         private Rigidbody rb;
 
         public void Start()
         {
             playerController = GetComponentInParent<IPlayerController>();
-            hero = GetComponent<Hero>();
+            stats = GetComponent<Stats>();
             rb = GetComponent<Rigidbody>();
         }
 
@@ -33,9 +34,9 @@ namespace Senior.Inputs
 
             //Makes sure the player faces the direction they're moving.
             if (moveDirection != Vector3.zero)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), Time.deltaTime * hero.SpeedRotation);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), Time.deltaTime * stats.RotationSpeedBase);
 
-            rb.MovePosition(GetComponent<Rigidbody>().position + moveDirection.normalized * hero.SpeedMovement * Time.deltaTime);
+            rb.MovePosition(GetComponent<Rigidbody>().position + moveDirection.normalized * stats.MovementSpeedBase * Time.deltaTime);
         }
     }
 }

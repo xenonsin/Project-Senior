@@ -91,12 +91,17 @@ namespace Senior.Managers
 
         }
 
+        // This method listens to the Player Events when a player moves left.
         public void MovePlayerSelectLeft(Player player)
         {
             int characterSelectIndex = player.PlayerNumber - 1;
             int prevIndex = playerSelectionIndex[player];
             int newIndex = SearchLeft(player);
+
+            // Moves the Player Marker to the next index
             PlayerSelectionSprites[characterSelectIndex].anchoredPosition = PlayerSelctionPositions[newIndex];
+
+            // Deselects the last selected portrait
 
             bool playerSelected = false;
             foreach (var p in playerSelectionIndex)
@@ -104,9 +109,13 @@ namespace Senior.Managers
                 if (p.Key != player && p.Value == prevIndex)
                     playerSelected = true;
             }
+
             if (!playerSelected)
                 CharacterPortraits[prevIndex].Deselected(player);
             CharacterPortraits[newIndex].Selected(player);
+
+
+            // Registers the new selection to the player selection index
             playerSelectionIndex[player] = newIndex;
         }
 
@@ -116,7 +125,7 @@ namespace Senior.Managers
             CharacterPortraits[index].Confirmed(player);
             
             //Update Positions of players that had selected this hero before it being confirmed.
-
+            //Bug
             foreach (var p in CharacterPortraits[index].PlayersCurrentlySelecting)
             {
                 if (p != player)
