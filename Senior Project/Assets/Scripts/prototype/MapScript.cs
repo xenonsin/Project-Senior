@@ -45,16 +45,16 @@ public class MapScript : MonoBehaviour
 
     void Update()
     {
-        ////spawning monster
-        //monsters = GameObject.FindGameObjectsWithTag("Monster");
-        ////Debug.Log(monsters.Length);
-        //if (monsters.Length==0)
-        //{
-        //    for (int i = 0; i < numberofspawn; i++)
-        //    {
-        //        GameObject Monster = GameObject.Instantiate(monsterObject, new Vector3((i + 4), 0.1f, 6f), Quaternion.identity) as GameObject;
-        //        Monster.name = "Monster " + i;
-        //    }
-        //}
+        //spawning monster
+        monsters = GameObject.FindGameObjectsWithTag("Monster");
+        //Debug.Log(monsters.Length);
+        if (monsters.Length == 0)
+        {
+            for (int i = 0; i < numberofspawn; i++)
+            {
+                GameObject monster = GameObject.Instantiate(monsterObject, new Vector3((i + 1), 0.1f, 0f), Quaternion.identity) as GameObject;
+                monster.name = "monster " + i;
+            }
+        }
     }
 }

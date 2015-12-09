@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Entities.Hero;
 using Senior.Components;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Senior.Inputs
 {
@@ -20,7 +19,7 @@ namespace Senior.Inputs
             rb = GetComponent<Rigidbody>();
         }
 
-        public void Update()
+        public void FixedUpdate()
         {
             Move();
                 
