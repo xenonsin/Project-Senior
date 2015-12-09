@@ -52,7 +52,7 @@ public class MapScript : MonoBehaviour
         {
             for (int i = 0; i < numberofspawn; i++)
             {
-                GameObject monster = GameObject.Instantiate(monsterObject, new Vector3((i + 1), 0.1f, 0f), Quaternion.identity) as GameObject;
+                GameObject monster = GameObject.Instantiate(monsterObject, new Vector3((i + 4), 0.1f, 4f), Quaternion.identity) as GameObject;
                 monster.name = "monster " + i;
             }
         }
