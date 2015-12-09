@@ -65,22 +65,20 @@ namespace Senior
                 if (HeroSpawned != null)
                     HeroSpawned(this);
 
-                ShowPlayerUI();
+                ShowPlayerUI(go);
             }
         }
 
         // Spawns the Health/Stamina bars if a hero is spawned, otherwise
-        // it spawns a insert credits text.
-        public void ShowPlayerUI()
+        // it spawns a insert credits text. We pass in the initialized game object 
+        // because we can't access getcomponent on non initialized prefabs
+        public void ShowPlayerUI(GameObject go)
         {
             if (ui != null)
             {
 
-                Hero hero = HeroGO.GetComponent<Hero>();
-                Debug.Log(hero.StatsComponent);
-
-                if (hero != null)
-                    ui.Initialize(hero);
+                Hero hero = go.GetComponent<Hero>();
+                ui.Initialize(hero);
                 ui.ShowHeroStats();
             }
 

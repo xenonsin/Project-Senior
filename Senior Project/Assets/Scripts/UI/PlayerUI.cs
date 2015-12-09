@@ -36,9 +36,8 @@ namespace Senior.Managers
                 if (hero.Portrait != null)
                     HeroPorait.sprite = hero.Portrait;
 
-                //string health = hero.StatsComponent.HealthMax + "/" + hero.StatsComponent.HealthMax;
-                //string health = string.Format("{0}/{1}", hero.StatsComponent.HealthMax, hero.StatsComponent.HealthMax);
-                //HealthText.text = health;
+                string health = string.Format("{0}/{1}", hero.StatsComponent.HealthMax, hero.StatsComponent.HealthMax);
+                HealthText.text = health;
             }
         }
     }
