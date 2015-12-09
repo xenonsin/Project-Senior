@@ -25,7 +25,14 @@ namespace Assets.Scripts.Entities.Hero
                // Dead();
         }
 
-        
-    
+        public override void GetDamaged(int damage)
+        {
+            base.GetDamaged(damage);
+        }
+
+        public override void GetHealed(int heal)
+        {
+            base.GetHealed(heal);
+        }
     }
 }

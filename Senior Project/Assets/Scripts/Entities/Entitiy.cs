@@ -29,22 +29,24 @@ namespace Assets.Scripts.Entities
         }
 
         // Called when the entity gets damaged
-        public virtual void GetDamaged(float damage)
+        public virtual void GetDamaged(int damage)
         {
-            
+            StatsComponent.HealthCurrent -= damage;
+
+            if (StatsComponent.HealthCurrent <= 0)
+                Die();
         }
 
         // Similar to the damaged method, but gets it's own method for ease of use.
-        public virtual void GetHealed(float damage)
+        public virtual void GetHealed(int heal)
         {
-            
+            StatsComponent.HealthCurrent += heal;
         }
 
         // Called when you want the entity to get fully healed.
         public virtual void FullHeal()
         {
-            StatsComponent.HealthCurrent = StatsComponent.mM;
-            Debug.Log(Name + " Health: " + Health.ToString());
+            StatsComponent.HealthCurrent = StatsComponent.HealthMax;
         }
 
 
