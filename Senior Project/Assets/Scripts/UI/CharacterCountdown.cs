@@ -71,7 +71,7 @@ namespace Senior.Managers
                 if (defaultCountdownTimer <= -2)
                 {
                     UIManager.Instance.DisplayInGameStuff();
-                    GameManager.LoadLevel("debug");
+                    GameManager.LoadLevel("map");
                     //Loading Screen
                     IsEnabled = false;
                     Reset();

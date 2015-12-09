@@ -5,35 +5,34 @@ using UnityEngine;
 
 namespace Assets.Scripts.Entities.Hero
 {
-    [RequireComponent(typeof(HeroController))]
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(CapsuleCollider))]
-    [RequireComponent(typeof(Stats))]
-    public class Hero : MonoBehaviour, IEntitiy
+    
+    public class Hero : Entitiy
     {
-        private Rigidbody rb;
-        public Stats StatsComponent { get; set; }                   // Contains the stats of the character
         public Inventory InventoryComponent { get; set; }           // Contains the inventory of the character
         public SkillsController SkillsComponent { get; set; }       // Listens to the player input to cast skills
 
-        public void Awake()
+        public override void Awake()
         {
-            rb = GetComponent<Rigidbody>();
-            rb.useGravity = true;
-            StatsComponent = GetComponent<Stats>();
+            base.Awake();
             InventoryComponent = GetComponentInChildren<Inventory>();
             SkillsComponent = GetComponentInChildren<SkillsController>();
         }
 
         void Update()        
         {
-            if (StatsComponent.HealthCurrent <= 0)
-                Dead();
+            //replace with an event that listens whenever the health is changed.
+            //if (StatsComponent.HealthCurrent <= 0)
+               // Dead();
         }
 
-        private void Dead()
+        public override void GetDamaged(int damage)
         {
+            base.GetDamaged(damage);
         }
-    
+
+        public override void GetHealed(int heal)
+        {
+            base.GetHealed(heal);
+        }
     }
 }

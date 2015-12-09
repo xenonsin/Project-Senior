@@ -63,7 +63,7 @@ namespace Senior
 
         // Spawns the Health/Stamina bars if a hero is spawned, otherwise
         // it spawns a insert credits text.
-        public void SpawnPlayerUI()
+        public void ShowPlayerUI()
         {
             
         }
