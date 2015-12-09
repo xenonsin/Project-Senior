@@ -27,6 +27,7 @@ namespace Assets.Scripts.Entities.Hero
 
         void Update()        
         {
+            //replace with an event that listens whenever the health is changed.
             if (StatsComponent.HealthCurrent <= 0)
                 Dead();
         }

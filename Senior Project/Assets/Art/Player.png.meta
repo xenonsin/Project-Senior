@@ -1,13 +1,13 @@
 fileFormatVersion: 2
 guid: 335b1ca28e0038c4d9373d825e0dd57f
-timeCreated: 1449018930
+timeCreated: 1449653325
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: FFset_0
-    21300002: FFset_1
-    21300004: FFset_2
-    21300006: FFset_3
+    21300000: Andrew
+    21300002: Hau
+    21300004: Keno
+    21300006: Lung
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -54,7 +54,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: FFset_0
+    - name: Andrew
       rect:
         serializedVersion: 2
         x: 0
@@ -64,7 +64,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: FFset_1
+    - name: Hau
       rect:
         serializedVersion: 2
         x: 192
@@ -74,7 +74,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: FFset_2
+    - name: Keno
       rect:
         serializedVersion: 2
         x: 287
@@ -84,7 +84,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: FFset_3
+    - name: Lung
       rect:
         serializedVersion: 2
         x: 192

@@ -110,8 +110,8 @@ namespace Senior.Managers
 
             switch (levelName)
             {
-                case "debug":
-                    Application.LoadLevel("debug");
+                case "map":
+                    Application.LoadLevel("map");
 
                     break;
                 case "levelSelect":
