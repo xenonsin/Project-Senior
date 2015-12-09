@@ -18,11 +18,9 @@ namespace Assets.Scripts.Entities.Hero
             SkillsComponent = GetComponentInChildren<SkillsController>();
         }
 
-        void Update()        
+        public override void Update()        
         {
-            //replace with an event that listens whenever the health is changed.
-            //if (StatsComponent.HealthCurrent <= 0)
-               // Dead();
+            base.Update();
         }
 
         public override void GetDamaged(int damage)

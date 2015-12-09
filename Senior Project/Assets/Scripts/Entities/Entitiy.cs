@@ -49,6 +49,11 @@ namespace Assets.Scripts.Entities
             StatsComponent.HealthCurrent = StatsComponent.HealthMax;
         }
 
+        public virtual void Update()
+        {
+            
+        }
+
 
     }
 }
