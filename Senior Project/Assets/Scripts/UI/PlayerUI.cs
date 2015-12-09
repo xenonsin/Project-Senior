@@ -10,7 +10,9 @@ namespace Senior.Managers
         public GameObject CoinText;
 
         public Image HeroPorait;
+
         public Text HealthText;
+        public Image HealthFill;
 
         public void Awake()
         {
@@ -35,10 +37,19 @@ namespace Senior.Managers
             {
                 if (hero.Portrait != null)
                     HeroPorait.sprite = hero.Portrait;
-
-                string health = string.Format("{0}/{1}", hero.StatsComponent.HealthMax, hero.StatsComponent.HealthMax);
-                HealthText.text = health;
             }
+        }
+
+        public void OnHealthModified(Hero hero)
+        {
+            SetHealthText(hero.StatsComponent.HealthCurrent, hero.StatsComponent.HealthMax);
+        }
+
+        public void SetHealthText(int current, int max)
+        {
+            string health = string.Format("{0}/{1}", current, max);
+            HealthText.text = health;
+            HealthFill.fillAmount = current/(float)max;
         }
     }
 }

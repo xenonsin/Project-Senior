@@ -78,10 +78,16 @@ namespace Senior
             {
 
                 Hero hero = go.GetComponent<Hero>();
+                hero.owner = this;
                 ui.Initialize(hero);
                 ui.ShowHeroStats();
             }
 
+        }
+
+        public void OnHealthModified(Hero hero)
+        {
+            ui.OnHealthModified(hero);
         }
     }
 }

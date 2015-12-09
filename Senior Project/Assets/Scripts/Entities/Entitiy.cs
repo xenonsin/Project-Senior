@@ -18,8 +18,12 @@ namespace Assets.Scripts.Entities
             rb = GetComponent<Rigidbody>();
             rb.useGravity = true;
             StatsComponent = GetComponent<Stats>();
-            FullHeal();
             StatsComponent.HealthModifier = 0;
+        }
+
+        public virtual void Start()
+        {
+            FullHeal();
         }
 
 
