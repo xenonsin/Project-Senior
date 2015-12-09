@@ -17,10 +17,10 @@ namespace Senior.Debugs
 
         void Start()
         {
-            player1.Hero = keno;
-            player2.Hero = andrew;
-            player3.Hero = hau;
-            player4.Hero = lung;
+            player1.HeroGO = keno;
+            player2.HeroGO = andrew;
+            player3.HeroGO = hau;
+            player4.HeroGO = lung;
 
             player1.SpawnPlayer(Vector3.zero);
             player2.SpawnPlayer(Vector3.zero);

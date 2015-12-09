@@ -1,5 +1,9 @@
-﻿using Senior.Globals;
+﻿using System;
+using Assets.Scripts.Entities.Hero;
+using Senior.Globals;
+using Senior.Managers;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Senior
 {
@@ -27,13 +31,15 @@ namespace Senior
         }
 
         [SerializeField]
-        private GameObject hero;
+        private GameObject heroGO;
 
-        public GameObject Hero
+        public GameObject HeroGO
         {
-            get { return hero; }
-            set { hero = value; }
+            get { return heroGO; }
+            set { heroGO = value; }
         }
+
+        public PlayerUI ui;
 
         public void OnEnable()
         {
@@ -49,15 +55,17 @@ namespace Senior
         // Spawns a Hero that is controlled by the player.
         public void SpawnPlayer(Vector3 spawnPosition)
         {
-            if (Hero != null)
+            if (HeroGO != null)
             {
                 spawnPosition.x += Random.Range(0, 5);
                 spawnPosition.z += Random.Range(0, 5);
-                GameObject go = Instantiate(hero, spawnPosition, Quaternion.identity) as GameObject;
+                GameObject go = Instantiate(heroGO, spawnPosition, Quaternion.identity) as GameObject;
                 go.transform.parent = this.transform;
 
                 if (HeroSpawned != null)
                     HeroSpawned(this);
+
+                ShowPlayerUI();
             }
         }
 
@@ -65,7 +73,17 @@ namespace Senior
         // it spawns a insert credits text.
         public void ShowPlayerUI()
         {
-            
+            if (ui != null)
+            {
+
+                Hero hero = HeroGO.GetComponent<Hero>();
+                Debug.Log(hero.StatsComponent);
+
+                if (hero != null)
+                    ui.Initialize(hero);
+                ui.ShowHeroStats();
+            }
+
         }
     }
 }

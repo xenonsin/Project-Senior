@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Assets.Scripts.Entities
 {
-    [RequireComponent(typeof(HeroController))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(Stats))]
@@ -19,6 +18,8 @@ namespace Assets.Scripts.Entities
             rb = GetComponent<Rigidbody>();
             rb.useGravity = true;
             StatsComponent = GetComponent<Stats>();
+            FullHeal();
+            StatsComponent.HealthModifier = 0;
         }
 
 

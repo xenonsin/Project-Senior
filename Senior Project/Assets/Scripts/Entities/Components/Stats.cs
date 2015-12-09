@@ -39,8 +39,8 @@ namespace Senior.Components
 
         public void Awake()
         {
-            HealthCurrent = HealthBase;
-            StaminaCurrent = StaminaBase;
+            //HealthCurrent = HealthBase;
+            //StaminaCurrent = StaminaBase;
         }
 
 

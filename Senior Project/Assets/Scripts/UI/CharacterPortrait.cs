@@ -38,7 +38,7 @@ namespace Senior.Managers
         {
             if (confirmedPlayer != player) return;
             IsConfirmed = false;
-            player.Hero = null;
+            player.HeroGO = null;
             confirmedPlayer = null;
         }
 
@@ -47,7 +47,7 @@ namespace Senior.Managers
             if (confirmedPlayer != null) return;
 
             IsConfirmed = true;
-            player.Hero = heroPrefab;
+            player.HeroGO = heroPrefab;
             confirmedPlayer = player;
             image.color = Color.yellow;
         }
