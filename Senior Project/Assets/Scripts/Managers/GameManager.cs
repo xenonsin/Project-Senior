@@ -6,26 +6,15 @@ using UnityEngine;
 
 namespace Senior.Managers
 {
-    public class GameManager : MonoBehaviour, IGameManager
+    public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
-        public GameState CurrentGameState { get; set; }
+        public static GameState CurrentGameState { get; private set; }
         public static List<Player> PlayersInGame = new List<Player>();
 
         public static int NumberOfPlayersInGame
         {
             get { return PlayersInGame.Count; }
-        }
-
-
-        void OnEnable()
-        {
-            PlayerController.StartButtonPressed += HandleScreenTransitionDependingOnGameState;
-        }
-
-        void OnDisable()
-        {
-            PlayerController.StartButtonPressed -= HandleScreenTransitionDependingOnGameState;
         }
 
         private void Awake()
@@ -49,41 +38,24 @@ namespace Senior.Managers
             Instance = null;
         }
 
-        public void SetGameState(GameState state)
+        public static void SetGameState(GameState state)
         {
             CurrentGameState = state;
         }
 
-        //TODO: move some logic to main menu.cs
-        void HandleScreenTransitionDependingOnGameState(Player player)
+        public static void AddPlayerToGame(Player player)
         {
-            int playerNumber = player.PlayerNumber;
-#if UNITY_EDITOR
-            Debug.Log(string.Format("Player {0} pressed the Start Button!", playerNumber));
-#endif
-
             if (!PlayerIsInGame(player))
                 PlayersInGame.Add(player);
-
-            switch (GameManager.Instance.CurrentGameState)
-            {
-                case GameState.MainMenu:
-                    UIManager.Instance.DisplayCharacterSelect();
-                    UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(player);
-                    break;
-                case GameState.CharacterSelect:
-                    UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(player);
-                    break;
-                case GameState.Playing:
-                    //EnableHeroSelectUIWheelSmall
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-
-            }
         }
 
-        public bool PlayerIsInGame(Player player)
+        public static void RemovePlayerFromGame(Player player)
+        {
+            if (PlayerIsInGame(player))
+                PlayersInGame.Remove(player);
+        }
+
+        public static bool PlayerIsInGame(Player player)
         {
             foreach (var p in PlayersInGame)
             {
@@ -102,8 +74,9 @@ namespace Senior.Managers
                     return false;
             }
             return true;
-        }
-
+        }       
+        //TODO: Create loading screen
+        //TODO: This is a trash method
         public static void LoadLevel(string levelName)
         {
             if (levelName == Application.loadedLevelName) return;
@@ -118,5 +91,7 @@ namespace Senior.Managers
                     break;
             }
         }
+
+        
     }
 }

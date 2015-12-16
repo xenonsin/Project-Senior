@@ -24,8 +24,8 @@ namespace Senior.Debugs
 
             player1.SpawnPlayer(Vector3.zero);
             player2.SpawnPlayer(Vector3.zero);
-            player3.SpawnPlayer(Vector3.zero);
-            player4.SpawnPlayer(Vector3.zero);
+            //player3.SpawnPlayer(Vector3.zero);
+            //player4.SpawnPlayer(Vector3.zero);
 
         }
     }

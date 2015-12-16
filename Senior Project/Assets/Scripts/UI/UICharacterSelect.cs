@@ -25,6 +25,8 @@ namespace Senior.Managers
 
         private Dictionary<Player,int> playerSelectionIndex = new Dictionary<Player, int>(); //player..CurrentSelection
 
+        public CharacterCountdown cd;
+
         private void Awake()
         {
             Initialize();
@@ -33,19 +35,11 @@ namespace Senior.Managers
 
         private void OnEnable()
         {
-            PlayerController.LeftButtonPressed += MovePlayerSelectLeft;
-            PlayerController.RightButtonPressed += MovePlayerSelectRight;
-            PlayerController.ConfirmButtonPressed += ConfirmSelection;
-            PlayerController.CancelButtonPressed += CancelSelection;
             CharacterCountdown.CountdownExpiration += FinalizePlayerHeroes;
         }
 
         private void OnDisable()
         {
-            PlayerController.LeftButtonPressed -= MovePlayerSelectLeft;
-            PlayerController.RightButtonPressed -= MovePlayerSelectRight;
-            PlayerController.ConfirmButtonPressed -= ConfirmSelection;
-            PlayerController.CancelButtonPressed -= CancelSelection;
             CharacterCountdown.CountdownExpiration -= FinalizePlayerHeroes;
         }
 

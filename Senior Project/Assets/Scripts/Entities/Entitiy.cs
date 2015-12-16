@@ -30,11 +30,11 @@ namespace Assets.Scripts.Entities
         // Called when the entity dies
         public virtual void Die()
         {
-            
+
         }
 
         // Called when the entity gets damaged
-        public virtual void GetDamaged(int damage)
+        public virtual void Damage(int damage)
         {
             StatsComponent.HealthCurrent -= damage;
 
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Entities
         }
 
         // Similar to the damaged method, but gets it's own method for ease of use.
-        public virtual void GetHealed(int heal)
+        public virtual void Heal(int heal)
         {
             StatsComponent.HealthCurrent += heal;
         }
@@ -56,9 +56,12 @@ namespace Assets.Scripts.Entities
 
         public virtual void Update()
         {
-            
+
         }
 
+        public virtual void OnCollisionEnter(Collision collision)
+        {
 
+        }
     }
 }

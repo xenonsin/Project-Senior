@@ -5,8 +5,9 @@ namespace Senior.Managers
 {
     public class UIManager : MonoBehaviour
     {
-        public GameObject MainMenu;
-        public UICharacterSelect CharacterSelect;
+        public  GameObject MainMenu;
+        public  UICharacterSelect CharacterSelect;
+        public  GameObject PlayerUi;
         public static UIManager Instance { get; private set; }
 
         private void Awake()
@@ -35,30 +36,34 @@ namespace Senior.Managers
         {
             MainMenu.SetActive(true);
             CharacterSelect.gameObject.SetActive(false);
-            GameManager.Instance.SetGameState(GameState.MainMenu);
+            PlayerUi.SetActive(false);
+            GameManager.SetGameState(GameState.MainMenu);
         }
 
         public void DisplayCharacterSelect()
         {
             MainMenu.SetActive(false);
             CharacterSelect.gameObject.SetActive(true);
-            GameManager.Instance.SetGameState(GameState.CharacterSelect);
+            PlayerUi.SetActive(false);
+            GameManager.SetGameState(GameState.CharacterSelect);
         }
 
         public void DisplayLoadingGraphic()
         {
             MainMenu.SetActive(false);
             CharacterSelect.gameObject.SetActive(false);
-            //DisplayGraphic
-            GameManager.Instance.SetGameState(GameState.Loading);
+            PlayerUi.SetActive(false);
+
+            GameManager.SetGameState(GameState.Loading);
         }
 
         public void DisplayInGameStuff()
         {
             MainMenu.SetActive(false);
             CharacterSelect.gameObject.SetActive(false);
-            //DisplayGraphic false
-            GameManager.Instance.SetGameState(GameState.Playing);
+            PlayerUi.SetActive(true);
+
+            GameManager.SetGameState(GameState.InGame);
         }
     }
 }

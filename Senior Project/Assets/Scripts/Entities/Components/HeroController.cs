@@ -10,19 +10,37 @@ namespace Senior.Inputs
     {
         private Stats stats;
         private IPlayerController playerController;
+        private SkillsController skills;
         private Rigidbody rb;
 
         public void Start()
         {
             playerController = GetComponentInParent<IPlayerController>();
+            skills = GetComponentInChildren<SkillsController>();
+
             stats = GetComponent<Stats>();
             rb = GetComponent<Rigidbody>();
         }
 
+        public void Update()
+        {
+            if (playerController.AttackButton)
+                skills.Attack();
+            if (playerController.AltAttackButton)
+                skills.AltAttack();
+            if (playerController.SkillOneButton)
+                skills.SkillOne();
+            if(playerController.SkillTwoButton)
+                skills.SkillTwo();
+            if(playerController.SkillThreeButton)
+                skills.SkillThree();
+            if(playerController.SkillFourButton)
+                skills.SkillFour();
+        }
+
         public void FixedUpdate()
         {
-            Move();
-                
+            Move();      
         }
 
         public void Move()

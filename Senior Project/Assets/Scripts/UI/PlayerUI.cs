@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Entities.Hero;
+using Senior.Items;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,6 +51,16 @@ namespace Senior.Managers
             string health = string.Format("{0}/{1}", current, max);
             HealthText.text = health;
             HealthFill.fillAmount = current/(float)max;
+        }
+
+        //Show item icon in player ui
+        public void OnItemPickUp(Item item)
+        {
+        }
+
+        // When a player dies, show the countdown timer to allow them to continue with the same hero
+        public void OnDead(Hero hero)
+        {
         }
     }
 }

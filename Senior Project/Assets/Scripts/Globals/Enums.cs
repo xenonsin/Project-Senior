@@ -4,7 +4,7 @@
     {
         MainMenu,
         CharacterSelect,
-        Playing,
+        InGame,
         Loading,
     }
 
@@ -14,6 +14,7 @@
         ConfirmedCharacter,
         Playing,
         WaitingForCredits,
+        HeroDead,
     }
 
 }
