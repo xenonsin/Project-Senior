@@ -15,6 +15,11 @@ namespace Assets.Scripts.Entities.Hero
         public Sprite Portrait;
         public Player owner;
 
+        public void Initialize(Player player)
+        {
+            owner = player;
+        }
+
         public override void Awake()
         {
             base.Awake();
@@ -25,11 +30,14 @@ namespace Assets.Scripts.Entities.Hero
 
         public override void Update()        
         {
+            if (Input.anyKeyDown)
+                Damage(20);
             base.Update();
         }
 
         public override void Die()
-        {            
+        {  
+            //Turn into spirit          
             if (owner)
                 owner.OnDead(this);
         }

@@ -9,11 +9,15 @@ namespace Senior.Managers
     {
         public GameObject HeroStats;
         public GameObject CoinText;
+        public GameObject ContinueText;
+        public GameObject HeroSelect;
 
         public Image HeroPorait;
 
         public Text HealthText;
         public Image HealthFill;
+
+        private Player owner;
 
         public void Awake()
         {
@@ -22,25 +26,58 @@ namespace Senior.Managers
 
         public void ShowHeroStats()
         {
+            Debug.Log(owner);
             CoinText.SetActive(false);
             HeroStats.SetActive(true);
+            ContinueText.SetActive(false);
+            HeroSelect.SetActive(false);
         }
 
         public void ShowCoinText()
         {
             CoinText.SetActive(true);
             HeroStats.SetActive(false);
+            ContinueText.SetActive(false);
+            HeroSelect.SetActive(false);
         }
 
-        public void Initialize(Hero hero)
+        public void ShowContinueText()
         {
-            if (hero != null)
+            CoinText.SetActive(false);
+            HeroStats.SetActive(false);
+            ContinueText.SetActive(true);
+            HeroSelect.SetActive(false);
+        }
+
+        public void ShowHeroSelect()
+        {
+            CoinText.SetActive(false);
+            HeroStats.SetActive(false);
+            ContinueText.SetActive(false);
+            HeroSelect.SetActive(true);
+        }
+
+        public void Initialize(Player player)
+        {
+            if (player != null)
             {
-                if (hero.Portrait != null)
-                    HeroPorait.sprite = hero.Portrait;
+                owner = player;
+                if (player.HeroGO != null)
+                {
+                    Hero hero = player.HeroGO.GetComponent<Hero>();
+                    if (hero.Portrait != null)
+                        HeroPorait.sprite = hero.Portrait;
+
+                    DeadCountdown dc = ContinueText.GetComponent<DeadCountdown>();
+                    if (dc != null)
+                        dc.Initialize(player);
+                    ShowHeroStats();
+                }
+
             }
         }
 
+        // whenever the hero's health is modified, change the health text/bar
         public void OnHealthModified(Hero hero)
         {
             SetHealthText(hero.StatsComponent.HealthCurrent, hero.StatsComponent.HealthMax);
@@ -61,6 +98,37 @@ namespace Senior.Managers
         // When a player dies, show the countdown timer to allow them to continue with the same hero
         public void OnDead(Hero hero)
         {
+            ShowContinueText();
+        }
+
+        public void  OnSelectLeft(Player player)
+        {
+            InGameHeroSelect hs = HeroSelect.GetComponent<InGameHeroSelect>();
+
+            if (hs != null)
+            {
+                hs.OnSelectLeft(player);
+            }
+        }
+
+        public void OnSelectRight(Player player)
+        {
+            InGameHeroSelect hs = HeroSelect.GetComponent<InGameHeroSelect>();
+
+            if (hs != null)
+            {
+                hs.OnSelectRight(player);
+            }
+        }
+
+        public void OnConfirm(Player player)
+        {
+            InGameHeroSelect hs = HeroSelect.GetComponent<InGameHeroSelect>();
+
+            if (hs != null)
+            {
+                hs.OnConfirm(player);
+            }
         }
     }
 }

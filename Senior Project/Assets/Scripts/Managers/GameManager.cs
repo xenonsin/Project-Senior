@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Scripts.Entities.Hero;
 using Senior.Globals;
 using Senior.Inputs;
 using UnityEngine;
@@ -8,9 +9,15 @@ namespace Senior.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        public delegate void GameManagerAction();
+
+        public static event GameManagerAction InactiveHeroListModified;
+
         public static GameManager Instance { get; private set; }
         public static GameState CurrentGameState { get; private set; }
         public static List<Player> PlayersInGame = new List<Player>();
+        public static List<GameObject> HeroPool = new List<GameObject>();
+        public static List<GameObject> HeroesNotInGame = new List<GameObject>();
 
         public static int NumberOfPlayersInGame
         {
@@ -53,17 +60,54 @@ namespace Senior.Managers
         {
             if (PlayerIsInGame(player))
                 PlayersInGame.Remove(player);
+
+            // if there are no players from the game go to game over/high score screen
         }
+
+        public static void AddHeroToHeroPool(GameObject hero)
+        {
+            if (HeroPool.Contains(hero)) return;
+
+            HeroPool.Add(hero);
+            HeroesNotInGame.Add(hero);
+
+            if (InactiveHeroListModified != null)
+                InactiveHeroListModified();
+        }
+
+        public static void GrantPlayerHero(Player player, GameObject hero)
+        {
+            if (PlayerIsInGame(player))
+            {
+                if (HeroPool.Contains(hero))
+                {
+                    player.HeroGO = hero;
+
+                    if (HeroesNotInGame.Contains(hero))
+                        HeroesNotInGame.Remove(hero);
+
+                    if (InactiveHeroListModified != null)
+                        InactiveHeroListModified();
+                }
+            }
+        }
+
+        public static void RemovePlayerHero(Player player)
+        {
+            if (PlayerIsInGame(player))
+            {
+                HeroesNotInGame.Add(player.HeroGO);
+                player.HeroGO = null;
+
+                if (InactiveHeroListModified != null)
+                    InactiveHeroListModified();
+            }
+        }
+
 
         public static bool PlayerIsInGame(Player player)
         {
-            foreach (var p in PlayersInGame)
-            {
-                if (p == player)
-                    return true;
-            }
-
-            return false;
+            return PlayersInGame.Contains(player);
         }
 
         public static bool AllPlayersInGameAreConfirmed()

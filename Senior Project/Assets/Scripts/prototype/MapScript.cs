@@ -34,6 +34,7 @@ public class MapScript : MonoBehaviour
             }
         }
 
+        // instead of position give the spawning tile go
 	    if (MapCreatedSuccess != null)
 	        MapCreatedSuccess(startPosition);
 	    //spawning player

@@ -48,6 +48,17 @@ namespace Senior
     #endregion
 
     #region In Game Initialize
+
+        void OnEnable()
+        {
+            MapScript.MapCreatedSuccess += SpawnPlayer;
+        }
+
+        void Disable()
+        {
+            MapScript.MapCreatedSuccess -= SpawnPlayer;
+
+        }
         void Awake()
         {
             control = GetComponent<PlayerController>();
@@ -82,9 +93,8 @@ namespace Senior
             {
 
                 Hero hero = go.GetComponent<Hero>();
-                hero.owner = this;
-                ui.Initialize(hero);
-                ui.ShowHeroStats();
+                hero.Initialize(this);
+                ui.Initialize(this);
             }
 
         }
@@ -102,7 +112,22 @@ namespace Senior
         // When you die, inform the UI to spawn the continue countdown
         public void OnDead(Hero hero)
         {
+            CurrentState = PlayerState.HeroDead;
+            ui.OnDead(hero);
+        }
+
+        // destroy the hero game object
+        public void OnDeadFinal()
+        {
+            CurrentState = PlayerState.WaitingForCredits;
+            ui.ShowCoinText();
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Destroy(transform.GetChild(i).gameObject);
+            }
             
+            GameManager.RemovePlayerHero(this);
         }
 
         // When you pick up an item, add the item sprite to the UI
@@ -177,7 +202,8 @@ namespace Senior
                     UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(this);
                     break;
                 case GameState.InGame:
-                    //Enable choosing UI
+                        ui.ShowHeroSelect();
+
                     //else if portraits are displayed spawn the hero
                     break;
             }
@@ -193,7 +219,7 @@ namespace Senior
                     UIManager.Instance.CharacterSelect.MovePlayerSelectLeft(this);                    
                     break;
                 case GameState.InGame:
-                    // move in game ui left
+                    ui.OnSelectLeft(this);
                     break;
             }
         }
@@ -208,7 +234,7 @@ namespace Senior
                     UIManager.Instance.CharacterSelect.MovePlayerSelectRight(this);                    
                     break;
                 case GameState.InGame:
-                    // move in game select right
+                    ui.OnSelectRight(this);
                     break;
             }
         }
@@ -228,7 +254,9 @@ namespace Senior
                     break;
                 case GameState.InGame:
                     if (CurrentState == PlayerState.ChoosingCharacter)
-                    { }
+                    {
+                        ui.OnConfirm(this);
+                    }
                         //choose the selected thing
                     break;
             }

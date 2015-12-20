@@ -16,6 +16,8 @@ namespace Senior.Managers
             IsConfirmed = false;
             image = GetComponent<Image>();
             image.color = Color.grey;
+            if (heroPrefab != null)
+                GameManager.AddHeroToHeroPool(heroPrefab);
         }
 
         public void Selected(Player player)
@@ -38,7 +40,7 @@ namespace Senior.Managers
         {
             if (confirmedPlayer != player) return;
             IsConfirmed = false;
-            player.HeroGO = null;
+            GameManager.RemovePlayerHero(player);
             confirmedPlayer = null;
         }
 
@@ -47,7 +49,7 @@ namespace Senior.Managers
             if (confirmedPlayer != null) return;
 
             IsConfirmed = true;
-            player.HeroGO = heroPrefab;
+            GameManager.GrantPlayerHero(player, heroPrefab);
             confirmedPlayer = player;
             image.color = Color.yellow;
         }

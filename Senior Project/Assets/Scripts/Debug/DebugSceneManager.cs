@@ -1,4 +1,6 @@
 ﻿using Senior;
+using Senior.Globals;
+using Senior.Managers;
 using UnityEngine;
 
 namespace Senior.Debugs
@@ -17,15 +19,25 @@ namespace Senior.Debugs
 
         void Start()
         {
-            player1.HeroGO = keno;
-            player2.HeroGO = andrew;
-            player3.HeroGO = hau;
-            player4.HeroGO = lung;
+            GameManager.AddHeroToHeroPool(keno);
+            GameManager.AddHeroToHeroPool(andrew);
+            GameManager.AddHeroToHeroPool(hau);
+            GameManager.AddHeroToHeroPool(lung);
+
+            GameManager.AddPlayerToGame(player1);
+            GameManager.AddPlayerToGame(player2);
+            //GameManager.AddPlayerToGame(player3);
+            //GameManager.AddPlayerToGame(player4);
+
+            GameManager.GrantPlayerHero(player1, keno);
+            GameManager.GrantPlayerHero(player2, andrew);
 
             player1.SpawnPlayer(Vector3.zero);
             player2.SpawnPlayer(Vector3.zero);
-            //player3.SpawnPlayer(Vector3.zero);
-            //player4.SpawnPlayer(Vector3.zero);
+            player3.SpawnPlayer(Vector3.zero);
+            player4.SpawnPlayer(Vector3.zero);
+
+            GameManager.SetGameState(GameState.InGame);
 
         }
     }
