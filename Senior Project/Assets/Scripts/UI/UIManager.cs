@@ -26,7 +26,6 @@ namespace Senior.Managers
             DontDestroyOnLoad(gameObject);
         }
 
-
         private void OnDestroy()
         {
             Instance = null;

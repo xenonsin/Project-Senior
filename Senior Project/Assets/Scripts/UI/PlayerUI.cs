@@ -26,7 +26,6 @@ namespace Senior.Managers
 
         public void ShowHeroStats()
         {
-            Debug.Log(owner);
             CoinText.SetActive(false);
             HeroStats.SetActive(true);
             ContinueText.SetActive(false);

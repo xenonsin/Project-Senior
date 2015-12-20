@@ -48,8 +48,8 @@ namespace Senior.Managers
             {
                 defaultCountdownTimer -= Time.deltaTime;
 
-                if (defaultCountdownTimer > 0)
-                    countdownText.text = "Continue? " + Mathf.Floor(defaultCountdownTimer).ToString();
+                if (defaultCountdownTimer > 1)
+                    countdownText.text = "CONTINUE? " + Mathf.Floor(defaultCountdownTimer).ToString();
 
                 if (defaultCountdownTimer <= 0 && !expirationSent)
                 {

@@ -202,7 +202,11 @@ namespace Senior
                     UIManager.Instance.CharacterSelect.ActivatePlayerSelectionSprite(this);
                     break;
                 case GameState.InGame:
-                        ui.ShowHeroSelect();
+                    if (CurrentState == PlayerState.ChoosingCharacter)
+                        if (!ui.HeroSelect.activeInHierarchy)
+                            ui.ShowHeroSelect();
+                        else
+                            ui.OnConfirm(this);
 
                     //else if portraits are displayed spawn the hero
                     break;
