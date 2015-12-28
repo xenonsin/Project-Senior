@@ -34,6 +34,11 @@ public class CameraMovement : MonoBehaviour
         Player.HeroSpawned += FindPlayers;
     }
 
+    void OnDisable()
+    {
+        Player.HeroSpawned -= FindPlayers;
+    }
+
     void FindPlayers(Player player)
     {
         players.Add(player.GetComponentInChildren<Hero>().gameObject);

@@ -3,6 +3,7 @@ using Senior;
 using Senior.Components;
 using Senior.Inputs;
 using Senior.Items;
+using Seniors.Skills;
 using UnityEngine;
 
 namespace Assets.Scripts.Entities.Hero
@@ -30,8 +31,6 @@ namespace Assets.Scripts.Entities.Hero
 
         public override void Update()        
         {
-            if (Input.anyKeyDown)
-                Damage(20);
             base.Update();
         }
 
@@ -86,5 +85,14 @@ namespace Assets.Scripts.Entities.Hero
         }
 
 
+        public void UseSkill(Skill skill)
+        {
+            owner.UseSkill(skill);
+        }
+
+        public void UpdateSkill(Skill skill)
+        {
+            owner.UpdateSkill(skill);
+        }
     }
 }

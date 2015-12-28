@@ -25,12 +25,12 @@ namespace Senior.Debugs
             GameManager.AddHeroToHeroPool(lung);
 
             GameManager.AddPlayerToGame(player1);
-            GameManager.AddPlayerToGame(player2);
+            //GameManager.AddPlayerToGame(player2);
             //GameManager.AddPlayerToGame(player3);
             //GameManager.AddPlayerToGame(player4);
 
             GameManager.GrantPlayerHero(player1, keno);
-            GameManager.GrantPlayerHero(player2, andrew);
+            //GameManager.GrantPlayerHero(player2, andrew);
 
             player1.SpawnPlayer(Vector3.zero);
             player2.SpawnPlayer(Vector3.zero);

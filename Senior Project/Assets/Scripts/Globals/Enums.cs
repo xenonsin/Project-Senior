@@ -17,4 +17,10 @@
         HeroDead,
     }
 
+    public enum SkillTargeting
+    {
+        Self,
+        Auto
+    }
+
 }

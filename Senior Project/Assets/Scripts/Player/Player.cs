@@ -4,6 +4,7 @@ using Senior.Globals;
 using Senior.Inputs;
 using Senior.Items;
 using Senior.Managers;
+using Seniors.Skills;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -136,9 +137,24 @@ namespace Senior
             ui.OnItemPickUp(item);
         }
 
-    #endregion
+        public void SetSkillIcon(Skill skill)
+        {
+            ui.SetSkillIcon(skill);
+        }
 
-    #region PlayerInput
+        public void UseSkill(Skill skill)
+        {
+            ui.UseSkill(skill);
+        }
+
+        public void UpdateSkill(Skill skill)
+        {
+            ui.UpdateSkill(skill);
+        }
+
+        #endregion
+
+        #region PlayerInput
 
         private bool isAxisInUse = false;
         void Update()
@@ -281,5 +297,6 @@ namespace Senior
         }
 
         #endregion
+
     }
 }
