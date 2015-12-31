@@ -17,6 +17,7 @@ namespace Senior.Inputs
 
         public bool CanMove { get; set; }
 
+        public Vector3 MoveDirection;
         private Vector3 lastMoveDirection;
 
         public Vector3 LastMoveDirection
@@ -60,52 +61,42 @@ namespace Senior.Inputs
 
         public void FixedUpdate()
         {
+            GetDirection();
+
             if (playerController != null && CanMove)
-                Move();      
+                Move();    
+        }
+
+        private void GetDirection()
+        {
+            var moveDirection = new Vector3(playerController.MoveInput.x, 0, playerController.MoveInput.y);
+            moveDirection = Camera.main.transform.TransformDirection(moveDirection);
+            moveDirection.y = 0;
+
+            MoveDirection = moveDirection;
         }
 
         public void Move()
-        {
-
-            var moveDirection = new Vector3(playerController.MoveInput.x, 0, playerController.MoveInput.y);
-            moveDirection = Camera.main.transform.TransformDirection(moveDirection);
-            moveDirection.y = 0;
-
+        {        
             if (anim != null)
             {
-                anim.SetFloat("Speed", moveDirection.normalized.sqrMagnitude);
+                anim.SetFloat("Speed", MoveDirection.normalized.sqrMagnitude);
             }
 
             //Makes sure the player faces the direction they're moving.
-            if (moveDirection != Vector3.zero)
+            if (MoveDirection != Vector3.zero)
             {
-                LastMoveDirection = moveDirection;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection),
+                LastMoveDirection = MoveDirection;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(MoveDirection),
                     Time.deltaTime*stats.RotationSpeedBase);
             }
-            rb.MovePosition(rb.position + moveDirection.normalized * stats.MovementSpeedBase * Time.deltaTime);
+            rb.MovePosition(rb.position + MoveDirection.normalized * stats.MovementSpeedBase * Time.deltaTime);
         }
 
-        public void LungeForward()
+        public void AnimationEvent(string eventName)
         {
-            var moveDirection = new Vector3(playerController.MoveInput.x, 0, playerController.MoveInput.y);
-            moveDirection = Camera.main.transform.TransformDirection(moveDirection);
-            moveDirection.y = 0;
-
-
-            //Makes sure the player faces the direction they're moving.
-            if (moveDirection != Vector3.zero)
-            {
-                LastMoveDirection = moveDirection;
-                transform.rotation = Quaternion.LookRotation(moveDirection);
-            }
-
-            rb.AddForce(rb.position + LastMoveDirection * 20, ForceMode.Impulse);
+            skills.RaiseEvent(eventName);
         }
 
-        public void EnableTransitions()
-        {
-            anim.SetBool("DisableTransitions", false);
-        }
     }
 }

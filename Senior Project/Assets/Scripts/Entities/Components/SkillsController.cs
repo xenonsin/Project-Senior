@@ -12,44 +12,57 @@ namespace Senior.Components
 
         public void Initialize(HeroController hc, Hero hero, Animator anim, Rigidbody rb)
         {
-            for (int i = 0; i < HeroSkills.Count; i++)
+            if (HeroSkills != null)
             {
-                HeroSkills[i].Initialize(hc, hero, anim, rb);
+                for (int i = 0; i < HeroSkills.Count; i++)
+                {
+                    HeroSkills[i].Initialize(hc, hero, anim, rb);
+                }
             }
         }
 
         public void Attack()
         {
-            HeroSkills[0].Activate();
+            if (HeroSkills[0] != null)
+                HeroSkills[0].Activate();
         }
 
         public void AltAttack()
         {
-            HeroSkills[1].Activate();
+            if (HeroSkills[1] != null)
+                HeroSkills[1].Activate();
         }
 
         public void SkillOne()
         {
-            HeroSkills[2].Activate();
-
+            if (HeroSkills[2] != null)
+                HeroSkills[2].Activate();
         }
 
         public void SkillTwo()
         {
-            HeroSkills[3].Activate();
-
+            if (HeroSkills[3] != null)
+                HeroSkills[3].Activate();
         }
 
         public void SkillThree()
         {
-            HeroSkills[4].Activate();
-
+            if (HeroSkills[4] != null)
+                HeroSkills[4].Activate();
         }
 
         public void SkillFour()
         {
-            HeroSkills[5].Activate();
+            if (HeroSkills[5] != null)
+                HeroSkills[5].Activate();
+        }
 
+        public void RaiseEvent(string eventName)
+        {
+            for (int i = 0; i < HeroSkills.Count; i++)
+            {
+                HeroSkills[i].RaiseEvent(eventName);
+            }
         }
     }
 }

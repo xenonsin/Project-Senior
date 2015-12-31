@@ -78,5 +78,8 @@ namespace Seniors.Skills
         }
 
 
+        public virtual void RaiseEvent(string eventName)
+        {           
+        }
     }
 }
