@@ -23,4 +23,13 @@
         Auto
     }
 
+    public enum Faction
+    {
+        Neutral = 1,    
+        Player = 2,
+        BorosLegion = 4,
+        Conclave = 8,
+        Demon = 16
+    }
+
 }

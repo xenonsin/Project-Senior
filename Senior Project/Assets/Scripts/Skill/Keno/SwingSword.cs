@@ -1,10 +1,13 @@
 ﻿using System.Collections;
+using Assets.Scripts.Entities;
 using UnityEngine;
 
 namespace Seniors.Skills
 {
     public class SwingSword : Skill
     {
+        [Header("Skill")]
+        public float damage;
         private bool dashing;
         public float dashSpeed;
         public override void Activate()
@@ -53,6 +56,22 @@ namespace Seniors.Skills
                     dashing = false;
 
                     break;
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            OnHit(other);
+        }
+
+        public override void OnHit(Collider hit)
+        {
+            Entitiy entitiy = hit.gameObject.GetComponent<Entitiy>();
+            if (entitiy != null)
+            {
+                Debug.Log("hi");
+                if ((hero.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
+                    entitiy.Damage(10);
             }
         }
     }
