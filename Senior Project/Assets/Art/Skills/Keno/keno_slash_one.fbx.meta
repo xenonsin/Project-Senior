@@ -189,15 +189,23 @@ ModelImporter:
       events:
       - time: 0
         functionName: AnimationEvent
-        data: DisableTransition
+        data: Attack_DisableTransition
         objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
           type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: .256484121
+      - time: .424192756
         functionName: AnimationEvent
-        data: EnableTransition
+        data: Attack_EnableTransition
+        objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: .582822084
+        functionName: AnimationEvent
+        data: Attack_EnableMove
         objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
           type: 2}
         floatParameter: 0

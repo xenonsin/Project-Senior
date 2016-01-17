@@ -5,11 +5,17 @@ namespace Senior.Inputs
     public interface IPlayerController
     {
         Vector2 MoveInput { get; }
-        bool AttackButton { get; }
-        bool AltAttackButton { get; }
-        bool SkillOneButton { get; }
-        bool SkillTwoButton { get; }
-        bool SkillThreeButton { get; }
-        bool SkillFourButton { get; }
+        bool AttackButtonDown { get; }
+        bool AttackButtonUp { get; }
+        bool AltAttackButtonDown { get; }
+        bool AltAttackButtonUp { get; }
+        bool SkillOneButtonDown { get; }
+        bool SkillOneButtonUp { get; }
+        bool SkillTwoButtonDown { get; }
+        bool SkillTwoButtonUp { get; }
+        bool SkillThreeButtonDown { get; }
+        bool SkillThreeButtonUp { get; }
+        bool SkillFourButtonDown { get; }
+        bool SkillFourButtonUp { get; }
     }
 }

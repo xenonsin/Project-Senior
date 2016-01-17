@@ -5,9 +5,10 @@ namespace Senior.Managers
 {
     public class UIManager : MonoBehaviour
     {
-        public  GameObject MainMenu;
-        public  UICharacterSelect CharacterSelect;
-        public  GameObject PlayerUi;
+        public GameObject MainMenu;
+        public UICharacterSelect CharacterSelect;
+        public GameObject PlayerUi;
+        public GameObject WorldUi;
         public static UIManager Instance { get; private set; }
 
         private void Awake()
@@ -36,6 +37,7 @@ namespace Senior.Managers
             MainMenu.SetActive(true);
             CharacterSelect.gameObject.SetActive(false);
             PlayerUi.SetActive(false);
+            WorldUi.SetActive(false);
             GameManager.SetGameState(GameState.MainMenu);
         }
 
@@ -44,6 +46,7 @@ namespace Senior.Managers
             MainMenu.SetActive(false);
             CharacterSelect.gameObject.SetActive(true);
             PlayerUi.SetActive(false);
+            WorldUi.SetActive(false);
             GameManager.SetGameState(GameState.CharacterSelect);
         }
 
@@ -52,7 +55,7 @@ namespace Senior.Managers
             MainMenu.SetActive(false);
             CharacterSelect.gameObject.SetActive(false);
             PlayerUi.SetActive(false);
-
+            WorldUi.SetActive(false);
             GameManager.SetGameState(GameState.Loading);
         }
 
@@ -61,7 +64,7 @@ namespace Senior.Managers
             MainMenu.SetActive(false);
             CharacterSelect.gameObject.SetActive(false);
             PlayerUi.SetActive(true);
-
+            WorldUi.SetActive(true);
             GameManager.SetGameState(GameState.InGame);
         }
     }

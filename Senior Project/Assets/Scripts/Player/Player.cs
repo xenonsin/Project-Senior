@@ -159,7 +159,7 @@ namespace Senior
         private bool isAxisInUse = false;
         void Update()
         {
-            if (control.StartButton)
+            if (control.StartButtonDown)
             {
                 OnStartButtonPressed();
             }
@@ -188,10 +188,10 @@ namespace Senior
                 isAxisInUse = false;
             }
 
-            if (control.AttackButton)
+            if (control.AttackButtonDown)
                 OnConfirmButtonPressed();
 
-            if (control.AltAttackButton)
+            if (control.AltAttackButtonDown)
                 OnCancelButtonPressed();
         }
 

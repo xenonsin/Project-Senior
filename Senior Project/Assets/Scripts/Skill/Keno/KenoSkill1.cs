@@ -6,7 +6,7 @@ namespace Seniors.Skills
 {
     public class KenoSkill1 : Skill
     {
-        public override void Activate()
+        public override void ActivateDown()
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
 

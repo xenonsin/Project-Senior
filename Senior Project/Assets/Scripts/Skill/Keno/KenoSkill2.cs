@@ -6,16 +6,17 @@ namespace Seniors.Skills
 {
     public class KenoSkill2 : Skill
     {
-        public override void Activate()
+        public override void ActivateDown()
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
 
             if (!IsDisabled)
             {
+                //todo: become invulnerable throughout duration
                 IsDisabled = true;
                 OnCast();
                 anim.SetTrigger("Skill2");
-                rb.AddForce(hc.LastMoveDirection * 50, ForceMode.Impulse);
+                rb.AddForce(hc.LastMoveDirection * 5, ForceMode.Impulse);
             }
         }
     }

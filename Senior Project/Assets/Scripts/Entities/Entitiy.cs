@@ -1,6 +1,7 @@
 ﻿using Senior.Components;
 using Senior.Globals;
 using Senior.Inputs;
+using Senior.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,15 +20,15 @@ namespace Assets.Scripts.Entities
         public Faction enemyFactions;
 
         [Header("WorldUI")]
-        public Canvas personalCanvas;
         public bool showDamagePopup;
-        public GameObject damagePrefab;
+        public WorldUI damagePrefab;
 
 
         public virtual void Awake()
         {
             rb = GetComponent<Rigidbody>();
             rb.useGravity = true;
+            rb.isKinematic = false;
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
             StatsComponent = GetComponent<Stats>();
             StatsComponent.HealthModifier = 0;
@@ -56,12 +57,14 @@ namespace Assets.Scripts.Entities
             {
                 if (damagePrefab != null)
                 {
-                    GameObject damageGO = Instantiate(damagePrefab, Vector3.zero, Quaternion.identity) as GameObject;
-                    damageGO.GetComponent<RectTransform>().SetParent(personalCanvas.transform);
-                    damageGO.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
-                    damageGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,1);
+                    Vector3 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
 
-                    damageGO.GetComponentInChildren<Text>().text = damage.ToString();
+                    WorldUI damageGO = Instantiate(damagePrefab, screenPoint, Quaternion.identity) as WorldUI;
+                    damageGO.gameObject.SetActive(true);
+                    damageGO.GetComponent<RectTransform>().SetParent(UIManager.Instance.WorldUi.transform);
+                    damageGO.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+
+                    damageGO.gameObject.GetComponentInChildren<Text>().text = damage.ToString();
 
                 }
             }
@@ -73,7 +76,10 @@ namespace Assets.Scripts.Entities
         // Similar to the damaged method, but gets it's own method for ease of use.
         public virtual void Heal(int heal)
         {
-            StatsComponent.HealthCurrent += heal;
+            if (StatsComponent.HealthCurrent + heal > StatsComponent.HealthMax)
+                StatsComponent.HealthCurrent = StatsComponent.HealthMax;
+            else
+                StatsComponent.HealthCurrent += heal;
         }
 
         // Called when you want the entity to get fully healed.

@@ -4,7 +4,7 @@ namespace Seniors.Skills
 {
     public class KenoAltAttack : Skill
     {
-        public override void Activate()
+        public override void ActivateDown()
         {
             anim.SetTrigger("AltAttack");
         }

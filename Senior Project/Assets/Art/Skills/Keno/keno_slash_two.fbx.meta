@@ -139,7 +139,7 @@ ModelImporter:
     400128: Spine2
     400130: //RootNode
     400132: sword_joint
-    7400000: keno alt attack
+    7400000: keno_slash_two
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -165,7 +165,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: keno alt attack
+      name: keno_slash_two
       takeName: mixamo.com
       firstFrame: 45
       lastFrame: 100
@@ -189,15 +189,23 @@ ModelImporter:
       events:
       - time: 0
         functionName: AnimationEvent
-        data: DisableTransition
+        data: Attack_DisableTransition
         objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
           type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: .250793666
+      - time: .422572821
         functionName: AnimationEvent
-        data: EnableTransition
+        data: Attack_EnableTransition
+        objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: .582763851
+        functionName: AnimationEvent
+        data: Attack_EnableMove
         objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
           type: 2}
         floatParameter: 0

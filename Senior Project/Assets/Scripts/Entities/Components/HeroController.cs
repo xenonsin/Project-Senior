@@ -14,7 +14,8 @@ namespace Senior.Inputs
         private Rigidbody rb;
         private Animator anim;
         private Hero hero;
-
+        public bool RotateBasedOnMovement = true;
+        public bool OnlyRotate = false;
         public bool CanMove { get; set; }
 
         public Vector3 MoveDirection;
@@ -34,7 +35,7 @@ namespace Senior.Inputs
             anim = GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
             stats = GetComponent<Stats>();
-
+            RotateBasedOnMovement = true;
             skills.Initialize(this, hero, anim, rb);
             CanMove = true;
 
@@ -44,18 +45,30 @@ namespace Senior.Inputs
         {
             if (playerController != null)
             {
-                if (playerController.AttackButton)
-                    skills.Attack();
-                if (playerController.AltAttackButton)
-                    skills.AltAttack();
-                if (playerController.SkillOneButton)
-                    skills.SkillOne();
-                if (playerController.SkillTwoButton)
-                    skills.SkillTwo();
-                if (playerController.SkillThreeButton)
-                    skills.SkillThree();
-                if (playerController.SkillFourButton)
-                    skills.SkillFour();
+                if (playerController.AttackButtonDown)
+                    skills.AttackDown();
+                if (playerController.AttackButtonUp)
+                    skills.AttackUp();
+                if (playerController.AltAttackButtonDown)
+                    skills.AltAttackDown();
+                if (playerController.AltAttackButtonUp)
+                    skills.AltAttackUp();
+                if (playerController.SkillOneButtonDown)
+                    skills.SkillOneDown();
+                if (playerController.SkillOneButtonUp)
+                    skills.SkillOneUp();
+                if (playerController.SkillTwoButtonDown)
+                    skills.SkillTwoDown();
+                if (playerController.SkillTwoButtonUp)
+                    skills.SkillTwoUp();
+                if (playerController.SkillThreeButtonDown)
+                    skills.SkillThreeDown();
+                if (playerController.SkillThreeButtonUp)
+                    skills.SkillThreeUp();
+                if (playerController.SkillFourButtonDown)
+                    skills.SkillFourDown();
+                if (playerController.SkillFourButtonUp)
+                    skills.SkillFourUp();
             }
         }
 
@@ -80,17 +93,27 @@ namespace Senior.Inputs
         {        
             if (anim != null)
             {
-                anim.SetFloat("Speed", MoveDirection.normalized.sqrMagnitude);
+                if (!OnlyRotate)
+                    anim.SetFloat("Speed", MoveDirection.normalized.sqrMagnitude);
+                else              
+                    anim.SetFloat("Speed", 0);
+
+                
             }
 
             //Makes sure the player faces the direction they're moving.
             if (MoveDirection != Vector3.zero)
             {
                 LastMoveDirection = MoveDirection;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(MoveDirection),
-                    Time.deltaTime*stats.RotationSpeedBase);
+                if (RotateBasedOnMovement)
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(MoveDirection),
+                        Time.deltaTime*stats.RotationSpeedBase);
+                }
             }
-            rb.MovePosition(rb.position + MoveDirection.normalized * stats.MovementSpeedBase * Time.deltaTime);
+            // if the player is only allowed to rotate, then don't move
+            if (!OnlyRotate)
+                rb.MovePosition(rb.position + MoveDirection.normalized * stats.MovementSpeedBase * Time.deltaTime);
         }
 
         public void AnimationEvent(string eventName)

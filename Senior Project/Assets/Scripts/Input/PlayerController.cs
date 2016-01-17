@@ -20,13 +20,19 @@ namespace Senior.Inputs
         private string startButtonName;
 
         public Vector2 MoveInput { get; private set; }
-        public bool AttackButton { get; private set; }
-        public bool AltAttackButton { get; private set; }
-        public bool SkillOneButton { get; private set; }
-        public bool SkillTwoButton { get; private set; }
-        public bool SkillThreeButton { get; private set; }
-        public bool SkillFourButton { get; private set; }
-        public bool StartButton { get; private set; }
+        public bool AttackButtonDown { get; private set; }
+        public bool AttackButtonUp { get; private set; }
+        public bool AltAttackButtonDown { get; private set; }
+        public bool AltAttackButtonUp { get; private set; }
+        public bool SkillOneButtonDown { get; private set; }
+        public bool SkillOneButtonUp { get; private set; }
+        public bool SkillTwoButtonDown { get; private set; }
+        public bool SkillTwoButtonUp { get; private set; }
+        public bool SkillThreeButtonDown { get; private set; }
+        public bool SkillThreeButtonUp { get; private set; }
+        public bool SkillFourButtonDown { get; private set; }
+        public bool SkillFourButtonUp { get; private set; }
+        public bool StartButtonDown { get; private set; }
 
         private void Awake()
         {
@@ -56,13 +62,26 @@ namespace Senior.Inputs
         private void Update()
         {
             MoveInput = new Vector2(Input.GetAxisRaw(horizontalControlName), Input.GetAxisRaw(verticalControlName));
-            AttackButton = Input.GetButtonDown(attackButtonName);
-            AltAttackButton = Input.GetButtonDown(altAttackButtonName);
-            SkillOneButton = Input.GetButtonDown(skillOneButtonName);
-            SkillTwoButton = Input.GetButtonDown(skillTwoButtonName);
-            SkillThreeButton = Input.GetButtonDown(skillThreeButtonName);
-            SkillFourButton = Input.GetButtonDown(skillFourButtonName);
-            StartButton = Input.GetButtonDown(startButtonName);
+            AttackButtonDown = Input.GetButtonDown(attackButtonName);
+            AttackButtonUp = Input.GetButtonUp(attackButtonName);
+
+            AltAttackButtonDown = Input.GetButtonDown(altAttackButtonName);
+            AltAttackButtonUp = Input.GetButtonUp(altAttackButtonName);
+
+            SkillOneButtonDown = Input.GetButtonDown(skillOneButtonName);
+            SkillOneButtonUp = Input.GetButtonUp(skillOneButtonName);
+
+            SkillTwoButtonDown = Input.GetButtonDown(skillTwoButtonName);
+            SkillTwoButtonUp = Input.GetButtonUp(skillTwoButtonName);
+
+            SkillThreeButtonDown = Input.GetButtonDown(skillThreeButtonName);
+            SkillThreeButtonUp = Input.GetButtonUp(skillThreeButtonName);
+
+            SkillFourButtonDown = Input.GetButtonDown(skillFourButtonName);
+            SkillFourButtonUp = Input.GetButtonUp(skillFourButtonName);
+
+            StartButtonDown = Input.GetButtonDown(startButtonName);
+            
         }
 
         

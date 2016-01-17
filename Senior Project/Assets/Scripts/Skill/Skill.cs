@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Entities.Hero;
+using Senior.Components;
 using Senior.Inputs;
+using Seniors.Skills.Projectiles;
 using UnityEngine;
 
 namespace Seniors.Skills
@@ -11,6 +13,12 @@ namespace Seniors.Skills
         public int SkillIndex = 0;
         public float CoolDown = 0;
         public float CoolDownTimer = 0;
+        public bool buttonHold = false;
+        public float buttonHoldTimePressed = 0f;
+        [Header("Projectile")]
+        public bool isProjectile = false;
+        public Projectile projectile;
+        public float projectileOffset = 1f;
         [Header("AOE")]
         public bool DrawGizmos;
         public Color GizmoColor;
@@ -21,14 +29,25 @@ namespace Seniors.Skills
         protected Animator anim;
         protected HeroController hc;
         protected Rigidbody rb;
+        protected Stats stats;
         protected Hero hero;
+        protected SkillsController sc;
 
         public virtual void Awake()
         {
         }
 
+        public virtual void Start()
+        {
+        }
+
         public virtual void Update()
         {
+            if (buttonHold)
+            {
+                buttonHoldTimePressed += Time.deltaTime;
+            }
+
             if (IsDisabled)
             {
                 CoolDownTimer -= Time.deltaTime;
@@ -96,6 +115,17 @@ namespace Seniors.Skills
             }
         }
 
+        public virtual void ShootProjectile()
+        {
+            if (projectile != null)
+            {
+                Projectile pro = Instantiate(projectile, hero.transform.position + (projectileOffset * hero.transform.forward) + (0.4f * hero.transform.up),
+                    hero.transform.rotation) as Projectile;
+                if (pro != null)
+                    pro.owner = hero;
+            }
+        }
+
         public virtual void OnHit(Collider hit)
         {
         }
@@ -105,13 +135,14 @@ namespace Seniors.Skills
             hero.UseSkill(this);
         }
 
-        public virtual void Initialize(HeroController hc, Hero hero, Animator anim, Rigidbody rb)
+        public virtual void Initialize(SkillsController sc, HeroController hc, Hero hero, Animator anim, Rigidbody rb)
         {
             this.hc = hc;
             this.hero = hero;
             this.anim = anim;
             this.rb = rb;
-
+            this.stats = hero.StatsComponent;
+            this.sc = sc;
             this.hero.owner.SetSkillIcon(this);
             Reset();
         }
@@ -122,9 +153,16 @@ namespace Seniors.Skills
 
         }
 
-        public virtual void Activate()
+        public virtual void ActivateDown()
         {
             IsDisabled = true;
+            buttonHold = true;
+            buttonHoldTimePressed = 0f;
+        }
+
+        public virtual void ActivateUp()
+        {
+            buttonHold = false;
         }
 
         public virtual void Deactivate()

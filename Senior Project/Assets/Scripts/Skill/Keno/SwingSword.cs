@@ -7,10 +7,11 @@ namespace Seniors.Skills
     public class SwingSword : Skill
     {
         [Header("Skill")]
-        public float damage;
-        private bool dashing;
+        public bool isActive = false;
+        public int damage;
+        public bool dashing;
         public float dashSpeed;
-        public override void Activate()
+        public override void ActivateDown()
         {
             anim.SetTrigger("Attack");
         }
@@ -23,7 +24,7 @@ namespace Seniors.Skills
 
         private void Dash()
         {
-            rb.AddForce(rb.position + hc.LastMoveDirection * 70);
+            rb.AddForce(rb.position + hc.LastMoveDirection * dashSpeed);
         }
 
         private void LookAtDirection()
@@ -37,23 +38,21 @@ namespace Seniors.Skills
 
         public override void RaiseEvent(string eventName)
         {
+            Debug.Log(eventName + " raised");
             switch (eventName)
             {
-                case "EnableTransition":
-                    anim.SetBool("DisableTransitions", false);
-                    dashing = false;
+                case "Attack_EnableTransition":
+                    anim.SetBool("EnableTransition", true);
                     break;
-                case "DisableTransition":
-                    anim.SetBool("DisableTransitions", true);
-                    dashing = true;
+                case "Attack_DisableTransition":
+                    anim.SetBool("EnableTransition", false);
+                    anim.SetBool("CanMove", false);
+                    hc.CanMove = false;
                     LookAtDirection();
                     break;
-                case "StartDash":
-                    dashing = true;
-
-                    break;
-                case "EndDash":
-                    dashing = false;
+                case "Attack_EnableMove":
+                    hc.CanMove = true;
+                    anim.SetBool("CanMove", true);
 
                     break;
             }
@@ -69,9 +68,8 @@ namespace Seniors.Skills
             Entitiy entitiy = hit.gameObject.GetComponent<Entitiy>();
             if (entitiy != null)
             {
-                Debug.Log("hi");
                 if ((hero.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
-                    entitiy.Damage(10);
+                    entitiy.Damage(damage);
             }
         }
     }
