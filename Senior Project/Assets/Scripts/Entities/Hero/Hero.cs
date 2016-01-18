@@ -24,6 +24,7 @@ namespace Assets.Scripts.Entities.Hero
         public override void Awake()
         {
             base.Awake();
+            mc = GetComponent<HeroController>();
             InventoryComponent = GetComponentInChildren<Inventory>();
             StatsComponent.Level = 1;           
         }

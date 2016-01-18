@@ -19,6 +19,7 @@ namespace Seniors.Skills.Projectiles
         public bool knockback = false;
         public float knockbackForce = 1f;
 
+
         public virtual void Start()
         {
             if (isMoving)
@@ -42,13 +43,7 @@ namespace Seniors.Skills.Projectiles
             {
                 if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
-                    entity.Damage(owner,damage);
-                    owner.OnHit(entity, damage);
-                    if (knockback)
-                    {
-                        Vector3 direction = (entity.transform.position - owner.transform.position).normalized;
-                        entity.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
-                    }
+                    OnHit(entity);
                     Destroy(gameObject);
                 }
             }
@@ -62,14 +57,19 @@ namespace Seniors.Skills.Projectiles
             {
                 if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
-                    entity.Damage(owner,damage);
-                    owner.OnHit(entity, damage);
-                    if (knockback)
-                    {
-                        Vector3 direction = (entity.transform.position - owner.transform.position).normalized;
-                        entity.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
-                    }
+                    OnHit(entity);
                 }
+            }
+        }
+
+        public virtual void OnHit(Entity target)
+        {
+            target.Damage(owner, damage);
+            owner.OnHit(target, damage);
+            if (knockback)
+            {
+                Vector3 direction = (target.transform.position - owner.transform.position).normalized;
+                target.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
             }
         }
     }

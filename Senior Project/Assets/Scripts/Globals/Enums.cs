@@ -38,4 +38,10 @@
         Debuff
     }
 
+    public enum SkillType
+    {
+        BasicAttack,            // has no cooldown and does not appear on the UI
+        UiSkill,                // has a cooldown and does appear on the UI
+    }
+
 }

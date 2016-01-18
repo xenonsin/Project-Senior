@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Entities.Hero;
+﻿using Assets.Scripts.Entities.Components;
+using Assets.Scripts.Entities.Hero;
 using Senior.Components;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Senior.Inputs
 {
     [RequireComponent(typeof(Stats))]
     [RequireComponent(typeof(Rigidbody))]
-    public class HeroController : MonoBehaviour
+    public class HeroController : MonoBehaviour, IMovementController
     {
         private Stats stats;
         private IPlayerController playerController;
@@ -14,11 +15,10 @@ namespace Senior.Inputs
         private Rigidbody rb;
         private Animator anim;
         private Hero hero;
-        public bool RotateBasedOnMovement = true;
-        public bool OnlyRotate = false;
+        public bool RotateBasedOnMovement { get; set; }
+        public bool OnlyRotate { get; set; }
         public bool CanMove { get; set; }
-
-        public Vector3 MoveDirection;
+        public Vector3 MoveDirection { get; set; }
         private Vector3 lastMoveDirection;
 
         public Vector3 LastMoveDirection

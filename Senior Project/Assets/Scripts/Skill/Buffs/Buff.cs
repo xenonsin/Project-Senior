@@ -44,6 +44,10 @@ namespace Seniors.Skills.Buffs
 
         public virtual void OnTick()
         {
+        }
+
+        public virtual void OnDestroy()
+        {
             owner.BuffManager.RemoveBuff(this);
         }
     }

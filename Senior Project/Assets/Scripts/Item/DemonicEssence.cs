@@ -6,20 +6,14 @@ namespace Senior.Items
 {
     public class DemonicEssence : Item
     {
-        public Buff demonicPrefab;
+        public GameObject demonichitEffect;
         public GameObject demonicEssencePrefab;
-
-        public override void OnEquip()
-        {
-            //spawn fire essence prefab that circles around the player
-            Debug.Log("on equpo");
-        }
-
         public override void OnHit(Entity target, int damage)
         {
             // give the target the burn debuff
-            Debug.Log("i quiep");
+            // spawn hi effect
             OnUse();
+
         }
     }
 }

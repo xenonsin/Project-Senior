@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Entities;
 using Assets.Scripts.Entities.Hero;
+using Seniors.Skills;
 using UnityEngine;
 
 namespace Senior.Items
@@ -55,6 +56,12 @@ namespace Senior.Items
                 if (healthCurrent <= 0)
                     Destroy(gameObject);
             }
+        }
+
+        // when the player casts a spell
+        public virtual void OnCast(Skill skill)
+        {
+            
         }
 
         public virtual void Repair()

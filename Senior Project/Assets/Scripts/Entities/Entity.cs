@@ -17,6 +17,7 @@ namespace Assets.Scripts.Entities
         public string name;
         public Stats StatsComponent { get; set; }                   // Contains the stats of the character
         public BuffsManager BuffManager { get; set; }
+        public IMovementController mc { get; set; }
         private Rigidbody rb;
         private Animator anim;
         public Faction currentFaction;

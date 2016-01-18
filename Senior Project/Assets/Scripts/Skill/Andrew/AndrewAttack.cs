@@ -11,6 +11,8 @@ namespace Seniors.Skills.Andrew
         public float kickRange = 1f;
         public override void ActivateDown()
         {
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
+
             Vector3 directionToTarget = target.transform.position - transform.position;
             if (directionToTarget.magnitude > 1f)
                 anim.SetTrigger("Attack");

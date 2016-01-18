@@ -6,20 +6,15 @@ namespace Senior.Items
 {
     public class LightningEssence : Item
     {
-        public Buff lightningPrefab;
-        public GameObject lightningEssencePrefab;
+        public GameObject lightningHitEffect;
 
-        public override void OnEquip()
-        {
-            //spawn fire essence prefab that circles around the player
-            Debug.Log("on equpo");
-        }
+        public GameObject lightningEssencePrefab;
 
         public override void OnHit(Entity target, int damage)
         {
             // give the target the burn debuff
-            Debug.Log("i quiep");
             OnUse();
+
         }
     }
 }

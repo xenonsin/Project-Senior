@@ -1,4 +1,5 @@
-﻿using Senior.Managers;
+﻿using Assets.Scripts.Entities.Components;
+using Senior.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,13 @@ namespace Assets.Scripts.Entities.Monster
         private Image HealthFill;
         public HealthBarWorldUI HealthPrefab;
         private GameObject healthGO;
+
+        public override void Awake()
+        {
+            base.Awake();
+            mc = GetComponent<MonsterController>();
+        }
+
         public override void Start()
         {
             base.Start();
