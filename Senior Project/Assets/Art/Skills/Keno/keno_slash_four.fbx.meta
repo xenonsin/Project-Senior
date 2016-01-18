@@ -189,7 +189,39 @@ ModelImporter:
       events:
       - time: .00634920644
         functionName: AnimationEvent
-        data: StartDash
+        data: Attack_StartDash
+        objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: .170804948
+        functionName: AnimationEvent
+        data: Attack_SphereColliderActivate
+        objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: .191019773
+        functionName: AnimationEvent
+        data: Attack_SphereColliderDeactivate
+        objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: .247310445
+        functionName: AnimationEvent
+        data: Attack_SphereColliderActivate
+        objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: .419097573
+        functionName: AnimationEvent
+        data: Attack_SphereColliderDeactivate
         objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
           type: 2}
         floatParameter: 0
@@ -197,7 +229,7 @@ ModelImporter:
         messageOptions: 0
       - time: .48888889
         functionName: AnimationEvent
-        data: EndDash
+        data: Attack_EndDash
         objectReferenceParameter: {fileID: 169456, guid: 35528232699754a4d918fe4b289bfab8,
           type: 2}
         floatParameter: 0

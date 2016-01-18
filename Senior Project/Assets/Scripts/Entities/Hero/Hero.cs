@@ -10,7 +10,7 @@ namespace Assets.Scripts.Entities.Hero
 {
     [RequireComponent(typeof(HeroController))]
 
-    public class Hero : Entitiy
+    public class Hero : Entity
     {
         public Inventory InventoryComponent { get; set; }           // Contains the inventory of the character
         public Sprite Portrait;
@@ -103,7 +103,7 @@ namespace Assets.Scripts.Entities.Hero
         }
 
         // called when a skill has hit an enemy, incokes any OnHit events ex. from items
-        public void OnHit(Entitiy entitiy, int damage)
+        public void OnHit(Entity entitiy, int damage)
         {
             
         }

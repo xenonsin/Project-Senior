@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Entities.Monster
 {
-    public class Monster : Entitiy
+    public class Monster : Entity
     {
          //Monster Controller
          //AI which keep track of states

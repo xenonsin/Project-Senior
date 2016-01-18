@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace Seniors.Skills.Projectiles
 {
-    [RequireComponent(typeof (Rigidbody))]
-    [RequireComponent(typeof (BoxCollider))]
 
-    public abstract class Projectile : MonoBehaviour
+
+    public class Projectile : MonoBehaviour
     {
         public Hero owner;
         private Rigidbody rb;
@@ -16,29 +15,40 @@ namespace Seniors.Skills.Projectiles
         public float speed;
         public float lifeSpan;
         public bool piercing = false;
+        public bool isMoving = true;
+        public bool knockback = false;
+        public float knockbackForce = 1f;
 
         public virtual void Start()
         {
-            rb = GetComponent<Rigidbody>();
-            bc = GetComponent<BoxCollider>();
-            rb.useGravity = false;
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
-            rb.velocity = transform.TransformDirection(Vector3.forward * speed);
-            bc.isTrigger = piercing;
+            if (isMoving)
+            {
+                rb = GetComponent<Rigidbody>();
+                bc = GetComponent<BoxCollider>();
+                rb.useGravity = false;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
 
+                rb.velocity = transform.TransformDirection(Vector3.forward*speed);
+                bc.isTrigger = piercing;
+            }
             Destroy(gameObject, lifeSpan);
         }
 
         // when the projectile can collide with another object
         public virtual void OnCollisionEnter(Collision collision)
         {
-            Entitiy entity = collision.gameObject.GetComponent<Entitiy>();
+            Entity entity = collision.gameObject.GetComponent<Entity>();
             if (entity != null)
             {
                 if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
                     entity.Damage(damage);
                     owner.OnHit(entity, damage);
+                    if (knockback)
+                    {
+                        Vector3 direction = (entity.transform.position - owner.transform.position).normalized;
+                        entity.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
+                    }
                     Destroy(gameObject);
                 }
             }
@@ -47,13 +57,18 @@ namespace Seniors.Skills.Projectiles
         // when the projectile can pierce
         public virtual void OnTriggerEnter(Collider collision)
         {
-            Entitiy entity = collision.gameObject.GetComponent<Entitiy>();
+            Entity entity = collision.gameObject.GetComponent<Entity>();
             if (entity != null)
             {
                 if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
                     entity.Damage(damage);
                     owner.OnHit(entity, damage);
+                    if (knockback)
+                    {
+                        Vector3 direction = (entity.transform.position - owner.transform.position).normalized;
+                        entity.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
+                    }
                 }
             }
         }

@@ -16,5 +16,15 @@ namespace Seniors.Skills
                 anim.SetTrigger("Skill3");
             }
         }
+
+        public override void RaiseEvent(string eventName)
+        {
+            switch (eventName)
+            {
+                case "Skill3_Launch":
+                    ShootProjectile();
+                    break;
+            }
+        }
     }
 }

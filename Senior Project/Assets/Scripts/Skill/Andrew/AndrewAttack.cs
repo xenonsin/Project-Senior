@@ -6,8 +6,8 @@ namespace Seniors.Skills.Andrew
 {
     public class AndrewAttack : Skill
     {
-        public List<Entitiy> enemies = new List<Entitiy>(); 
-        public Entitiy target = null;
+        public List<Entity> enemies = new List<Entity>(); 
+        public Entity target = null;
         public float kickRange = 1f;
         public override void ActivateDown()
         {
@@ -40,10 +40,10 @@ namespace Seniors.Skills.Andrew
         }
 
         // from the enemies list, find the closest target to look at
-        private Entitiy FindNearestTarget()
+        private Entity FindNearestTarget()
         {
             float closestDist = Mathf.Infinity;
-            Entitiy closestEntitiy = null;
+            Entity closestEntitiy = null;
             for (int i = 0; i < enemies.Count; i++)
             {
                 float dist = (transform.position - enemies[i].transform.position).sqrMagnitude;
@@ -59,14 +59,14 @@ namespace Seniors.Skills.Andrew
         //When an enemy comes into range, add it into the enemies list
         private void OnTriggerEnter(Collider other)
         {
-            Entitiy entitiy = other.gameObject.GetComponent<Entitiy>();
+            Entity entity = other.gameObject.GetComponent<Entity>();
 
-            if (entitiy != null)
+            if (entity != null)
             {
-                if ((hero.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
+                if ((hero.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
-                    if (!enemies.Contains(entitiy))
-                        enemies.Add(entitiy);
+                    if (!enemies.Contains(entity))
+                        enemies.Add(entity);
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace Seniors.Skills.Andrew
         // When an enemy exits the trigger, remove it from the list
         void OnTriggerExit(Collider other)
         {
-            Entitiy entitiy = other.gameObject.GetComponent<Entitiy>();
+            Entity entitiy = other.gameObject.GetComponent<Entity>();
 
             if (entitiy != null)
             {

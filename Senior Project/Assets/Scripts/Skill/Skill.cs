@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Entities.Hero;
+﻿using System.Collections;
+using Assets.Scripts.Entities;
+using Assets.Scripts.Entities.Hero;
 using Senior.Components;
 using Senior.Inputs;
 using Seniors.Skills.Projectiles;
@@ -15,6 +17,13 @@ namespace Seniors.Skills
         public float CoolDownTimer = 0;
         public bool buttonHold = false;
         public float buttonHoldTimePressed = 0f;
+        //type target, projectile aoe
+        public int damage = 0;
+        public bool knockback = false;
+        public float knockbackForce = 1f;
+        [Header("Target")]
+        public bool isTarget = false;
+        public Vector3 targetLocation;
         [Header("Projectile")]
         public bool isProjectile = false;
         public Projectile projectile;
@@ -32,6 +41,10 @@ namespace Seniors.Skills
         protected Stats stats;
         protected Hero hero;
         protected SkillsController sc;
+        [Header("Colldrs")]
+        public BoxCollider BCollider;
+
+        public SphereCollider SCollider;
 
         public virtual void Awake()
         {
@@ -122,12 +135,30 @@ namespace Seniors.Skills
                 Projectile pro = Instantiate(projectile, hero.transform.position + (projectileOffset * hero.transform.forward) + (0.4f * hero.transform.up),
                     hero.transform.rotation) as Projectile;
                 if (pro != null)
+                {
+                    pro.damage = damage;
                     pro.owner = hero;
+                }
             }
         }
 
         public virtual void OnHit(Collider hit)
         {
+            Entity entity = hit.gameObject.GetComponent<Entity>();
+            if (entity != null)
+            {
+                if ((hero.enemyFactions & entity.currentFaction) == entity.currentFaction)
+                {
+                    hero.OnHit(entity, damage);
+                    entity.Damage(damage);
+                    if (knockback)
+                    {
+                        Vector3 direction = (entity.transform.position - hero.transform.position).normalized;
+                        entity.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
+                    }
+                }
+            }
+            
         }
 
         public virtual void OnCast()
@@ -173,5 +204,15 @@ namespace Seniors.Skills
         public virtual void RaiseEvent(string eventName)
         {           
         }
+
+        //FreezeFrame
+        protected IEnumerator FreezeFrame()
+        {
+            // if frozen = false, froze = true you know just in case
+            anim.enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            anim.enabled = true;
+        }
+
     }
 }

@@ -8,7 +8,6 @@ namespace Seniors.Skills
     {
         [Header("Skill")]
         public bool isActive = false;
-        public int damage;
         public bool dashing;
         public float dashSpeed;
         public override void ActivateDown()
@@ -55,6 +54,36 @@ namespace Seniors.Skills
                     anim.SetBool("CanMove", true);
 
                     break;
+                case "Attack_BoxColliderActivate":
+                    if (BCollider != null)
+                    {
+                        BCollider.enabled = true;
+                    }
+                    break;
+                case "Attack_BoxColliderDeactivate":
+                    if (BCollider != null)
+                    {
+                        BCollider.enabled = false;
+                    }
+                    break;
+                case "Attack_SphereColliderActivate":
+                    if (SCollider != null)
+                    {
+                        SCollider.enabled = true;
+                    }
+                    break;
+                case "Attack_SphereColliderDeactivate":
+                    if (SCollider != null)
+                    {
+                        SCollider.enabled = false;
+                    }
+                    break;
+                case "Attack_StartDash":
+                    dashing = true;
+                    break;
+                case "Attack_EndDash":
+                    dashing = false;
+                    break;
             }
         }
 
@@ -65,12 +94,10 @@ namespace Seniors.Skills
 
         public override void OnHit(Collider hit)
         {
-            Entitiy entitiy = hit.gameObject.GetComponent<Entitiy>();
-            if (entitiy != null)
-            {
-                if ((hero.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
-                    entitiy.Damage(damage);
-            }
+            base.OnHit(hit);
+            StartCoroutine(FreezeFrame());
+
         }
+
     }
 }

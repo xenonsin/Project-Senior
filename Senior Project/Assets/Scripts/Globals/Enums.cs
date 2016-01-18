@@ -32,4 +32,10 @@
         Demon = 16
     }
 
+    public enum BuffType
+    {
+        Buff,
+        Debuff
+    }
+
 }

@@ -5,7 +5,7 @@ namespace Senior.Managers
 {
     public class WorldUI : MonoBehaviour
     {
-        public Entitiy owner;
+        public Entity owner;
         public bool follow;
 
         private RectTransform trans;

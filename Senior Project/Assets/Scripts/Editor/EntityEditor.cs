@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace Senior.Editorr
 {
-    [CustomEditor(typeof(Entitiy), true)]
+    [CustomEditor(typeof(Entity), true)]
     public class EntityEditor : Editor
     {
         public SerializedProperty currentFaction;
