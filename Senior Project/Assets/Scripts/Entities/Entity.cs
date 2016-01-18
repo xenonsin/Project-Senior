@@ -5,6 +5,7 @@ using Senior.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Assets.Scripts.Entities.Components;
 
 namespace Assets.Scripts.Entities
 {
@@ -15,6 +16,7 @@ namespace Assets.Scripts.Entities
     {
         public string name;
         public Stats StatsComponent { get; set; }                   // Contains the stats of the character
+        public BuffsManager BuffManager { get; set; }
         private Rigidbody rb;
         private Animator anim;
         public Faction currentFaction;
@@ -37,7 +39,8 @@ namespace Assets.Scripts.Entities
         {
             anim = GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
-            renderer.GetComponentInChildren<SkinnedMeshRenderer>();
+            BuffManager = GetComponentInChildren<BuffsManager>();
+            renderer = GetComponentInChildren<SkinnedMeshRenderer>();
             if (renderer != null)
                 defaultMaterial = renderer.material;
             if (rb != null)
@@ -78,7 +81,7 @@ namespace Assets.Scripts.Entities
         }
 
         // Called when the entity gets damaged
-        public virtual void Damage(int damage)
+        public virtual void Damage(Entity dealer, int damage)
         {
             StatsComponent.HealthCurrent -= damage;
 

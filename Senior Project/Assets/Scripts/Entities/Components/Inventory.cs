@@ -7,7 +7,7 @@ namespace Senior.Components
 {
     public class Inventory : MonoBehaviour
     {
-         List<Item> items = new List<Item>();
+         public List<Item> items = new List<Item>();
 
         public void Equip(Item item)
         {
@@ -18,7 +18,6 @@ namespace Senior.Components
             }
 
             item.transform.SetParent(this.transform);
-            item.OnEquip();
             items.Add(item);
 
         }

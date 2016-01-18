@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Senior.Items
 {
-    public class FireEssence : Item
+    public class LightningEssence : Item
     {
-        public Buff burnPrefab;
-        public GameObject fireEssencePrefab;
+        public Buff lightningPrefab;
+        public GameObject lightningEssencePrefab;
 
         public override void OnEquip()
         {

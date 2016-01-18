@@ -43,9 +43,10 @@ namespace Assets.Scripts.Entities.Hero
         }
 
         // the hero is damaged by a certain amount
-        public override void Damage(int damage)
+        public override void Damage(Entity dealer, int damage)
         {
-            base.Damage(damage);
+            base.Damage(dealer,damage);
+            InventoryComponent.OnDamage(dealer, damage);
             if (owner)
                 owner.OnHealthModified(this);
         }
@@ -93,7 +94,8 @@ namespace Assets.Scripts.Entities.Hero
         // Is used to notify the UI that a skill has been used, and the cd should start
         public void UseSkill(Skill skill)
         {
-            owner.UseSkill(skill);
+            if (skill.showInUi)
+                owner.UseSkill(skill);
         }
 
         // Is used to update the skill cd for the ui
@@ -105,6 +107,7 @@ namespace Assets.Scripts.Entities.Hero
         // called when a skill has hit an enemy, incokes any OnHit events ex. from items
         public void OnHit(Entity entitiy, int damage)
         {
+            InventoryComponent.OnHit(entitiy,damage);
             
         }
 

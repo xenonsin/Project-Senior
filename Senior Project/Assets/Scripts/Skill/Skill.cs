@@ -13,6 +13,7 @@ namespace Seniors.Skills
         public string SkillName = string.Empty;
         public Sprite SkillIcon = null;
         public int SkillIndex = 0;
+        public bool showInUi = true;
         public float CoolDown = 0;
         public float CoolDownTimer = 0;
         public bool buttonHold = false;
@@ -132,6 +133,7 @@ namespace Seniors.Skills
         {
             if (projectile != null)
             {
+                OnCast();
                 Projectile pro = Instantiate(projectile, hero.transform.position + (projectileOffset * hero.transform.forward) + (0.4f * hero.transform.up),
                     hero.transform.rotation) as Projectile;
                 if (pro != null)
@@ -150,7 +152,7 @@ namespace Seniors.Skills
                 if ((hero.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
                     hero.OnHit(entity, damage);
-                    entity.Damage(damage);
+                    entity.Damage(hero,damage);
                     if (knockback)
                     {
                         Vector3 direction = (entity.transform.position - hero.transform.position).normalized;

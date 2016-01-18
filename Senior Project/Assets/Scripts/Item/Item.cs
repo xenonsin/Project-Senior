@@ -8,6 +8,7 @@ namespace Senior.Items
     {
         public string itemName;
         public string description;
+        public Sprite icon;
         public Hero owner;
         public bool limitedUses = false;
         public int numberOfUses = 1;
@@ -26,6 +27,13 @@ namespace Senior.Items
                 Destroy(gameObject, lifespan);
         }
 
+        public virtual void Initialize(Hero owner)
+        {
+            this.owner = owner;
+            this.owner.InventoryComponent.Equip(this);
+            OnEquip();
+        }
+
         // when the item is initially equipped
         public virtual void OnEquip()
         {
@@ -35,7 +43,6 @@ namespace Senior.Items
         // when the player hits a target
         public virtual void OnHit(Entity target, int damage)
         {
-            
         }
 
         // When the player got damaged
@@ -69,7 +76,8 @@ namespace Senior.Items
         // when the item is destroyed, call to unquip it
         public virtual void OnDestroy()
         {
-            owner.InventoryComponent.UnEquip(this);
+            if (owner)
+                owner.InventoryComponent.UnEquip(this);
         }
     }
 }

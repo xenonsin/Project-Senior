@@ -48,6 +48,7 @@ namespace Seniors.Skills
                     anim.SetBool("CanMove", false);
                     hc.CanMove = false;
                     LookAtDirection();
+                    OnCast();
                     break;
                 case "Attack_EnableMove":
                     hc.CanMove = true;

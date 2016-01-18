@@ -37,7 +37,7 @@ namespace Seniors.Skills.Buffs
         private void Hit(Entity entity)
         {
 
-            entity.Damage(damage);
+            entity.Damage(owner,damage);
             //owner.OnHit(entity, damage);
 
             Vector3 direction = (entity.transform.position - owner.transform.position).normalized;

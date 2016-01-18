@@ -29,7 +29,7 @@ namespace Senior.Debugs
             //GameManager.AddPlayerToGame(player3);
             //GameManager.AddPlayerToGame(player4);
 
-            GameManager.GrantPlayerHero(player1, keno);
+            GameManager.GrantPlayerHero(player1, andrew);
             //GameManager.GrantPlayerHero(player2, andrew);
 
             player1.SpawnPlayer(Vector3.zero);

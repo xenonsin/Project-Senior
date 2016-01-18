@@ -29,9 +29,9 @@ namespace Assets.Scripts.Entities.Monster
             healthGO.SetActive(false);
         }
 
-        public override void Damage(int damage)
+        public override void Damage(Entity dealer, int damage)
         {
-            base.Damage(damage);
+            base.Damage(dealer,damage);
             Debug.Log(name + " has been hit for " + damage + " damage!");
             healthGO.gameObject.SetActive(true);
             HealthFill.fillAmount = StatsComponent.HealthCurrent/(float)StatsComponent.HealthMax;

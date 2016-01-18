@@ -42,7 +42,7 @@ namespace Seniors.Skills.Projectiles
             {
                 if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
-                    entity.Damage(damage);
+                    entity.Damage(owner,damage);
                     owner.OnHit(entity, damage);
                     if (knockback)
                     {
@@ -62,7 +62,7 @@ namespace Seniors.Skills.Projectiles
             {
                 if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
-                    entity.Damage(damage);
+                    entity.Damage(owner,damage);
                     owner.OnHit(entity, damage);
                     if (knockback)
                     {

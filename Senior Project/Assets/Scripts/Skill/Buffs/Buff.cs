@@ -11,14 +11,21 @@ namespace Seniors.Skills.Buffs
         public Entity owner;
         public float lifeSpan = 1f;
         public float period = 1f;
+        public bool canStack = false;
+        //TODO: make a buff manager
         private float nextActionTime = 0f;
 
         public virtual void Initialize(Entity origin, Entity target)
         {
             this.target = target;
-            this.owner = origin;
+            owner = origin;
+            owner.BuffManager.AddBuff(this);
+            OnAdd();
+        }
 
-            transform.SetParent(target.transform);
+        public virtual void OnAdd()
+        {
+            
         }
 
         public virtual void Start()
@@ -37,7 +44,7 @@ namespace Seniors.Skills.Buffs
 
         public virtual void OnTick()
         {
-            
+            owner.BuffManager.RemoveBuff(this);
         }
     }
 }
