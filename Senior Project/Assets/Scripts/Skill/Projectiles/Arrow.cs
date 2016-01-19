@@ -1,4 +1,6 @@
-﻿using Senior.Items;
+﻿using Assets.Scripts.Entities;
+using Senior.Items;
+using Seniors.Skills.Buffs;
 using UnityEngine;
 
 namespace Seniors.Skills.Projectiles
@@ -16,7 +18,15 @@ namespace Seniors.Skills.Projectiles
         private bool IceActive = false;
         private bool LightningActive = false;
         private bool DemonicActive = false;
-        
+
+        //because im lazy
+        public Buff brnDebuff;
+        public Buff iceDebuff;
+        public Buff lightningDebuff;
+        public Buff demonicDebuff;
+
+        public bool Onehit = false;
+
         public override void Start()
         {
             base.Start();
@@ -46,6 +56,54 @@ namespace Seniors.Skills.Projectiles
                     DemonicTrail.SetActive(true);
                     DemonicActive = true;
                 }
+            }
+        }
+
+        // when the projectile can pierce
+        public override void OnTriggerEnter(Collider collision)
+        {
+            Entity entity = collision.gameObject.GetComponent<Entity>();
+            if (entity != null)
+            {
+                if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
+                {
+                    OnHit(entity);
+                    if (Onehit)
+                        Destroy(gameObject);
+                }
+            }
+        }
+
+        public override void OnHit(Entity target)
+        {
+            base.OnHit(target);
+            // if using piercing arrow, then it applies the debuffs for each it hits
+            if (piercing)
+            {
+                if (FireActive && brnDebuff != null)
+                {
+                    Buff burn = Instantiate(brnDebuff, target.transform.position, Quaternion.identity) as Buff;
+                    burn.Initialize(owner, target);
+                }
+
+                if (IceActive && iceDebuff != null)
+                {
+                    Buff ice = Instantiate(iceDebuff, target.transform.position, Quaternion.identity) as Buff;
+                    ice.Initialize(owner, target);
+                }
+
+                if (LightningActive && lightningDebuff != null)
+                {
+                    Buff light = Instantiate(lightningDebuff, target.transform.position, Quaternion.identity) as Buff;
+                    light.Initialize(owner, target);
+                }
+
+                if (DemonicActive && demonicDebuff != null)
+                {
+                    Buff demon = Instantiate(demonicDebuff, target.transform.position, Quaternion.identity) as Buff;
+                    demon.Initialize(owner, target);
+                }
+
             }
         }
     }

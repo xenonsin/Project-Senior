@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Entities;
+using Seniors.Skills.Projectiles;
 using UnityEngine;
 
 namespace Seniors.Skills.Andrew
@@ -9,6 +10,7 @@ namespace Seniors.Skills.Andrew
         public List<Entity> enemies = new List<Entity>(); 
         public Entity target = null;
         public float kickRange = 1f;
+        public Bomb KickBomb;
         public override void ActivateDown()
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
@@ -92,6 +94,10 @@ namespace Seniors.Skills.Andrew
             {
                 case "Attack_Shoot":
                     ShootProjectile();
+                    break;
+                case "Attack_Kick":
+                    Bomb bomb = Instantiate(KickBomb, hero.transform.position + 1 * hero.transform.forward, Quaternion.identity) as Bomb;
+                    bomb.owner = hero;
                     break;
             }
         }

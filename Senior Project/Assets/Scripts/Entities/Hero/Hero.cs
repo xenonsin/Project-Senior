@@ -44,7 +44,7 @@ namespace Assets.Scripts.Entities.Hero
         }
 
         // the hero is damaged by a certain amount
-        public override void Damage(Entity dealer, int damage)
+        public override void Damage(Entity dealer, float damage)
         {
             base.Damage(dealer,damage);
             InventoryComponent.OnDamage(dealer, damage);
@@ -53,7 +53,7 @@ namespace Assets.Scripts.Entities.Hero
         }
 
         // the hero is healed by a certain amount
-        public override void Heal(int heal)
+        public override void Heal(float heal)
         {
             base.Heal(heal);
             if (owner)
@@ -106,7 +106,7 @@ namespace Assets.Scripts.Entities.Hero
         }
 
         // called when a skill has hit an enemy, incokes any OnHit events ex. from items
-        public void OnHit(Entity entitiy, int damage)
+        public void OnHit(Entity entitiy, float damage)
         {
             InventoryComponent.OnHit(entitiy,damage);
             

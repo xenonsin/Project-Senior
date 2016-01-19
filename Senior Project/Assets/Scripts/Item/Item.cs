@@ -17,8 +17,8 @@ namespace Senior.Items
         public float lifespan = 1;
         public bool canOwnMultiple = true;
         public bool hasDurability = false;
-        public int healthMax = 100;
-        public int healthCurrent;
+        public float healthMax = 100;
+        public float healthCurrent;
 
         // sets the lifespan of the item
         public virtual void Start()
@@ -42,12 +42,12 @@ namespace Senior.Items
         }
 
         // when the player hits a target
-        public virtual void OnHit(Entity target, int damage)
+        public virtual void OnHit(Entity target, float damage)
         {
         }
 
         // When the player got damaged
-        public virtual void OnDamage(Entity dealer, int damage)
+        public virtual void OnDamage(Entity dealer, float damage)
         {
             if (hasDurability)
             {

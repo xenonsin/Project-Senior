@@ -97,7 +97,7 @@ namespace Senior.Managers
             SetHealthText(hero.StatsComponent.HealthCurrent, hero.StatsComponent.HealthMax);
         }
 
-        public void SetHealthText(int current, int max)
+        public void SetHealthText(float current, float max)
         {
             string health = string.Format("{0}/{1}", current, max);
             HealthText.text = health;

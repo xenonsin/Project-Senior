@@ -9,6 +9,19 @@ namespace Senior.Components
     {
          public List<Item> items = new List<Item>();
 
+        private Quaternion rotation;
+
+        void Awake()
+        {
+            rotation = transform.rotation;
+        }
+
+        // this is done to cancel the rotation so that attached particles won't spaz out
+        void Update()
+        {
+            transform.rotation = rotation;
+        }
+
         public void Equip(Item item)
         {
             if (!item.canOwnMultiple)
@@ -27,7 +40,7 @@ namespace Senior.Components
             items.Remove(item);
         }
 
-        public void OnHit(Entity target, int damage)
+        public void OnHit(Entity target, float damage)
         {
             for (int i = 0; i < items.Count; i++)
             {
@@ -35,7 +48,7 @@ namespace Senior.Components
             }
         }
 
-        public void OnDamage(Entity dealer, int damage)
+        public void OnDamage(Entity dealer, float damage)
         {
             for (int i = 0; i < items.Count; i++)
             {

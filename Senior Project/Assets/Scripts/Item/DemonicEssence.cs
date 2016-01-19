@@ -1,17 +1,18 @@
 ﻿using Assets.Scripts.Entities;
 using Seniors.Skills.Buffs;
+using Seniors.Skills.Projectiles;
 using UnityEngine;
 
 namespace Senior.Items
 {
     public class DemonicEssence : Item
     {
-        public GameObject demonichitEffect;
-        public GameObject demonicEssencePrefab;
-        public override void OnHit(Entity target, int damage)
+        public Bomb DemonicBomb;
+
+        public override void OnHit(Entity target, float damage)
         {
-            // give the target the burn debuff
-            // spawn hi effect
+            Bomb bomb = Instantiate(DemonicBomb, target.transform.position, Quaternion.identity) as Bomb;
+            bomb.Initialize(owner, owner.enemyFactions);
             OnUse();
 
         }

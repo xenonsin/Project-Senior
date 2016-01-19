@@ -1,18 +1,18 @@
 ﻿using Assets.Scripts.Entities;
 using Seniors.Skills.Buffs;
+using Seniors.Skills.Projectiles;
 using UnityEngine;
 
 namespace Senior.Items
 {
     public class LightningEssence : Item
     {
-        public GameObject lightningHitEffect;
+        public Bomb LightningBomb;
 
-        public GameObject lightningEssencePrefab;
-
-        public override void OnHit(Entity target, int damage)
+        public override void OnHit(Entity target, float damage)
         {
-            // give the target the burn debuff
+            Bomb bomb = Instantiate(LightningBomb, target.transform.position, Quaternion.identity) as Bomb;
+            bomb.Initialize(owner, owner.enemyFactions);
             OnUse();
 
         }

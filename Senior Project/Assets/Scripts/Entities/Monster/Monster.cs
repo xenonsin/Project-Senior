@@ -37,7 +37,7 @@ namespace Assets.Scripts.Entities.Monster
             healthGO.SetActive(false);
         }
 
-        public override void Damage(Entity dealer, int damage)
+        public override void Damage(Entity dealer, float damage)
         {
             base.Damage(dealer,damage);
             Debug.Log(name + " has been hit for " + damage + " damage!");
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Entities.Monster
             HealthFill.fillAmount = StatsComponent.HealthCurrent/(float)StatsComponent.HealthMax;
         }
 
-        public override void Heal(int heal)
+        public override void Heal(float heal)
         {
             base.Heal(heal);
 

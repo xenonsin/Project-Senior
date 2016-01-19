@@ -10,32 +10,32 @@ namespace Senior.Components
         public int Level { get; set; }
 
         // The base health granted to the entity
-        public int HealthBase = 100;
-        public int HealthCurrent { get; set; }
+        public float HealthBase = 100;
+        public float HealthCurrent { get; set; }
         // The health granted per level, current default value is 32 (set in the editor to modify)
-        public int HealthPerLevel = 32;
+        public float HealthPerLevel = 32;
         // The sum of all health modifications due to items/skills/buffs/debuffs
-        public int HealthModifier { get; set; }
+        public float HealthModifier { get; set; }
         //The max health as the result of the formula
-        public int HealthMax
+        public float HealthMax
         {
             get { return (HealthBase + HealthPerLevel * Level + HealthModifier); }
         }
 
-        public int StaminaBase = 100;
-        public int StaminaCurrent { get; set; }
+        public float StaminaBase = 100;
+        public float StaminaCurrent { get; set; }
 
-        public int AttackSpeedBase = 5;
-        public int AttackSpeedCurrent { get; set; }
+        public float AttackSpeedBase = 5;
+        public float AttackSpeedCurrent { get; set; }
 
-        public int DamageBase = 5;
-        public int DamageCurrent { get; set; }
+        public float DamageBase = 5;
+        public float DamageCurrent { get; set; }
 
-        public int MovementSpeedBase = 5;
-        public int MovementSpeedCurrent { get; set; }
+        public float MovementSpeedBase = 5;
+        public float MovementSpeedCurrent { get; set; }
 
-        public int RotationSpeedBase = 20;
-        public int RotationSpeedCurrent { get; set; }
+        public float RotationSpeedBase = 20;
+        public float RotationSpeedCurrent { get; set; }
 
         public void Awake()
         {

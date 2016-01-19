@@ -7,7 +7,17 @@ namespace Assets.Scripts.Entities.Components
     public class BuffsManager : MonoBehaviour
     {
         public List<Buff> buffs = new List<Buff>();
+        private Quaternion rotation;
 
+        void Awake()
+        {
+            rotation = transform.rotation;
+        }
+        // this is done to cancel the rotation so that attached particles won't spaz out
+        void Update()
+        {
+            transform.rotation = rotation;
+        }
         public void AddBuff(Buff buff)
         {
             if (!buff.canStack)

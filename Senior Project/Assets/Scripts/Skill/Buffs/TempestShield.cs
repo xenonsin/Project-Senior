@@ -40,7 +40,7 @@ namespace Seniors.Skills.Buffs
             entity.Damage(owner,damage);
             //owner.OnHit(entity, damage);
 
-            Vector3 direction = (entity.transform.position - owner.transform.position).normalized;
+            Vector3 direction = (entity.transform.position - target.transform.position).normalized;
             entity.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
         }
 

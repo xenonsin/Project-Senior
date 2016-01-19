@@ -1,0 +1,89 @@
+﻿using Assets.Scripts.Entities;
+using Seniors.Skills.Buffs;
+using UnityEngine;
+
+namespace Seniors.Skills.Hau
+{
+    public class HauSkill1 : Skill
+    {
+        public bool dashing;
+        public float dashSpeed;
+        public Buff stunDebuff;
+        public float stunDuration;
+        public override void ActivateDown()
+        {
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
+
+            if (!IsDisabled)
+            {
+                IsDisabled = true;
+                OnCast();
+                anim.SetTrigger("Skill1");
+
+            }
+        }
+
+        public override void FixedUpdate()
+        {
+            if (dashing)
+                Dash();
+        }
+
+        private void Dash()
+        {
+            rb.AddForce(rb.position + hc.LastMoveDirection * dashSpeed);
+        }
+
+        public override void RaiseEvent(string eventName)
+        {
+            switch (eventName)
+            {
+                case "Skill1_StartDash":
+                    rb.AddForce(rb.position + hc.LastMoveDirection * dashSpeed,ForceMode.Impulse);
+
+                    if (BCollider != null)
+                    {
+                        BCollider.enabled = true;
+                    }
+                    break;
+                case "Skill1_EndDash":
+                    if (BCollider != null)
+                    {
+                        BCollider.enabled = false;
+                    }
+                    break;
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            //stun debuff
+            OnHit(other);
+        }
+
+        public override void OnHit(Collider hit)
+        {
+            Entity entity = hit.gameObject.GetComponent<Entity>();
+            if (entity != null)
+            {
+                if ((hero.enemyFactions & entity.currentFaction) == entity.currentFaction)
+                {
+                    hero.OnHit(entity, damage);
+                    entity.Damage(hero, damage);
+                    if (knockback)
+                    {
+                        Vector3 direction = (entity.transform.position - hero.transform.position).normalized;
+                        entity.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
+                    }
+                }
+            }
+
+            Buff stun = Instantiate(stunDebuff, hit.transform.position, Quaternion.identity) as Buff;
+            stun.lifeSpan = stunDuration;
+            stun.Initialize(hero, entity);    
+
+            StartCoroutine(FreezeFrame());
+
+        }
+    }
+}

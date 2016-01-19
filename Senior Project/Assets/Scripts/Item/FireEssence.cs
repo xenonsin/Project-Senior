@@ -9,10 +9,10 @@ namespace Senior.Items
     {
         public Bomb FireBomb;
 
-        public override void OnHit(Entity target, int damage)
+        public override void OnHit(Entity target, float damage)
         {
             Bomb bomb = Instantiate(FireBomb, target.transform.position, Quaternion.identity) as Bomb;
-            bomb.owner = owner;
+            bomb.Initialize(owner, owner.enemyFactions);
             OnUse();
 
         }

@@ -19,7 +19,7 @@ namespace Seniors.Skills.Buffs
         {
             this.target = target;
             owner = origin;
-            owner.BuffManager.AddBuff(this);
+            target.BuffManager.AddBuff(this);
             OnAdd();
         }
 

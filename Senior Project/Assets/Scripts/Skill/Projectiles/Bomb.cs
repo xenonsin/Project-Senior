@@ -15,7 +15,6 @@ namespace Seniors.Skills.Projectiles
             {
                 Buff buff = Instantiate(BuffToBeApplied, target.transform.position, Quaternion.identity) as Buff;
                 buff.Initialize(owner,target);
-                target.BuffManager.AddBuff(buff);
             }
 
         }

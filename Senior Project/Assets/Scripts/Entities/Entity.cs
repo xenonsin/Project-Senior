@@ -20,9 +20,14 @@ namespace Assets.Scripts.Entities
         public IMovementController mc { get; set; }
         private Rigidbody rb;
         private Animator anim;
+        [HideInInspector]
         public Faction currentFaction;
+        [HideInInspector]
         public Faction alliedFactions;
+        [HideInInspector]
         public Faction enemyFactions;
+        public GameObject healEffect;
+        public Vector3 healEffectOffset;
         public GameObject hitEffect;
         public Vector3 hitEffectOffset;
         public Material hitMaterial;
@@ -82,7 +87,7 @@ namespace Assets.Scripts.Entities
         }
 
         // Called when the entity gets damaged
-        public virtual void Damage(Entity dealer, int damage)
+        public virtual void Damage(Entity dealer, float damage)
         {
             StatsComponent.HealthCurrent -= damage;
 
@@ -124,12 +129,33 @@ namespace Assets.Scripts.Entities
         }
 
         // Similar to the damaged method, but gets it's own method for ease of use.
-        public virtual void Heal(int heal)
+        public virtual void Heal(float heal)
         {
             if (StatsComponent.HealthCurrent + heal > StatsComponent.HealthMax)
                 StatsComponent.HealthCurrent = StatsComponent.HealthMax;
             else
                 StatsComponent.HealthCurrent += heal;
+
+            //spawn heal effect
+            if (healEffect != null)
+            {
+                GameObject heals = Instantiate(healEffect, transform.position + healEffectOffset, Quaternion.identity) as GameObject;
+                heals.transform.SetParent(transform);
+            }
+            if (damagePrefab != null)
+            {
+                //spawn damage number indicator
+                Vector3 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+                WorldUI damageGO = Instantiate(damagePrefab, screenPoint, Quaternion.identity) as WorldUI;
+                damageGO.gameObject.SetActive(true);
+                damageGO.GetComponent<RectTransform>().SetParent(UIManager.Instance.WorldUi.transform);
+                damageGO.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+
+                damageGO.gameObject.GetComponentInChildren<Text>().text = heal.ToString();
+                damageGO.gameObject.GetComponentInChildren<Text>().color = Color.green;
+
+
+            }
         }
 
         // Called when you want the entity to get fully healed.
