@@ -44,4 +44,9 @@
         UiSkill,                // has a cooldown and does appear on the UI
     }
 
+    public enum TurrateState
+    {
+        Follow,
+        Attack
+    }
 }

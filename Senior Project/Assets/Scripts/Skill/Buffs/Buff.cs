@@ -28,9 +28,9 @@ namespace Seniors.Skills.Buffs
             
         }
 
-        public virtual void Start()
+        public virtual void OnEnable()
         {
-            Destroy(gameObject, lifeSpan);
+            TrashMan.despawnAfterDelay(gameObject, lifeSpan);
         }
 
         public virtual void Update()
@@ -42,13 +42,19 @@ namespace Seniors.Skills.Buffs
             }
         }
 
+        // when the player hits a target
+        public virtual void OnHit(Entity target, float damage)
+        {
+        }
+
         public virtual void OnTick()
         {
         }
 
-        public virtual void OnDestroy()
+        public virtual void OnDisable()
         {
-            owner.BuffManager.RemoveBuff(this);
+            if (owner != null)
+                owner.BuffManager.RemoveBuff(this);
         }
     }
 }

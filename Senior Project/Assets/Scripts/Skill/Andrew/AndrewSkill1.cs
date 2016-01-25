@@ -15,8 +15,8 @@ namespace Seniors.Skills.Andrew
                 IsDisabled = true;
                 OnCast();
                 
-                FireEssence fe = Instantiate(fireEssensePrefab, hero.transform.position, Quaternion.identity) as FireEssence;
-                fe.Initialize(hero);
+                FireEssence fe = Instantiate(fireEssensePrefab, owner.transform.position, Quaternion.identity) as FireEssence;
+                fe.Initialize(owner);
             }
         }
     }

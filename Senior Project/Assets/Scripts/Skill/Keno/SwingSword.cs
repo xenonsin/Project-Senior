@@ -31,7 +31,7 @@ namespace Seniors.Skills
             if (hc.MoveDirection != Vector3.zero)
             {
                 hc.LastMoveDirection = hc.MoveDirection;
-                hc.transform.rotation = Quaternion.LookRotation(hc.MoveDirection);
+                owner.transform.rotation = Quaternion.LookRotation(hc.MoveDirection);
             }
         }
 

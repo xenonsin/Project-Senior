@@ -12,20 +12,17 @@ namespace Assets.Scripts.Entities.Hero
 
     public class Hero : Entity
     {
-        public Inventory InventoryComponent { get; set; }           // Contains the inventory of the character
         public Sprite Portrait;
-        public Player owner;
 
         public void Initialize(Player player)
         {
-            owner = player;
+            playerOwner = player;
         }
 
         public override void Awake()
         {
             base.Awake();
             mc = GetComponent<HeroController>();
-            InventoryComponent = GetComponentInChildren<Inventory>();
             StatsComponent.Level = 1;           
         }
 
@@ -39,8 +36,8 @@ namespace Assets.Scripts.Entities.Hero
         public override void Die()
         {  
             //Turn into spirit          
-            if (owner)
-                owner.OnDead(this);
+            if (playerOwner)
+                playerOwner.OnDead(this);
         }
 
         // the hero is damaged by a certain amount
@@ -48,16 +45,16 @@ namespace Assets.Scripts.Entities.Hero
         {
             base.Damage(dealer,damage);
             InventoryComponent.OnDamage(dealer, damage);
-            if (owner)
-                owner.OnHealthModified(this);
+            if (playerOwner)
+                playerOwner.OnHealthModified(this);
         }
 
         // the hero is healed by a certain amount
         public override void Heal(float heal)
         {
             base.Heal(heal);
-            if (owner)
-                owner.OnHealthModified(this);
+            if (playerOwner)
+                playerOwner.OnHealthModified(this);
 
         }
 
@@ -66,8 +63,8 @@ namespace Assets.Scripts.Entities.Hero
         {
             base.FullHeal();
 
-            if (owner)
-                owner.OnHealthModified(this);
+            if (playerOwner)
+                playerOwner.OnHealthModified(this);
         }
 
         // the hero collides with an object
@@ -84,36 +81,36 @@ namespace Assets.Scripts.Entities.Hero
         }
 
         // the hero picks up an item
-        public void PickUpItem(Item item)
+        public override void PickUpItem(Item item)
         {
-            item.transform.parent = InventoryComponent.transform;
-
-            if (owner)
-                owner.OnItemPickUp(item);
+            base.PickUpItem(item);
+            if (playerOwner)
+                playerOwner.OnItemPickUp(item);
         }
 
         // Is used to notify the UI that a skill has been used, and the cd should start
-        public void UseSkill(Skill skill)
+        public override void UseSkill(Skill skill)
         {
             if (skill.showInUi)
-                owner.UseSkill(skill);
+                playerOwner.UseSkill(skill);
         }
 
         // Is used to update the skill cd for the ui
-        public void UpdateSkill(Skill skill)
+        public override void UpdateSkill(Skill skill)
         {
-            owner.UpdateSkill(skill);
+            playerOwner.UpdateSkill(skill);
         }
 
         // called when a skill has hit an enemy, incokes any OnHit events ex. from items
-        public void OnHit(Entity entitiy, float damage)
+        public override void OnHit(Entity entitiy, float damage)
         {
             InventoryComponent.OnHit(entitiy,damage);
+            BuffManager.OnHit(entitiy, damage);
             
         }
 
         // called when casting a skill, invokes and OnCast events ex. from items
-        public void OnCast()
+        public override void OnCast()
         {
             
         }

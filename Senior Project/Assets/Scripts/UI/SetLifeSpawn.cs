@@ -4,15 +4,12 @@ namespace Senior.Managers
 {
     public class SetLifeSpawn : MonoBehaviour
     {
-        public Object myGameObjectOrComponent;
         public float timer;
 
-        void Start()
+        void OnEnable()
         {
-            if (myGameObjectOrComponent == null)
-                myGameObjectOrComponent = gameObject;
 
-            Destroy(myGameObjectOrComponent, timer);
+            TrashMan.despawnAfterDelay(gameObject, timer);
         }
     }
 }

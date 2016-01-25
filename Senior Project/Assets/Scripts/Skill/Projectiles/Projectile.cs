@@ -9,7 +9,7 @@ namespace Seniors.Skills.Projectiles
 
     public class Projectile : MonoBehaviour
     {
-        public Hero owner;
+        public Entity owner;
         private Rigidbody rb;
         private BoxCollider bc;
         public bool isHealing = false;
@@ -22,27 +22,44 @@ namespace Seniors.Skills.Projectiles
         public float knockbackForce = 1f;
         [HideInInspector]
         public Faction targetFaction;
+        protected bool isInitialized = false;
+        protected float countupTimer = 0;
 
-        public virtual void Initialize(Hero owner, Faction targetFaction)
+
+        public virtual void Initialize(Entity owner, Faction targetFaction)
         {
             this.owner = owner;
             this.targetFaction = targetFaction;
+            isInitialized = true;
+            countupTimer = 0;
+            OnEnable();
         }
 
-        public virtual void Start()
+        public virtual void OnEnable()
         {
+            if (!isInitialized) return;
+
             if (isMoving)
             {
                 rb = GetComponent<Rigidbody>();
                 bc = GetComponent<BoxCollider>();
                 rb.useGravity = false;
                 rb.constraints = RigidbodyConstraints.FreezeRotation;
-
                 rb.velocity = transform.TransformDirection(Vector3.forward*speed);
             }
-            Destroy(gameObject, lifeSpan);
         }
 
+        public virtual void Update()
+        {
+            if (isInitialized)
+            {
+                countupTimer += Time.deltaTime;
+
+                if (countupTimer >= lifeSpan)
+                    TrashMan.despawn(gameObject);
+
+            }
+        }
         // when the projectile can pierce
         public virtual void OnTriggerEnter(Collider collision)
         {
@@ -54,7 +71,7 @@ namespace Seniors.Skills.Projectiles
                     OnHit(entity);
                     if (!piercing)
                     {
-                        Destroy(gameObject);
+                        TrashMan.despawn(gameObject);
                     }
                 }
             }
@@ -67,13 +84,19 @@ namespace Seniors.Skills.Projectiles
             else
             {
                 target.Damage(owner, damage);
-                owner.OnHit(target, damage);
+                if (owner != null)
+                    owner.OnHit(target, damage);
             }
             if (knockback)
             {
                 Vector3 direction = (target.transform.position - owner.transform.position).normalized;
                 target.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
             }
+        }
+
+        public virtual void OnDisable()
+        {
+            isInitialized = false;
         }
     }
 }

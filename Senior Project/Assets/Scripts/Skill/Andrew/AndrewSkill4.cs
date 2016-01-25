@@ -15,8 +15,8 @@ namespace Seniors.Skills.Andrew
                 IsDisabled = true;
                 OnCast();
 
-                DemonicEssence fe = Instantiate(demonicEssensePrefab, hero.transform.position, Quaternion.identity) as DemonicEssence;
-                fe.Initialize(hero);
+                DemonicEssence fe = Instantiate(demonicEssensePrefab, owner.transform.position, Quaternion.identity) as DemonicEssence;
+                fe.Initialize(owner);
             }
         }
     }

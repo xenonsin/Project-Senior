@@ -19,10 +19,10 @@ namespace Seniors.Skills.Buffs
             vfxInstance = vfx.gameObject;
         }
 
-        public override void OnDestroy()
+        public override void OnDisable()
         {
-            Destroy(vfxInstance);
-            base.OnDestroy();
+            TrashMan.despawn(vfxInstance);
+            base.OnDisable();
         }
     }
 }

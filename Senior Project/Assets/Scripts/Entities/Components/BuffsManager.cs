@@ -31,6 +31,14 @@ namespace Assets.Scripts.Entities.Components
             buffs.Add(buff);
         }
 
+        public void OnHit(Entity target, float damage)
+        {
+            for (int i = 0; i < buffs.Count; i++)
+            {
+                buffs[i].OnHit(target, damage);
+            }
+        }
+
         public void RemoveBuff(Buff buff)
         {
             buffs.Remove(buff);

@@ -16,8 +16,8 @@ namespace Seniors.Skills.Hau
 
             base.ActivateDown();
 
-            tauntInstance = Instantiate(TauntPrefab, hero.transform.position, Quaternion.identity) as GameObject;
-            tauntInstance.transform.SetParent(hero.transform);
+            tauntInstance = TrashMan.spawn(TauntPrefab, owner.transform.position, Quaternion.identity);
+            tauntInstance.transform.SetParent(owner.transform);
 
         }
 
@@ -42,7 +42,7 @@ namespace Seniors.Skills.Hau
             base.ActivateUp();
 
             if (tauntInstance != null)
-                Destroy(tauntInstance);
+                TrashMan.despawn(tauntInstance);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -51,10 +51,10 @@ namespace Seniors.Skills.Hau
 
             if (entity != null)
             {
-                if ((hero.enemyFactions & entity.currentFaction) == entity.currentFaction)
+                if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
                     Buff buff = Instantiate(tauntDebuff, entity.transform.position, Quaternion.identity) as Buff;
-                    buff.Initialize(hero, entity);
+                    buff.Initialize(owner, entity);
                 }
             }
         }

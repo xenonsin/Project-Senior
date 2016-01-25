@@ -29,11 +29,11 @@ namespace Seniors.Skills
             switch (eventName)
             {
                 case "Skill1_Sparks":
-                    Instantiate(SparksPrefab, hero.transform.position, Quaternion.identity);
+                    Instantiate(SparksPrefab, owner.transform.position, Quaternion.identity);
                     break;
                 case "Skill1_Shield":
-                    TempestShield shield = Instantiate(TempestShieldPrefab, hero.transform.position, Quaternion.identity) as TempestShield;
-                    shield.Initialize(hero,hero);
+                    TempestShield shield = Instantiate(TempestShieldPrefab, owner.transform.position, Quaternion.identity) as TempestShield;
+                    shield.Initialize(owner,owner);
                     break;
             }
         }

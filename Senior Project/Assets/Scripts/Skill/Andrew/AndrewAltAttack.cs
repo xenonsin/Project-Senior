@@ -14,6 +14,7 @@ namespace Seniors.Skills.Andrew
         private GameObject chargeInstance;
         public float damageMultiplier = 2;
         public float speedMultiplier = 10;
+        private float chargeTime = 0;
         public override void Start()
         {
             
@@ -28,10 +29,10 @@ namespace Seniors.Skills.Andrew
             sc.IsBusy = true;
             hc.OnlyRotate = true;
             hc.RotateBasedOnMovement = true;
-            hero.channelFill.fillAmount = 0;
+            owner.channelFill.fillAmount = 0;
 
-            hero.channelBarGO.SetActive(true);
-            chargeInstance = Instantiate(chargePrefab, hero.transform.position, Quaternion.identity) as GameObject;
+            owner.channelBarGO.SetActive(true);
+            chargeInstance = Instantiate(chargePrefab, owner.transform.position, Quaternion.identity) as GameObject;
         }
 
         public override void Update()
@@ -40,20 +41,24 @@ namespace Seniors.Skills.Andrew
 
             if (buttonHold)
             {
-                hero.channelFill.fillAmount = buttonHoldTimePressed / maxChargeTime;
+                owner.channelFill.fillAmount = buttonHoldTimePressed / maxChargeTime;
             }
 
         }
 
         public override void ActivateUp()
         {
+            chargeTime = buttonHoldTimePressed;
             base.ActivateUp();
+
             anim.SetBool("AltHold", false);
-            hero.channelBarGO.SetActive(false);
-            hero.channelFill.fillAmount = 0;
+            owner.channelBarGO.SetActive(false);
+            owner.channelFill.fillAmount = 0;
             
             if (chargeInstance != null)
                 Destroy(chargeInstance);
+
+
         }
 
         public override void RaiseEvent(string eventName)
@@ -73,16 +78,19 @@ namespace Seniors.Skills.Andrew
 
         public override void ShootProjectile()
         {
-            if (projectile != null)
+            if (projectilePrefab != null)
             {
                 OnCast();
-                Projectile pro = Instantiate(projectile, hero.transform.position + (projectileOffset * hero.transform.forward) + (0.4f * hero.transform.up),
-                    hero.transform.rotation) as Projectile;
-                if (pro != null)
+                var pro = TrashMan.spawn(projectilePrefab, owner.transform.position + (projectileOffset * owner.transform.forward) + (0.4f * owner.transform.up),
+                    owner.transform.rotation);
+
+                Projectile proj = pro.GetComponent<Projectile>();
+                if (proj != null)
                 {
-                    pro.damage = damage * (1 + damageMultiplier * (buttonHoldTimePressed / maxChargeTime));
-                    pro.owner = hero;
-                    pro.speed *= 1 + speedMultiplier * buttonHoldTimePressed/maxChargeTime;
+                    proj.damage = damage * (1 + damageMultiplier * (buttonHoldTimePressed / maxChargeTime));
+                    proj.owner = owner;
+                    proj.speed *= 1 + speedMultiplier * chargeTime / maxChargeTime;
+
                 }
             }
         }

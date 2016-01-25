@@ -29,7 +29,7 @@ namespace Seniors.Skills
 
             if (entitiy != null)
             {
-                if ((hero.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
+                if ((owner.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
                 {
                     if (!enemies.Contains(entitiy))
                         enemies.Add(entitiy);
@@ -44,7 +44,7 @@ namespace Seniors.Skills
 
             if (entitiy != null)
             {
-                if ((hero.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
+                if ((owner.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
                     enemies.Remove(entitiy);
             }
         }
@@ -63,19 +63,19 @@ namespace Seniors.Skills
         {
             if (enemies.Count > 0)
             {
-                if (projectile != null)
+                if (projectilePrefab != null)
                 {
                     for (int i = 0; i < enemies.Count; i++)
                     {
-                        Projectile pro = Instantiate(projectile, enemies[i].transform.position, Quaternion.identity) as Projectile;
-                        if (pro != null)
+                        var pro = TrashMan.spawn(projectilePrefab, enemies[i].transform.position, Quaternion.identity);
+                        Projectile proj = pro.GetComponent<Projectile>();
+                        if (proj != null)
                         {
-                            pro.damage = damage;
-                            pro.owner = hero;
+                            proj.Initialize(owner, owner.enemyFactions);
+
                         }
                     }
-                
-                    
+
                 }
             }
             

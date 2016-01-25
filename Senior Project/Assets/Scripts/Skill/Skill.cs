@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Assets.Scripts.Entities;
+using Assets.Scripts.Entities.Components;
 using Assets.Scripts.Entities.Hero;
 using Senior.Components;
 using Senior.Inputs;
@@ -27,15 +28,15 @@ namespace Seniors.Skills
         public Vector3 targetLocation;
         [Header("Projectile")]
         public bool isProjectile = false;
-        public Projectile projectile;
+        public GameObject projectilePrefab;
         public float projectileOffset = 1f;
 
         protected bool IsDisabled = false;
         protected Animator anim;
-        protected HeroController hc;
+        protected IMovementController hc;
         protected Rigidbody rb;
         protected Stats stats;
-        protected Hero hero;
+        protected Entity owner;
         protected SkillsController sc;
         [Header("Colldrs")]
         public BoxCollider BCollider;
@@ -63,7 +64,7 @@ namespace Seniors.Skills
                 CoolDownTimer -= Time.deltaTime;
 
                 //if (countdownTimer > 1)
-                hero.UpdateSkill(this);
+                owner.UpdateSkill(this);
                 if (CoolDownTimer <= 0)
                 {
                     IsDisabled = false;
@@ -79,15 +80,17 @@ namespace Seniors.Skills
 
         public virtual void ShootProjectile()
         {
-            if (projectile != null)
+            if (projectilePrefab != null)
             {
                 OnCast();
-                Projectile pro = Instantiate(projectile, hero.transform.position + (projectileOffset * hero.transform.forward) + (0.4f * hero.transform.up),
-                    hero.transform.rotation) as Projectile;
-                if (pro != null)
+                var pro = TrashMan.spawn(projectilePrefab, owner.transform.position + (projectileOffset * owner.transform.forward) + (0.4f * owner.transform.up),
+                    owner.transform.rotation);
+
+                Projectile proj = pro.GetComponent<Projectile>();
+                if (proj != null)
                 {
-                    pro.damage = damage;
-                    pro.owner = hero;
+                    proj.Initialize(owner, owner.enemyFactions);
+                    proj.damage = damage;
                 }
             }
         }
@@ -97,13 +100,13 @@ namespace Seniors.Skills
             Entity entity = hit.gameObject.GetComponent<Entity>();
             if (entity != null)
             {
-                if ((hero.enemyFactions & entity.currentFaction) == entity.currentFaction)
+                if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
-                    hero.OnHit(entity, damage);
-                    entity.Damage(hero,damage);
+                    owner.OnHit(entity, damage);
+                    entity.Damage(owner,damage);
                     if (knockback)
                     {
-                        Vector3 direction = (entity.transform.position - hero.transform.position).normalized;
+                        Vector3 direction = (entity.transform.position - owner.transform.position).normalized;
                         entity.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
                     }
                 }
@@ -113,18 +116,19 @@ namespace Seniors.Skills
 
         public virtual void OnCast()
         {
-            hero.UseSkill(this);
+            owner.UseSkill(this);
         }
 
-        public virtual void Initialize(SkillsController sc, HeroController hc, Hero hero, Animator anim, Rigidbody rb)
+        public virtual void Initialize(SkillsController sc, IMovementController hc, Entity hero, Animator anim, Rigidbody rb)
         {
             this.hc = hc;
-            this.hero = hero;
+            this.owner = hero;
             this.anim = anim;
             this.rb = rb;
             this.stats = hero.StatsComponent;
             this.sc = sc;
-            this.hero.owner.SetSkillIcon(this);
+            if (hero is Hero)
+                this.owner.playerOwner.SetSkillIcon(this);
             Reset();
         }
 

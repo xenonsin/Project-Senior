@@ -5,7 +5,13 @@ using Senior.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+
 using Assets.Scripts.Entities.Components;
+using Senior;
+using Senior.Items;
+using Seniors.Skills;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Entities
 {
@@ -31,24 +37,39 @@ namespace Assets.Scripts.Entities
         public GameObject hitEffect;
         public Vector3 hitEffectOffset;
         public Material hitMaterial;
-        public SkinnedMeshRenderer renderer;
-        private Material defaultMaterial;
+        public Material invisMaterial;
+        public Renderer[] renderer;
+        private List<Material> defaultMaterial = new List<Material>();
         [Header("WorldUI")]
         public bool showDamagePopup;
-        public WorldUI damagePrefab;
-        public ChannelBarWorldUI channelBarPrefab;
+        public GameObject damagePrefab;
+        public GameObject channelBarPrefab;
         public GameObject channelBarGO { get; set; }
         public Image channelFill { get; set; }
+        public Inventory InventoryComponent { get; set; }
 
+        public CapsuleCollider collider;
+        public Player playerOwner;
+        public Entity entityOwner;
+        public bool IsInvis = false;
 
         public virtual void Awake()
         {
             anim = GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
+            InventoryComponent = GetComponentInChildren<Inventory>();
+
             BuffManager = GetComponentInChildren<BuffsManager>();
-            renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+            renderer = GetComponentsInChildren<Renderer>();
+            collider = GetComponent<CapsuleCollider>();
             if (renderer != null)
-                defaultMaterial = renderer.material;
+            {
+                for (int i = 0; i < renderer.Length; i++)
+                {
+                    defaultMaterial.Add(renderer[i].material); 
+                }
+
+            }
             if (rb != null)
             {
                 rb.useGravity = true;
@@ -67,16 +88,22 @@ namespace Assets.Scripts.Entities
 
             Vector3 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
 
-            // Setup Channel World UI
-            ChannelBarWorldUI channel = Instantiate(channelBarPrefab, screenPoint, Quaternion.identity) as ChannelBarWorldUI;
-            channelBarGO = channel.gameObject;
-            channelBarGO.SetActive(true);
-            channel.GetComponent<RectTransform>().SetParent(UIManager.Instance.WorldUi.transform);
-            channel.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-            channel.offset = new Vector2(0, -20);
-            channel.owner = this;
-            channelFill = channel.ChannelFill;
-            channelBarGO.SetActive(false);
+            if (channelBarPrefab != null)
+            {
+                // Setup Channel World UI
+                channelBarGO = TrashMan.spawn(channelBarPrefab, screenPoint, Quaternion.identity);               
+                channelBarGO.SetActive(true);
+                ChannelBarWorldUI channel = channelBarGO.GetComponent<ChannelBarWorldUI>();
+                if (channel != null)
+                {
+                    channel.GetComponent<RectTransform>().SetParent(UIManager.Instance.WorldUi.transform);
+                    channel.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+                    channel.offset = new Vector2(0, -20);
+                    channel.owner = this;
+                    channelFill = channel.ChannelFill;
+                    channelBarGO.SetActive(false);
+                }
+            }
         }
 
 
@@ -96,18 +123,20 @@ namespace Assets.Scripts.Entities
                 //spawn hit effect
                 if (hitEffect != null)
                 {
-                    GameObject hit = Instantiate(hitEffect, transform.position + hitEffectOffset, Quaternion.identity) as GameObject;
+                    
+                    TrashMan.spawn(hitEffect, transform.position + hitEffectOffset, Quaternion.identity);
                 }
                 if (damagePrefab != null)
                 {
                     //spawn damage number indicator
                     Vector3 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-                    WorldUI damageGO = Instantiate(damagePrefab, screenPoint, Quaternion.identity) as WorldUI;
+                    var damageGO = TrashMan.spawn(damagePrefab, screenPoint, Quaternion.identity);
                     damageGO.gameObject.SetActive(true);
                     damageGO.GetComponent<RectTransform>().SetParent(UIManager.Instance.WorldUi.transform);
                     damageGO.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
 
                     damageGO.gameObject.GetComponentInChildren<Text>().text = damage.ToString();
+                    damageGO.gameObject.GetComponentInChildren<Text>().color = Color.white;
 
                 }
                 if (renderer != null && anim != null)
@@ -121,11 +150,40 @@ namespace Assets.Scripts.Entities
         //Flash Red and FreezeFrame
         private IEnumerator FlashRedOnHit()
         {
-            renderer.material = hitMaterial;
+            for (int i = 0; i < renderer.Length; i++)
+            {
+                renderer[i].material = hitMaterial;
+
+            }
             anim.enabled = false;
             yield return new WaitForSeconds(0.1f);
-            renderer.material = defaultMaterial;
+            for (int i = 0; i < renderer.Length; i++)
+            {
+                renderer[i].material = defaultMaterial[i];
+
+            }
             anim.enabled = true;
+        }
+
+        public void GoInvisible()
+        {
+            IsInvis = true;
+            collider.enabled = false;
+            for (int i = 0; i < renderer.Length; i++)
+            {
+                renderer[i].material = invisMaterial;
+
+            }
+        }
+
+        public void UnInvisible()
+        {
+            IsInvis = false;
+            collider.enabled = true;
+            for (int i = 0; i < renderer.Length; i++)
+            {
+                renderer[i].material = defaultMaterial[i];
+            }
         }
 
         // Similar to the damaged method, but gets it's own method for ease of use.
@@ -139,14 +197,14 @@ namespace Assets.Scripts.Entities
             //spawn heal effect
             if (healEffect != null)
             {
-                GameObject heals = Instantiate(healEffect, transform.position + healEffectOffset, Quaternion.identity) as GameObject;
+                GameObject heals = TrashMan.spawn(healEffect, transform.position + healEffectOffset, Quaternion.identity);
                 heals.transform.SetParent(transform);
             }
             if (damagePrefab != null)
             {
                 //spawn damage number indicator
                 Vector3 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-                WorldUI damageGO = Instantiate(damagePrefab, screenPoint, Quaternion.identity) as WorldUI;
+                var damageGO = TrashMan.spawn(damagePrefab, screenPoint, Quaternion.identity);
                 damageGO.gameObject.SetActive(true);
                 damageGO.GetComponent<RectTransform>().SetParent(UIManager.Instance.WorldUi.transform);
                 damageGO.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
@@ -172,6 +230,36 @@ namespace Assets.Scripts.Entities
         public virtual void OnCollisionEnter(Collision collision)
         {
 
+        }
+
+        public virtual void OnHit(Entity entity, float damage)
+        {
+            
+        }
+
+        public virtual void UseSkill(Skill skill)
+        {
+
+        }
+
+        public virtual void UpdateSkill(Skill skill)
+        {
+            
+        }
+
+        public virtual void PickUpItem(Item item)
+        {
+            item.transform.parent = InventoryComponent.transform;
+        }
+
+        public virtual void OnCast()
+        {
+            
+        }
+
+        public virtual void OnEnable()
+        {
+            
         }
     }
 }

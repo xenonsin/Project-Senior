@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Entities;
+using Assets.Scripts.Entities.Components;
 using Assets.Scripts.Entities.Hero;
 using Senior.Inputs;
 using Seniors.Skills;
@@ -10,7 +12,7 @@ namespace Senior.Components
     {
         public List<Skill> HeroSkills = new List<Skill>();
         public bool IsBusy = false;
-        public void Initialize(HeroController hc, Hero hero, Animator anim, Rigidbody rb)
+        public void Initialize(IMovementController hc, Entity hero, Animator anim, Rigidbody rb)
         {
             if (HeroSkills != null)
             {

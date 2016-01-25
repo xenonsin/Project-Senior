@@ -15,11 +15,18 @@ namespace Seniors.Skills.Andrew
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
 
-            Vector3 directionToTarget = target.transform.position - transform.position;
-            if (directionToTarget.magnitude > 1f)
-                anim.SetTrigger("Attack");
+            if (target != null)
+            {
+                Vector3 directionToTarget = target.transform.position - transform.position;
+                if (directionToTarget.magnitude > 1f)
+                    anim.SetTrigger("Attack");
+                else
+                    anim.SetTrigger("SecAttack");
+            }
             else
-                anim.SetTrigger("SecAttack");
+            {
+                anim.SetTrigger("Attack");
+            }
         }
 
         public override void Update()
@@ -32,7 +39,7 @@ namespace Seniors.Skills.Andrew
                     target = FindNearestTarget();
                     Vector3 directionToTarget = target.transform.position - transform.position;
                     hc.RotateBasedOnMovement = false;
-                    hero.transform.rotation = Quaternion.Slerp(transform.rotation,
+                    owner.transform.rotation = Quaternion.Slerp(transform.rotation,
                         Quaternion.LookRotation(directionToTarget),
                         Time.deltaTime*stats.RotationSpeedBase);
                 }
@@ -67,7 +74,7 @@ namespace Seniors.Skills.Andrew
 
             if (entity != null)
             {
-                if ((hero.enemyFactions & entity.currentFaction) == entity.currentFaction)
+                if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
                     if (!enemies.Contains(entity))
                         enemies.Add(entity);
@@ -82,22 +89,21 @@ namespace Seniors.Skills.Andrew
 
             if (entitiy != null)
             {
-                if ((hero.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
+                if ((owner.enemyFactions & entitiy.currentFaction) == entitiy.currentFaction)
                     enemies.Remove(entitiy);
             }
         }
 
         public override void RaiseEvent(string eventName)
         {
-            Debug.Log(eventName);
             switch (eventName)
             {
                 case "Attack_Shoot":
                     ShootProjectile();
                     break;
                 case "Attack_Kick":
-                    Bomb bomb = Instantiate(KickBomb, hero.transform.position + 1 * hero.transform.forward, Quaternion.identity) as Bomb;
-                    bomb.owner = hero;
+                    Bomb bomb = Instantiate(KickBomb, owner.transform.position + 1 * owner.transform.forward, Quaternion.identity) as Bomb;
+                    bomb.owner = owner;
                     break;
             }
         }

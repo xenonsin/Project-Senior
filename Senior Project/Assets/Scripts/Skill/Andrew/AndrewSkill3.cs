@@ -15,8 +15,8 @@ namespace Seniors.Skills.Andrew
                 IsDisabled = true;
                 OnCast();
 
-                LightningEssence fe = Instantiate(lightingEssensePrefab, hero.transform.position, Quaternion.identity) as LightningEssence;
-                fe.Initialize(hero);
+                LightningEssence fe = Instantiate(lightingEssensePrefab, owner.transform.position, Quaternion.identity) as LightningEssence;
+                fe.Initialize(owner);
             }
         }
     }

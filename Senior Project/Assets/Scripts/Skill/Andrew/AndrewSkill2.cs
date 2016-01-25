@@ -15,8 +15,8 @@ namespace Seniors.Skills.Andrew
                 IsDisabled = true;
                 OnCast();
 
-                IceEssence fe = Instantiate(iceEssensePrefab, hero.transform.position, Quaternion.identity) as IceEssence;
-                fe.Initialize(hero);
+                IceEssence fe = Instantiate(iceEssensePrefab, owner.transform.position, Quaternion.identity) as IceEssence;
+                fe.Initialize(owner);
             }
         }
     }

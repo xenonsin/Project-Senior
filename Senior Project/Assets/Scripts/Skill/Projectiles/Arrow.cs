@@ -27,9 +27,11 @@ namespace Seniors.Skills.Projectiles
 
         public bool Onehit = false;
 
-        public override void Start()
+        public override void OnEnable()
         {
-            base.Start();
+            if (!isInitialized) return;
+
+            base.OnEnable();
             FireTrail.SetActive(false);
             IceTrail.SetActive(false);
             LightningTrail.SetActive(false);
@@ -69,7 +71,7 @@ namespace Seniors.Skills.Projectiles
                 {
                     OnHit(entity);
                     if (Onehit)
-                        Destroy(gameObject);
+                        TrashMan.despawn(gameObject);
                 }
             }
         }

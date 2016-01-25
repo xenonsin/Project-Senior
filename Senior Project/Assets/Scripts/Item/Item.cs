@@ -10,7 +10,7 @@ namespace Senior.Items
         public string itemName;
         public string description;
         public Sprite icon;
-        public Hero owner;
+        public Entity owner;
         public bool limitedUses = false;
         public int numberOfUses = 1;
         public bool limitedTime = false;
@@ -21,14 +21,14 @@ namespace Senior.Items
         public float healthCurrent;
 
         // sets the lifespan of the item
-        public virtual void Start()
+        public virtual void OnEnable()
         {
             healthCurrent = healthMax;
             if (limitedTime)
-                Destroy(gameObject, lifespan);
+                TrashMan.despawnAfterDelay(gameObject, lifespan);
         }
 
-        public virtual void Initialize(Hero owner)
+        public virtual void Initialize(Entity owner)
         {
             this.owner = owner;
             this.owner.InventoryComponent.Equip(this);
@@ -54,7 +54,7 @@ namespace Senior.Items
                 healthCurrent -= damage;
 
                 if (healthCurrent <= 0)
-                    Destroy(gameObject);
+                    TrashMan.despawn(gameObject);
             }
         }
 
@@ -76,12 +76,12 @@ namespace Senior.Items
             {
                 numberOfUses -= 1;
                 if (numberOfUses <= 0)
-                    Destroy(gameObject);
+                    TrashMan.despawn(gameObject);
             }
         }
 
         // when the item is destroyed, call to unquip it
-        public virtual void OnDestroy()
+        public virtual void OnDisable()
         {
             if (owner)
                 owner.InventoryComponent.UnEquip(this);

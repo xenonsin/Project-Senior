@@ -66,13 +66,13 @@ namespace Seniors.Skills.Hau
             Entity entity = hit.gameObject.GetComponent<Entity>();
             if (entity != null)
             {
-                if ((hero.enemyFactions & entity.currentFaction) == entity.currentFaction)
+                if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
-                    hero.OnHit(entity, damage);
-                    entity.Damage(hero, damage);
+                    owner.OnHit(entity, damage);
+                    entity.Damage(owner, damage);
                     if (knockback)
                     {
-                        Vector3 direction = (entity.transform.position - hero.transform.position).normalized;
+                        Vector3 direction = (entity.transform.position - owner.transform.position).normalized;
                         entity.gameObject.GetComponent<Rigidbody>().AddForce(direction * knockbackForce, ForceMode.Impulse);
                     }
                 }
@@ -80,7 +80,7 @@ namespace Seniors.Skills.Hau
 
             Buff stun = Instantiate(stunDebuff, hit.transform.position, Quaternion.identity) as Buff;
             stun.lifeSpan = stunDuration;
-            stun.Initialize(hero, entity);    
+            stun.Initialize(owner, entity);    
 
             StartCoroutine(FreezeFrame());
 

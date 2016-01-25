@@ -9,10 +9,10 @@ namespace Seniors.Skills.Buffs
             target.mc.CanMove = false;
         }
 
-        public override void OnDestroy()
+        public override void OnDisable()
         {
             target.mc.CanMove = true;
-            base.OnDestroy();
+            base.OnDisable();
         }
     }
 }

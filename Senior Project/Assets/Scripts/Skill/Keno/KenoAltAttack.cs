@@ -40,7 +40,7 @@ namespace Seniors.Skills
                 case "AltAttack_Lightning":
                     if (LightningBolt != null)
                     {
-                        Instantiate(LightningBolt, hero.transform.position + LightningBoltOffset * hero.transform.forward, Quaternion.identity);
+                        Instantiate(LightningBolt, owner.transform.position + LightningBoltOffset * owner.transform.forward, Quaternion.identity);
                     }
 
                     break;
