@@ -70,6 +70,15 @@ namespace Senior.Inputs
                 if (playerController.SkillFourButtonUp)
                     skills.SkillFourUp();
             }
+
+            Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);
+            viewPos.x = Mathf.Clamp01(viewPos.x);
+            viewPos.y = Mathf.Clamp(viewPos.y,0,.9f);
+            Vector3 pos = Camera.main.ViewportToWorldPoint(viewPos);
+            pos.y = 0;
+            transform.position = pos;
+            //Debug.Log(transform.position);
+
         }
 
         public void FixedUpdate()
@@ -77,15 +86,19 @@ namespace Senior.Inputs
             GetDirection();
 
             if (playerController != null && CanMove)
-                Move();    
+                Move();
+
+            
+
+            //hero.transform.position.y = 0;
         }
+
 
         private void GetDirection()
         {
             var moveDirection = new Vector3(playerController.MoveInput.x, 0, playerController.MoveInput.y);
             moveDirection = Camera.main.transform.TransformDirection(moveDirection);
             moveDirection.y = 0;
-
             MoveDirection = moveDirection;
         }
 
@@ -96,9 +109,7 @@ namespace Senior.Inputs
                 if (!OnlyRotate)
                     anim.SetFloat("Speed", MoveDirection.normalized.sqrMagnitude);
                 else              
-                    anim.SetFloat("Speed", 0);
-
-                
+                    anim.SetFloat("Speed", 0);             
             }
 
             //Makes sure the player faces the direction they're moving.
@@ -111,9 +122,19 @@ namespace Senior.Inputs
                         Time.deltaTime*stats.RotationSpeedBase);
                 }
             }
+
+            Vector3 newPosition = rb.position + MoveDirection.normalized * stats.MovementSpeedBase * Time.deltaTime;
+            Vector3 clampedPosition = Camera.main.WorldToViewportPoint(newPosition);
+            clampedPosition.x = Mathf.Clamp(clampedPosition.x, 0.2f, 0.8f);
+            clampedPosition.y = Mathf.Clamp(clampedPosition.y, 0.2f, 0.8f);
+            
+            //newPosition.x = Mathf.Clamp(newPosition.x, movementRangeMin.x, movementRangeMax.x);
+
+            //newPosition.z = Mathf.Clamp(newPosition.z, movementRangeMin.z, movementRangeMax.z);
             // if the player is only allowed to rotate, then don't move
             if (!OnlyRotate)
-                rb.MovePosition(rb.position + MoveDirection.normalized * stats.MovementSpeedBase * Time.deltaTime);
+                rb.MovePosition(newPosition);
+            //rb.MovePosition(Camera.main.ViewportToWorldPoint(clampedPosition));
         }
 
         public void AnimationEvent(string eventName)
