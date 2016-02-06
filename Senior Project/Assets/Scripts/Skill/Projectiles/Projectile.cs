@@ -25,14 +25,14 @@ namespace Seniors.Skills.Projectiles
         protected bool isInitialized = false;
         protected float countupTimer = 0;
 
-
         public virtual void Initialize(Entity owner, Faction targetFaction)
         {
             this.owner = owner;
             this.targetFaction = targetFaction;
             isInitialized = true;
-            countupTimer = 0;
+            countupTimer = 0;    
             OnEnable();
+
         }
 
         public virtual void OnEnable()
@@ -42,6 +42,8 @@ namespace Seniors.Skills.Projectiles
             if (isMoving)
             {
                 rb = GetComponent<Rigidbody>();
+                rb.velocity = Vector3.zero;
+
                 bc = GetComponent<BoxCollider>();
                 rb.useGravity = false;
                 rb.constraints = RigidbodyConstraints.FreezeRotation;

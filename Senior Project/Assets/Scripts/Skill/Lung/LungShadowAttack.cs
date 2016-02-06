@@ -14,7 +14,6 @@ namespace Seniors.Skills.Lung
 
         public override void RaiseEvent(string eventName)
         {
-            Debug.Log(eventName);
             switch (eventName)
             {
                 case "Attack_Shoot":

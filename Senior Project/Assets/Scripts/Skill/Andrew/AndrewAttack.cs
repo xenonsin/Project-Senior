@@ -10,7 +10,7 @@ namespace Seniors.Skills.Andrew
         public List<Entity> enemies = new List<Entity>(); 
         public Entity target = null;
         public float kickRange = 1f;
-        public Bomb KickBomb;
+        public GameObject KickBomb;
         public override void ActivateDown()
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
@@ -102,8 +102,11 @@ namespace Seniors.Skills.Andrew
                     ShootProjectile();
                     break;
                 case "Attack_Kick":
-                    Bomb bomb = Instantiate(KickBomb, owner.transform.position + 1 * owner.transform.forward, Quaternion.identity) as Bomb;
-                    bomb.owner = owner;
+                    var bombGO = TrashMan.spawn(KickBomb, owner.transform.position + 1*owner.transform.forward,
+                        Quaternion.identity);
+                    Bomb bomb = bombGO.GetComponent<Bomb>();
+                    bomb.damage = damage;
+                    bomb.Initialize(owner, owner.enemyFactions);
                     break;
             }
         }

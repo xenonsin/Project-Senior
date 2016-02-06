@@ -8,11 +8,15 @@ namespace Senior.Items
 {
     public class IceEssence : Item
     {
-        public Bomb IceBomb;
-
+        public GameObject IceBomb;
+        public float bombDamage;
+        public float stunDuration;
         public override void OnHit(Entity target, float damage)
         {
-            Bomb bomb = Instantiate(IceBomb, target.transform.position, Quaternion.identity) as Bomb;
+            var bombGo = TrashMan.spawn(IceBomb, target.transform.position, Quaternion.identity);
+            Bomb bomb = bombGo.GetComponent<Bomb>();
+            bomb.damage = bombDamage;
+            bomb.buffDuration = stunDuration;
             bomb.Initialize(owner, owner.enemyFactions);
             OnUse();
 

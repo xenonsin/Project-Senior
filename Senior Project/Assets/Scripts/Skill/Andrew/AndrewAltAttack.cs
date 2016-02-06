@@ -12,6 +12,7 @@ namespace Seniors.Skills.Andrew
         public float maxChargeTime;
         public GameObject chargePrefab;
         private GameObject chargeInstance;
+        public float baseSpeed = 2;
         public float damageMultiplier = 2;
         public float speedMultiplier = 10;
         private float chargeTime = 0;
@@ -32,7 +33,7 @@ namespace Seniors.Skills.Andrew
             owner.channelFill.fillAmount = 0;
 
             owner.channelBarGO.SetActive(true);
-            chargeInstance = Instantiate(chargePrefab, owner.transform.position, Quaternion.identity) as GameObject;
+            chargeInstance = TrashMan.spawn(chargePrefab, owner.transform.position, Quaternion.identity);
         }
 
         public override void Update()
@@ -87,10 +88,9 @@ namespace Seniors.Skills.Andrew
                 Projectile proj = pro.GetComponent<Projectile>();
                 if (proj != null)
                 {
-                    proj.damage = damage * (1 + damageMultiplier * (buttonHoldTimePressed / maxChargeTime));
-                    proj.owner = owner;
-                    proj.speed *= 1 + speedMultiplier * chargeTime / maxChargeTime;
-
+                    proj.damage = damage * (1 + damageMultiplier * (chargeTime / maxChargeTime));
+                    proj.speed = baseSpeed + speedMultiplier * chargeTime / maxChargeTime;
+                    proj.Initialize(owner, owner.enemyFactions);
                 }
             }
         }

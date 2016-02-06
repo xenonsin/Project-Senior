@@ -23,12 +23,13 @@ namespace Assets.Scripts.Entities.Turret
             isInitialized = true;
         }
 
-        public override void OnEnable()
+
+        public override void Start()
         {
-            base.OnEnable();
+            FullHeal();
         }
 
-        public virtual void Update()
+        public override void Update()
         {
             if (isInitialized)
             {

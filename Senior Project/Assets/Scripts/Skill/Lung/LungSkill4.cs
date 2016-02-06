@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Assets.Scripts.Entities.Turret;
+using Seniors.Skills.Projectiles;
 using UnityEngine;
 
 namespace Seniors.Skills.Lung
@@ -12,6 +13,8 @@ namespace Seniors.Skills.Lung
         public GameObject shadowClonesPrefab;
         public int clonesDuration = 10;
         public List<Vector3> spawnLocations;
+        public GameObject SmokeBomb;
+        public float buffDuration = 3;
         public override void ActivateDown()
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
@@ -31,7 +34,11 @@ namespace Seniors.Skills.Lung
             switch (eventName)
             {
                 case "Skill4_CastSmoke":
-                    ShootProjectile();
+                    var bombGo = TrashMan.spawn(SmokeBomb, owner.transform.position, Quaternion.identity);
+                    Bomb bomb = bombGo.GetComponent<Bomb>();
+                    bomb.buffDuration = buffDuration;
+                    bomb.Initialize(owner, owner.enemyFactions);
+                    OnCast();
                     break;
                 case "Skill4_Project":
                     if (spawnLocations.Count > 0)

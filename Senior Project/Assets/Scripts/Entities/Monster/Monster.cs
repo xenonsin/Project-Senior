@@ -49,6 +49,9 @@ namespace Assets.Scripts.Entities.Monster
         {
             base.Heal(heal);
 
+            HealthFill.fillAmount = StatsComponent.HealthCurrent / (float)StatsComponent.HealthMax;
+
+
             if (StatsComponent.HealthCurrent == StatsComponent.HealthMax)
                 healthGO.gameObject.SetActive(false);
         }

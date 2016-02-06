@@ -25,7 +25,7 @@ namespace Assets.Scripts.Entities
         public BuffsManager BuffManager { get; set; }
         public IMovementController mc { get; set; }
         private Rigidbody rb;
-        private Animator anim;
+        public Animator anim;
         [HideInInspector]
         public Faction currentFaction;
         [HideInInspector]
@@ -38,7 +38,7 @@ namespace Assets.Scripts.Entities
         public Vector3 hitEffectOffset;
         public Material hitMaterial;
         public Material invisMaterial;
-        public Renderer[] renderer;
+        public Renderer[] renderers;
         private List<Material> defaultMaterial = new List<Material>();
         [Header("WorldUI")]
         public bool showDamagePopup;
@@ -60,13 +60,13 @@ namespace Assets.Scripts.Entities
             InventoryComponent = GetComponentInChildren<Inventory>();
 
             BuffManager = GetComponentInChildren<BuffsManager>();
-            renderer = GetComponentsInChildren<Renderer>();
+            renderers = GetComponentsInChildren<Renderer>();
             collider = GetComponent<CapsuleCollider>();
-            if (renderer != null)
+            if (renderers != null)
             {
-                for (int i = 0; i < renderer.Length; i++)
+                for (int i = 0; i < renderers.Length; i++)
                 {
-                    defaultMaterial.Add(renderer[i].material); 
+                    defaultMaterial.Add(renderers[i].material); 
                 }
 
             }
@@ -110,7 +110,6 @@ namespace Assets.Scripts.Entities
         // Called when the entity dies
         public virtual void Die()
         {
-
         }
 
         // Called when the entity gets damaged
@@ -123,23 +122,26 @@ namespace Assets.Scripts.Entities
                 //spawn hit effect
                 if (hitEffect != null)
                 {
-                    
+
                     TrashMan.spawn(hitEffect, transform.position + hitEffectOffset, Quaternion.identity);
                 }
                 if (damagePrefab != null)
                 {
-                    //spawn damage number indicator
-                    Vector3 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
-                    var damageGO = TrashMan.spawn(damagePrefab, screenPoint, Quaternion.identity);
-                    damageGO.gameObject.SetActive(true);
-                    damageGO.GetComponent<RectTransform>().SetParent(UIManager.Instance.WorldUi.transform);
-                    damageGO.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+                    if (damage > 0)
+                    {
+                        //spawn damage number indicator
+                        Vector3 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+                        var damageGO = TrashMan.spawn(damagePrefab, screenPoint, Quaternion.identity);
+                        damageGO.gameObject.SetActive(true);
+                        damageGO.GetComponent<RectTransform>().SetParent(UIManager.Instance.WorldUi.transform);
+                        damageGO.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
 
-                    damageGO.gameObject.GetComponentInChildren<Text>().text = damage.ToString();
-                    damageGO.gameObject.GetComponentInChildren<Text>().color = Color.white;
+                        damageGO.gameObject.GetComponentInChildren<Text>().text = Mathf.Floor(damage).ToString();
+                        damageGO.gameObject.GetComponentInChildren<Text>().color = Color.white;
+                    }
 
                 }
-                if (renderer != null && anim != null)
+                if (renderers != null && anim != null)
                     StartCoroutine(FlashRedOnHit());
             }
 
@@ -150,28 +152,28 @@ namespace Assets.Scripts.Entities
         //Flash Red and FreezeFrame
         private IEnumerator FlashRedOnHit()
         {
-            for (int i = 0; i < renderer.Length; i++)
+            for (int i = 0; i < renderers.Length; i++)
             {
-                renderer[i].material = hitMaterial;
+                renderers[i].material = hitMaterial;
 
             }
-            anim.enabled = false;
-            yield return new WaitForSeconds(0.1f);
-            for (int i = 0; i < renderer.Length; i++)
+            anim.speed = 0;
+            yield return new WaitForSeconds(0.12f);
+            for (int i = 0; i < renderers.Length; i++)
             {
-                renderer[i].material = defaultMaterial[i];
+                renderers[i].material = defaultMaterial[i];
 
             }
-            anim.enabled = true;
+            anim.speed = 1;
         }
 
         public void GoInvisible()
         {
             IsInvis = true;
             collider.enabled = false;
-            for (int i = 0; i < renderer.Length; i++)
+            for (int i = 0; i < renderers.Length; i++)
             {
-                renderer[i].material = invisMaterial;
+                renderers[i].material = invisMaterial;
 
             }
         }
@@ -180,9 +182,9 @@ namespace Assets.Scripts.Entities
         {
             IsInvis = false;
             collider.enabled = true;
-            for (int i = 0; i < renderer.Length; i++)
+            for (int i = 0; i < renderers.Length; i++)
             {
-                renderer[i].material = defaultMaterial[i];
+                renderers[i].material = defaultMaterial[i];
             }
         }
 
@@ -209,7 +211,7 @@ namespace Assets.Scripts.Entities
                 damageGO.GetComponent<RectTransform>().SetParent(UIManager.Instance.WorldUi.transform);
                 damageGO.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
 
-                damageGO.gameObject.GetComponentInChildren<Text>().text = heal.ToString();
+                damageGO.gameObject.GetComponentInChildren<Text>().text = Mathf.Floor(heal).ToString();
                 damageGO.gameObject.GetComponentInChildren<Text>().color = Color.green;
 
 

@@ -7,11 +7,17 @@ namespace Senior.Items
 {
     public class LightningEssence : Item
     {
-        public Bomb LightningBomb;
-
+        public GameObject LightningBomb;
+        public float bombDamage;
+        public float buffDamage;
+        public float duration;
         public override void OnHit(Entity target, float damage)
         {
-            Bomb bomb = Instantiate(LightningBomb, target.transform.position, Quaternion.identity) as Bomb;
+            var bombGo = TrashMan.spawn(LightningBomb, target.transform.position, Quaternion.identity);
+            Bomb bomb = bombGo.GetComponent<Bomb>();
+            bomb.damage = bombDamage;
+            bomb.buffDamage = buffDamage;
+            bomb.buffDuration = duration;
             bomb.Initialize(owner, owner.enemyFactions);
             OnUse();
 

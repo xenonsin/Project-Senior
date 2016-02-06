@@ -7,11 +7,17 @@ namespace Senior.Items
 {
     public class DemonicEssence : Item
     {
-        public Bomb DemonicBomb;
-
+        public GameObject DemonicBomb;
+        public float bombDamage;
+        public float buffDamage;
+        public float duration;
         public override void OnHit(Entity target, float damage)
         {
-            Bomb bomb = Instantiate(DemonicBomb, target.transform.position, Quaternion.identity) as Bomb;
+            var bombGo = TrashMan.spawn(DemonicBomb, target.transform.position, Quaternion.identity);
+            Bomb bomb = bombGo.GetComponent<Bomb>();
+            bomb.damage = bombDamage;
+            bomb.buffDamage = buffDamage;
+            bomb.lifeSpan = duration;
             bomb.Initialize(owner, owner.enemyFactions);
             OnUse();
 

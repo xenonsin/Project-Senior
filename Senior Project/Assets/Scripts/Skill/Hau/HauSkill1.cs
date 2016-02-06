@@ -8,7 +8,7 @@ namespace Seniors.Skills.Hau
     {
         public bool dashing;
         public float dashSpeed;
-        public Buff stunDebuff;
+        public GameObject stunDebuff;
         public float stunDuration;
         public override void ActivateDown()
         {
@@ -78,7 +78,8 @@ namespace Seniors.Skills.Hau
                 }
             }
 
-            Buff stun = Instantiate(stunDebuff, hit.transform.position, Quaternion.identity) as Buff;
+            var buff = TrashMan.spawn(stunDebuff, hit.transform.position, Quaternion.identity);
+            Buff stun = buff.GetComponent<Buff>();
             stun.lifeSpan = stunDuration;
             stun.Initialize(owner, entity);    
 

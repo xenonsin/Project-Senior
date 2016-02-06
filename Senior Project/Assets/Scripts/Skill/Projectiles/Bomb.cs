@@ -6,14 +6,19 @@ namespace Seniors.Skills.Projectiles
 {
     public class Bomb : Projectile
     {
-        public Buff BuffToBeApplied;
+        public GameObject BuffToBeApplied;
+        public float buffDamage;
+        public float buffDuration;
         public override void OnHit(Entity target)
         {
             base.OnHit(target);
 
             if (BuffToBeApplied != null)
             {
-                Buff buff = Instantiate(BuffToBeApplied, target.transform.position, Quaternion.identity) as Buff;
+                var buffGo = TrashMan.spawn(BuffToBeApplied, target.transform.position, Quaternion.identity);
+                Buff buff = buffGo.GetComponent<Buff>();
+                buff.damage = buffDamage;
+                buff.lifeSpan = buffDuration;
                 buff.Initialize(owner,target);
             }
 

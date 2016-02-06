@@ -71,7 +71,9 @@ namespace Seniors.Skills
                         Projectile proj = pro.GetComponent<Projectile>();
                         if (proj != null)
                         {
+                            proj.damage = damage;
                             proj.Initialize(owner, owner.enemyFactions);
+
 
                         }
                     }

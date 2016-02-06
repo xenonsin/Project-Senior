@@ -6,12 +6,21 @@ namespace Seniors.Skills.Buffs
     {
         public override void OnAdd()
         {
-            target.mc.CanMove = false;
+            if (target != null)
+            {
+                target.mc.CanMove = false;
+                target.anim.SetBool("Stunned", true);
+            }
         }
 
         public override void OnDisable()
         {
-            target.mc.CanMove = true;
+            if (target != null)
+            {
+                target.mc.CanMove = true;
+                target.anim.SetBool("Stunned", false);
+            }
+
             base.OnDisable();
         }
     }

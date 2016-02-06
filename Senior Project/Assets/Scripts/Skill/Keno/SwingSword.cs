@@ -37,7 +37,6 @@ namespace Seniors.Skills
 
         public override void RaiseEvent(string eventName)
         {
-            Debug.Log(eventName + " raised");
             switch (eventName)
             {
                 case "Attack_EnableTransition":

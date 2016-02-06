@@ -7,11 +7,17 @@ namespace Senior.Items
 {
     public class FireEssence : Item
     {
-        public Bomb FireBomb;
-
+        public GameObject FireBomb;
+        public float bombDamage;
+        public float buffDamage;
+        public float buffDuration;
         public override void OnHit(Entity target, float damage)
         {
-            Bomb bomb = Instantiate(FireBomb, target.transform.position, Quaternion.identity) as Bomb;
+            var bombGo = TrashMan.spawn(FireBomb, target.transform.position, Quaternion.identity);
+            Bomb bomb = bombGo.GetComponent<Bomb>();
+            bomb.damage = bombDamage;
+            bomb.buffDamage = buffDamage;
+            bomb.buffDuration = buffDuration;
             bomb.Initialize(owner, owner.enemyFactions);
             OnUse();
 

@@ -12,6 +12,7 @@ namespace Seniors.Skills.Buffs
         public float lifeSpan = 1f;
         public float period = 1f;
         public bool canStack = false;
+        public float damage;
         //TODO: make a buff manager
         private float nextActionTime = 0f;
 

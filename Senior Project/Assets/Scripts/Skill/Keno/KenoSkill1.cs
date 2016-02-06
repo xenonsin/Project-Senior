@@ -9,7 +9,8 @@ namespace Seniors.Skills
     public class KenoSkill1 : Skill
     {
         public GameObject SparksPrefab;
-        public TempestShield TempestShieldPrefab;
+        public GameObject TempestShieldPrefab;
+        public float duration;
 
         public override void ActivateDown()
         {
@@ -32,8 +33,11 @@ namespace Seniors.Skills
                     Instantiate(SparksPrefab, owner.transform.position, Quaternion.identity);
                     break;
                 case "Skill1_Shield":
-                    TempestShield shield = Instantiate(TempestShieldPrefab, owner.transform.position, Quaternion.identity) as TempestShield;
-                    shield.Initialize(owner,owner);
+                    var shieldGO = TrashMan.spawn(TempestShieldPrefab, owner.transform.position, Quaternion.identity);
+                    TempestShield tshield = shieldGO.GetComponent<TempestShield>();
+                    tshield.damage = damage;
+                    tshield.lifeSpan = duration;
+                    tshield.Initialize(owner,owner);
                     break;
             }
         }

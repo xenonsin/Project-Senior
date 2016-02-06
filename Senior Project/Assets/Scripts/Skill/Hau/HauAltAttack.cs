@@ -8,7 +8,7 @@ namespace Seniors.Skills.Hau
     {
         public GameObject TauntPrefab;
         private GameObject tauntInstance;
-        public Buff tauntDebuff;
+        public GameObject tauntDebuff;
 
         public override void ActivateDown()
         {
@@ -53,8 +53,9 @@ namespace Seniors.Skills.Hau
             {
                 if ((owner.enemyFactions & entity.currentFaction) == entity.currentFaction)
                 {
-                    Buff buff = Instantiate(tauntDebuff, entity.transform.position, Quaternion.identity) as Buff;
-                    buff.Initialize(owner, entity);
+                    var buff = TrashMan.spawn(tauntDebuff, entity.transform.position, Quaternion.identity);
+                    Buff taunt = buff.GetComponent<Buff>();
+                    taunt.Initialize(owner, entity);
                 }
             }
         }

@@ -1,23 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.Entities.Hero;
 using Senior.Inputs;
 
-public class EnableMovement : StateMachineBehaviour {
+public class EnableMovement : StateMachineBehaviour
+{
+    private Transform tr;
+    private HeroController hc;
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
-	    Transform tr = animator.transform;
-	    if (tr.GetComponent<HeroController>())
+	    tr = animator.transform;
+	    hc = tr.GetComponent<HeroController>();
+	    if (hc != null)
 	    {
-	        tr.GetComponent<HeroController>().CanMove = true;
+            hc.CanMove = true;
 	    }
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+    //
+    //}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	//override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

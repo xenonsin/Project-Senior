@@ -164,9 +164,9 @@ namespace Seniors.Skills
         protected IEnumerator FreezeFrame()
         {
             // if frozen = false, froze = true you know just in case
-            anim.enabled = false;
-            yield return new WaitForSeconds(0.1f);
-            anim.enabled = true;
+            anim.speed = 0;
+            yield return new WaitForSeconds(0.12f);
+            anim.speed = 1;
         }
 
     }

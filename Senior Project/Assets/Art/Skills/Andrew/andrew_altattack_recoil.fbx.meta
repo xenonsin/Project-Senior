@@ -197,7 +197,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: .999275506
+      - time: .962465703
         functionName: AnimationEvent
         data: AltAttack_NotBusy
         objectReferenceParameter: {fileID: 124176, guid: a4a573d2743d8034480ab3499582bc64,

@@ -8,6 +8,8 @@ namespace Seniors.Skills.Lung
     public class LungSkill1 : Skill
     {
         public List<Entity> enemies = new List<Entity>();
+        public GameObject SmokeBomb;
+        public float buffDuration = 3;
         public override void ActivateDown()
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
@@ -68,7 +70,11 @@ namespace Seniors.Skills.Lung
             switch (eventName)
             {
                 case "Skill1_CastSmoke":
-                    ShootProjectile();
+                    var bombGo = TrashMan.spawn(SmokeBomb, owner.transform.position, Quaternion.identity);
+                    Bomb bomb = bombGo.GetComponent<Bomb>();
+                    bomb.buffDuration = buffDuration;
+                    bomb.Initialize(owner, owner.enemyFactions);
+                    OnCast();
                     break;
                 case "Skill1_Teleport":
                     Entity target = GetRandomEntity();

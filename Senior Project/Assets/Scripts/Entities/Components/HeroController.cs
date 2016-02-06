@@ -11,7 +11,7 @@ namespace Senior.Inputs
     {
         private Stats stats;
         private IPlayerController playerController;
-        private SkillsController skills;
+        public SkillsController skills;
         private Rigidbody rb;
         private Animator anim;
         private Hero hero;
@@ -77,8 +77,6 @@ namespace Senior.Inputs
             Vector3 pos = Camera.main.ViewportToWorldPoint(viewPos);
             pos.y = 0;
             transform.position = pos;
-            //Debug.Log(transform.position);
-
         }
 
         public void FixedUpdate()
@@ -87,10 +85,6 @@ namespace Senior.Inputs
 
             if (playerController != null && CanMove)
                 Move();
-
-            
-
-            //hero.transform.position.y = 0;
         }
 
 
@@ -122,19 +116,9 @@ namespace Senior.Inputs
                         Time.deltaTime*stats.RotationSpeedBase);
                 }
             }
-
-            Vector3 newPosition = rb.position + MoveDirection.normalized * stats.MovementSpeedBase * Time.deltaTime;
-            Vector3 clampedPosition = Camera.main.WorldToViewportPoint(newPosition);
-            clampedPosition.x = Mathf.Clamp(clampedPosition.x, 0.2f, 0.8f);
-            clampedPosition.y = Mathf.Clamp(clampedPosition.y, 0.2f, 0.8f);
-            
-            //newPosition.x = Mathf.Clamp(newPosition.x, movementRangeMin.x, movementRangeMax.x);
-
-            //newPosition.z = Mathf.Clamp(newPosition.z, movementRangeMin.z, movementRangeMax.z);
             // if the player is only allowed to rotate, then don't move
             if (!OnlyRotate)
-                rb.MovePosition(newPosition);
-            //rb.MovePosition(Camera.main.ViewportToWorldPoint(clampedPosition));
+                rb.MovePosition(rb.position + MoveDirection.normalized * stats.MovementSpeedBase * Time.deltaTime);
         }
 
         public void AnimationEvent(string eventName)

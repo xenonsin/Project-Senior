@@ -1,7 +1,13 @@
-﻿namespace Seniors.Skills.Hau
+﻿using Seniors.Skills.Projectiles;
+using UnityEngine;
+
+namespace Seniors.Skills.Hau
 {
     public class HauSkill3 : Skill
     {
+        public GameObject IceNovaBomb;
+        public float bombDamage;
+        public float buffDuration;
         public override void ActivateDown()
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
@@ -19,7 +25,12 @@
             switch (eventName)
             {
                 case "TossBomb":
-                    ShootProjectile();
+                    var bombGo = TrashMan.spawn(IceNovaBomb, owner.transform.position, Quaternion.identity);
+                    Bomb bomb = bombGo.GetComponent<Bomb>();
+                    bomb.damage = bombDamage;
+                    bomb.buffDuration = buffDuration;
+                    bomb.Initialize(owner, owner.enemyFactions);
+                    OnCast();
                     break;
             }
         }

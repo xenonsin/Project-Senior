@@ -5,7 +5,10 @@ namespace Seniors.Skills.Andrew
 {
     public class AndrewSkill1 : Skill
     {
-        public FireEssence fireEssensePrefab;
+        public GameObject fireEssensePrefab;
+        public float bombDamage;
+        public float buffDamage;
+        public float buffDuration = 5;
         public override void ActivateDown()
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
@@ -14,8 +17,11 @@ namespace Seniors.Skills.Andrew
             {
                 IsDisabled = true;
                 OnCast();
-                
-                FireEssence fe = Instantiate(fireEssensePrefab, owner.transform.position, Quaternion.identity) as FireEssence;
+                var fireEssenceGo = TrashMan.spawn(fireEssensePrefab, owner.transform.position, Quaternion.identity);
+                FireEssence fe = fireEssenceGo.GetComponent<FireEssence>();
+                fe.bombDamage = bombDamage;
+                fe.buffDamage = buffDamage;
+                fe.buffDuration = buffDuration;
                 fe.Initialize(owner);
             }
         }

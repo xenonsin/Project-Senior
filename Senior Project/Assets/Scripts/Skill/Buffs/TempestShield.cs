@@ -6,7 +6,6 @@ namespace Seniors.Skills.Buffs
 {
     public class TempestShield : Buff
     {
-        public int damage;
         public float knockbackForce;
 
         public List<Entity> enemies = new List<Entity>();

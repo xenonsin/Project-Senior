@@ -98,7 +98,8 @@ namespace Assets.Scripts.Entities.Hero
         // Is used to update the skill cd for the ui
         public override void UpdateSkill(Skill skill)
         {
-            playerOwner.UpdateSkill(skill);
+            if (skill.showInUi)
+                playerOwner.UpdateSkill(skill);
         }
 
         // called when a skill has hit an enemy, incokes any OnHit events ex. from items

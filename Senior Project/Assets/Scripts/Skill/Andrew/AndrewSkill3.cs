@@ -5,7 +5,10 @@ namespace Seniors.Skills.Andrew
 {
     public class AndrewSkill3 : Skill
     {
-        public LightningEssence lightingEssensePrefab;
+        public GameObject lightingEssensePrefab;
+        public float bombDamage;
+        public float buffDamage;
+        public float debuffDuration;
         public override void ActivateDown()
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Locomotion")) return;
@@ -14,8 +17,11 @@ namespace Seniors.Skills.Andrew
             {
                 IsDisabled = true;
                 OnCast();
-
-                LightningEssence fe = Instantiate(lightingEssensePrefab, owner.transform.position, Quaternion.identity) as LightningEssence;
+                var lightingEssenseGo = TrashMan.spawn(lightingEssensePrefab, owner.transform.position, Quaternion.identity);
+                LightningEssence fe = lightingEssenseGo.GetComponent<LightningEssence>();
+                fe.bombDamage = bombDamage;
+                fe.buffDamage = buffDamage;
+                fe.duration = debuffDuration;
                 fe.Initialize(owner);
             }
         }
